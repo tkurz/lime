@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="lib/jquery/jquery-ui.min.css" />
+
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <link rel="stylesheet" href="css/infobox.css" />
+
+    <script type="text/javascript" src="lib/jquery/jquery-1.6.1.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
+    <script type="text/javascript" src="lib/jquery/jquery-ui.1.8.12.min.js"></script>
+<!--    <script type="text/javascript" src="lib/jquery-ui.1.9m5.js"></script>-->
+    <script type="text/javascript" src="lib/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/backbone/backbone.js"></script>
+
+    <script type="text/javascript" src="lib/vie/jquery.rdfquery.min.js"></script>
+
+    <script type="text/javascript" src="lib/vie/vie-latest.debug.js"></script>
+
+    <script type="text/javascript" src="lib/viewidgets/vie.autocomplete.js"></script>
+    <script type="text/javascript" src="lib/viewidgets/hallo.js"></script>
+    <script type="text/javascript" src="lib/viewidgets/annotate.js"></script>
+
+    <script type="text/javascript" src="lib/coffee-script.js"></script>
+    <script type="text/coffeescript" src="infobox.coffee"></script>
+
+    <style>
+        body {
+            font-family: Verdana;
+            font-size: 15px;
+            background-color: #eee;
+        }
+    </style>
+    <script type="text/coffeescript">
+# Initialize page
+  _.defer ->
+    vie = new VIE()
+    vie.use new vie.StanbolService(
+      url: "http://dev.iks-project.eu:8081"
+      enhancerUrlPostfix: "/enhancer/chain/ehealth"
+      entityhubSite: "ehealth"
+      proxyDisabled: true
+      getSources: [
+        uri: "www4.wiwiss.fu-berlin.de"
+        label: "ehealth"
+      ]
+    )
+    jQuery(".infoBox").infobox
+      vie: vie
+      service: "stanbol"
+      config: ->
+        localStorage.vhealthConfig
+
+    jQuery('.infobox').infobox 'option', 'entity', 'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/DB00945'
+
+    </script>
+    <body>
+        <a href="https://github.com/szabyg/vie-health"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+        <h1>Infobox widget test page</h1>
+        <div class="infobox"></div>
+            <h2 class="entityLabel"></h2>
+            <div class="entity-types"></div>
+            <div>
+                <h4>selected:</h4>
+                <div id="results"></div>
+            <button id="loadAspirin">load Aspirin</button><br/>
+            <button id="loadEpilepsy">load Epilepsy</button><br/><br/>
+            <button id="showConfigBtn">show config JSON</button><br/>
+            <button id="clearConfigBtn">clear config</button><br/>
+            <button id="initConfigBtn">load initial configuration</button><br/>
+
+            <script type="text/coffeescript">
+              jQuery("#loadSbg").button().click ->
+                jQuery('.infobox').infobox 'option', 'entity', 'http://dbpedia.org/resource/Salzburg'
+              jQuery("#loadAspirin").button().click ->
+                jQuery('.infobox').infobox 'option', 'entity', 'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/DB00945'
+              jQuery("#loadEpilepsy").button().click ->
+                jQuery('.infobox').infobox 'option', 'entity', 'http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseases/372'
+              jQuery("#showConfigBtn").button().click ->
+                alert(localStorage.vhealthConfig)
+              jQuery("#clearConfigBtn").button().click ->
+                delete localStorage[Vhealth.lsName];Vhealth.reloadEntity()
+              jQuery("#initConfigBtn").button().click ->
+                Vhealth.configInit()
+            </script>
+          </div>
+        </div>
+    </body>
+</html>
