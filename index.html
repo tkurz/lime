@@ -7,14 +7,13 @@
 
 <script src="js/jquery.js"></script>    
 <link href="css/video-js.css" rel="stylesheet">  
-<script src="js/video.js"></script>   
+<script src="js/video.min.js"></script>   
 <!-- CDN-hosted versions disabled for now for extra speed -->
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
 <!--<link rel=stylesheet href="http://vjs.zencdn.net/3.2/video-js.css" type="text/css">
 <script src="http://vjs.zencdn.net/3.2/video.js"></script>-->
- <script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
 <script src="js/connectme.js"></script> 	<!-- The extended player -->
-<script src="js/mediafragments.js"></script> <!-- Media fragments stuff -->
 <link href="css/screen.css" rel="stylesheet">	
 
 <script type="text/javascript" language="javascript">
@@ -25,149 +24,34 @@ if ($.event.props[17] == 'layerX') {
 }
 }());
 </script>  
+<script type="text/javascript" src="js/jquery-ui-1.8.21.min.js"></script>
+<script type="text/javascript" language="javascript">
 
-<!-- 
-VIE infobox & VIE-LMF service includes:
-https://github.com/szabyg/VIE.infobox
-https://github.com/szabyg/VIE-LMF-Service
--->
-    <script type="text/javascript" src="js/infobox/lib/jquery/jquery-ui.1.8.12.min.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/vie/jquery.rdfquery.debug.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/underscore/underscore-min.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/backbone/backbone.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/json-serialization.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/vie/vie-latest.debug.js"></script>
-    <script type="text/javascript" src="js/lmfservice/lib/coffee-script.js"></script>
-    
-    <script type="text/javascript" src="http://client.lmf.googlecode.com/hg/lmf-client-js/lmf-0.0.1.js"></script>
-	
-	<script type="text/javascript" src="js/lmfservice/lmfservice.js"></script>
-	<script type="text/javascript" src="js/infobox/infobox.js"></script>
-    <!--<script type="text/coffeescript" src="js/infobox/infobox.coffee"></script>
-	<script type="text/coffeescript" src="js/lmfservice/lmfservice.coffee"></script>-->
-    
-    <link href="js/infobox/css/infobox.css" type="text/css" rel="stylesheet" />
-    <link href="js/infobox/css/font-awesome.css" type="text/css" rel="stylesheet" /> <!-- for infobox controls -->
-     
-    <!--Annotation format: http://devserver.sti2.org/connectme/1.2/downloads/6306_519_20120508125738_standard_mp4_1337789614.n3
-   	DEMO VIDEO 1: https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4
-    DEMO VIDEO 2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4  -->
-	
-     
-<script type="text/coffeescript">
-# this is the infobox to display RDF data as widgets in the page
-# we need to have several versions of the widget - custom views for displaying info about persons, places, maps, forms, etc; needs service to connect to dbpedia, geonames, etc and to deliver VIE instances, currently the only connector is for LMF & Stanbol
+$(document).ready(function(){	
+	LimePlayer = new LIMEPlayer({
+	  Video: ["https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4"],	//, "video/tourism_video.webm"
+	  ContainerDiv: "mainwrapper",
+	  VideoPlayerSize: {"width": 640, "height": 360},
+	  VPlayer: "VideoJS",
+	  AnnotFrameworkURL: "http://labs.newmedialab.at/SKOS/",
+	  Widgets: ["infobox", "imagebox"],
+	  Platform: "web",
+	  DimensionsNWSE: {"AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300},
+	  AnnotationsVisible : true,
+	  TimeInterval: 1000,
+	});
+});
 
-### working demo setup for RedBull LMF
-resUri_demo = 'http://labs.newmedialab.at/RedBull/resource/GaryHunt'
-LMFConfigDemo={
-	"<http://redbullcontentpool.com/ontology/Athlete>":[	//http://www.w3.org/2002/07/owl
-		[],[
-			{"property":"<http://www.w3.org/2000/01/rdf-schema#label>","fieldLabel":"Name"},
-			{"property":"<http://purl.org/dc/elements/1.1/description>","fieldLabel":"Description"},
-			{"property":"<http://xmlns.com/foaf/0.1/img>","fieldLabel":"Image"},
-			{"property":"<http://xmlns.com/foaf/0.1/based_near>","fieldLabel":"Location"}
-		]
-	]
-}###
-###
-# not working
-resUri = 'http://dbpedia.org/resource/Flachau'
-v = new VIE
-v.use new v.LMFService
-	lmfUrl: 'http://labs.newmedialab.at/SKOS/'
-
-v.load
-		uri: resUri
-.using('lmf')
-.execute()
-.success (res) ->
-	#console.log 'lmfservice.load success:', res
-#sample config for a place - we should have several of these according to information type
-LMFConfig={
-	"<http://dbpedia.org/ontology/Place>":[
-		[],[
-			{"property":"<http://dbpedia.org/ontology/abstract>","fieldLabel":"Description"}
-			{"property":"<http://xmlns.com/foaf/0.1/name>","fieldLabel":"Name"},
-			{"property":"<http://dbpedia.org/ontology/thumbnail>","fieldLabel":"Image"},
-			{"property":"<http://dbpedia.org/ontology/country>","fieldLabel":"Location"}	
-		]
-	]
-}
-infobox = jQuery('#meta2').infobox
-	vie: v
-	config: LMFConfig
-	entity: resUri
-	service: "lmf"
-#console.log infobox.infobox 'option', 'entity'
-###
 </script>
-
 </head>
 <body>
 <div align="center" id="container">
-<div id="header" class="header" align="left"><a href="./"><img src="img/connectme_logo_web.png" width="204" height="40" border="0" /></a></div>
-
-<div class="mainwrapper" id="mainwrapper" align="center">
-    <div class="west" id="west">West  <br />
-        <div class="widget">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus   metus nec urna luctus non consectetur nulla fermentum. Aliquam libero   leo, porttitor vel pellentesque at, fringilla vestibulum dolor.   Curabitur dignissim luctus sem ut elementum.  </div>
-        <!--<div class="widget"> 
-          <p> time fragments - you can pass a parameter #t=12,15 to pla that section of the video from sec 12 to sec 15, or simply pass a start point like #t=6 in the URL</p></div>-->
-    </div>
-
-    <div id="center" class="center">
-        <div class="north" id="north">North</div>
-        
-        <div class="videowrapper">
-            <video id="videoplayer" class="video-js vjs-default-skin" autoplay  controls  preload="metadata"  width="640" height="360" poster="img/connectme-video-poster.jpg" data-setup="{}">
-                <source src="https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4"  type='video/mp4'>
-            </video>
-               <input type="button" value="Try another video" onclick="window.location='?video=https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4'" />
-        </div>
-        
-        <div id="south" class="south">South</div>
-    </div><!--end center div -->
-
-    <div class="east" id="east">East
-        <!--<div class="widget">demo resource for infobox below:  <a href="http://labs.newmedialab.at/RedBull/resource/GaryHunt" target="_blank">http://labs.newmedialab.at/RedBull/resource/GaryHunt</a><br />
-        !!!Infobox displays fine in FF &amp; IE9, but not in Chrome - there is a known Chrome bug to be solved in the upcoming (still beta) release</div>-->
-        <div id="meta2" class="widget" style="font-size:12px"></div>
-        <div id="timer" style=" border: solid #09Fl 1px; margin: 1px">&nbsp;</div>
-        <div id="meta" style=" border: solid #09Fl 1px; margin: 1px"></div>
-        <div id="current-time"></div>
-    </div>
+	<div id="header" class="header" align="left"><a href="./"><img src="img/connectme_logo_web.png" width="204" height="40" border="0" /></a></div>
+    <div class="mainwrapper" id="mainwrapper" align="center"></div>
 </div>
-</div>
-
 <div id="footer" align="center">
 	<div class="container" align="center"><a target="_blank" href="http://salzburgresearch.at"><img alt="Salzburg Research Forschungsgesellschaft" src="img/salzburgresearch.png" border="0"/></a></div>
 </div>
-
-<script type="text/javascript" language="javascript">
-/*var VIE= new VIE();
-var dbpService = new VIE.DBPediaService();
-var dbpConn = new VIE.DBPediaConnector();
-dbpConn.load("<http://dbpedia.org/resource/Barack_Obama>",
-            function (res) { console.log(res) },
-            function (err) { console.log(err) });
-*/
-
-_V_("videoplayer").ready(function(){
-	var LimePlayer = _V_('videoplayer');
-	var video="https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4";
-	var params = UTILS.url.queryParams();
-	if(params['video']){
-		LimePlayer.src(params['video']);
-	}
-	else LimePlayer.src(video);
-	if(LimePlayer.tech.techName=="flash") video=LimePlayer.values.src.value;
-	LimePlayer.addEvent("loadedmetadata", autoseekvideo);
-	LimePlayer.addEvent("loadedmetadata", scale);
-	timeofvideo();
-	console.log(LimePlayer);
-//	loadAnnotations();		//As the videos are all mp4, in Firefox it switches to Flash technology, thus calling this function here doesn't work, need to put it below
-});
-	loadAnnotations();		//triggers the hipervideo player with annotations
-</script>
+</div>
 </body>
 </html>

@@ -1,18 +1,13 @@
 /* screen css */
 /*for annotations */
-.AnnW { width: 118px; cursor: pointer !important; float: left; background-color: #CCC; color: red; position: absolute; top: 5px; right: 5px; 
-/*-khtml-opacity:.50; -moz-opacity:.50; -ms-filter:”alpha(opacity=50)”; filter:alpha(opacity=50); opacity:.50;*/
-font-size: 14px; 
-}
 .widget{
-  border: 1px solid #111; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; 
-  margin: 5px;
-  margin-bottom: 10px;
-  padding: 3px;
-  background: rgba(128, 128, 128, 0.1);	
-  border: solid 1px #999;
-  
-  box-shadow:rgba(255,255,255,0.5) 0px 0px 24px;
+	border: 1px solid #111; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; 
+	margin: 5px;
+	margin-bottom: 10px;
+	padding: 3px;
+	background: rgba(128, 128, 128, 0.1);	
+	border: solid 1px #999;
+	box-shadow:rgba(255,255,255,0.5) 0px 0px 24px;
 }
 .annotation-wrapper .widget{
 	overflow: hidden;
@@ -27,39 +22,21 @@ font-size: 14px;
 .vjs-default-skin.vjs-fullscreen .vjs-logobox div { width: 86px; height: 16px; background: url('../img/connectme_logo_16.png'); margin: 0.5em auto 0; }
 
 /* style for annotations toggle */
-.vjs-default-skin .vjs-annotationstoggler { width: 73px; height: 20px; cursor: pointer !important; float: left; border: 1px solid #111; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em; border-radius: 0.3em; 
-  background: #4d4d4d; margin: 0.2em auto 0;
-  background: -moz-linear-gradient(top,  #4d4d4d 0%, #3f3f3f 50%, #333333 50%, #252525 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4d4d), color-stop(50%,#3f3f3f), color-stop(50%,#333333), color-stop(100%,#252525));
-  background: -webkit-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: -o-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: -ms-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);}
-.vjs-default-skin .vjs-annotationstoggler div { width: 73px; height: 16px; background: url('../img/annot_button.png'); margin: 0.3em auto 0;} /* */
-.vjs-default-skin.vjs-fullscreen .vjs-annotationstoggler div { width: 73px; height: 16px; background: url('../img/annot_button.png'); margin: 0.3em auto 0;}	/* 0.2em auto 0;*/
-
-/*
-.vjs-default-skin .vjs-menu-button {
-  float: right; margin: 0.2em 0.5em 0 0; padding: 0; width: 3em; height: 2em; cursor: pointer !important;
-
-  border: 1px solid #111; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em; border-radius: 0.3em;
-
-  background: #4d4d4d;
-  background: -moz-linear-gradient(top,  #4d4d4d 0%, #3f3f3f 50%, #333333 50%, #252525 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4d4d), color-stop(50%,#3f3f3f), color-stop(50%,#333333), color-stop(100%,#252525));
-  background: -webkit-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: -o-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: -ms-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
-  background: linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
+.vjs-default-skin .vjs-annotationstoggler { 
+	width: 86px; height: 20px; cursor: pointer !important; float: left; border: 1px solid #111; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em; border-radius: 0.3em; 
+	background: #4d4d4d; margin: 0.2em auto 0;
+	background: -moz-linear-gradient(top,  #4d4d4d 0%, #3f3f3f 50%, #333333 50%, #252525 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4d4d), color-stop(50%,#3f3f3f), color-stop(50%,#333333), color-stop(100%,#252525));
+	background: -webkit-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
+	background: -o-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
+	background: -ms-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
+	background: linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
 }
-/* Button Icon */
-
-
-
+.vjs-default-skin .vjs-annotationstoggler div { width: 86px; height: 16px; background: url('../img/connectme_logo_16.png'); margin: 0.3em auto 0;} /* */
+.vjs-default-skin.vjs-fullscreen .vjs-annotationstoggler div { width: 86px; height: 16px; background: url('../img/connectme_logo_16.png'); margin: 0.3em auto 0;}	/* 0.2em auto 0;*/
 
 .vjs-default-skin .vjs-remaining-time-display { right: 0; margin-left: 15px;}
 .vjs-default-skin .vjs-current-time-display { left: 0;   padding-left: 5px; }
-
 
 body{background-color: #333; }
 div{text-align: left;}
@@ -80,8 +57,8 @@ div{text-align: left;}
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8E8E8, endColorstr=#FFFFFF,GradientType=1);
 	background-color:#FFF;
 	width: 98%;
-	height: 600px;
-	float: left
+	/*max-height: 600px;*/
+	float: left;
 	position: relative;
 	align: center;
 }
@@ -89,15 +66,19 @@ div{text-align: left;}
 	width: 200px;
 	float: left;
 	border: solid 1px #1c8317;
-	padding: 5px; 
-	margin: 5px;
+	padding: 1px; 
+	margin: 3px;
+	max-height: 900px;
+	max-width: 250px;
 }
 .east{
 	border: solid 1px #039;  
-	padding: 5px; 
-	margin: 5px;
-	margin-left: 890px;
-
+	padding: 1px; 
+	margin: 3px;
+	position: relative;
+	float: left;
+	max-height: 900px;
+	max-width: 250px;
 }
 .center{
 	border: solid 1px #c30; 
@@ -107,17 +88,25 @@ div{text-align: left;}
 }
 .north{
 	border: solid 1px #1f169e; 
-	width: 99%;
-	margin: 5px;
+	width: 100%;
+	margin: 3px;
+	padding: 1px;
 	min-height: 20px;
+	position: relative;
+	float: left;
+	max-height: 200px;
+	max-width: 1920px;
 }
 .south{
 	border: solid 1px #724c04; 
-	width: 99%;
-	margin: 5px;
+	width: 100%;
+	margin: 3px;
+	padding: 1px;
 	min-height: 20px;
-	max-width: 640px;
-
+	position: relative;
+	float: left;
+	max-height: 200px;
+	max-width: 1920px;
 }
 .connectme_logo_player{
 	background-image:url(../img/connectme_logo.png); background-repeat:no-repeat;
@@ -128,6 +117,7 @@ div{text-align: left;}
 	margin: 5px;
 	min-height: 370px;
 	min-width: 640px;
+	float: left;
 }
 #header {
     background: -moz-linear-gradient(center top , #414141 0%, #161616 50%, #000000 100%) repeat scroll 0 0 transparent;
@@ -147,7 +137,9 @@ div{text-align: left;}
 #footer {
     box-shadow: 0 -3px 3px 1px #000000;
     height: 185px;
+	width: 100%;
     position: relative;
+	float: left;
     z-index: 5;
     background-color: #414141;
 	background: linear-gradient(top, #414141 0%, #161616 50%, #000000 100%);
@@ -161,7 +153,7 @@ div{text-align: left;}
 #footer .container {
 	color: #FFFFFF;
     padding: 0px;
-    position:absolute;
+    position: absolute;
     left:50%;
 	margin-left: -75px;	/* centering for an image ~150px wide */
 }
@@ -202,7 +194,6 @@ div{text-align: left;}
 	left: 5px;
 	width: 250px; 
 	max-height: 90%;
-/*	-khtml-opacity:.50; -moz-opacity:.50; -ms-filter:”alpha(opacity=50)”; filter:alpha(opacity=50); opacity:.50;*/
 	font-size: 14px;
 	color: #fff;
 	border: solid 1px #EAEAEA;
@@ -217,8 +208,6 @@ div{text-align: left;}
 	width:250px; 
 	max-height: 90%;
 	background-color:  rgba(31,89,160,0.1);
-/*	background-color: #33e;
-	-khtml-opacity:.50; -moz-opacity:.50; -ms-filter:”alpha(opacity=50)”; filter:alpha(opacity=50); opacity:.50;*/
 	font-size: 14px;
 	color: #fff;
 	border: solid 1px #EAEAEA;
@@ -231,9 +220,6 @@ div{text-align: left;}
 	width:99%; 
 	height: 40px;
 	margin: 5px;
-/*	background-color:  rgba(35,179,28,0.3);
-	background-color: #4f2;
-	-khtml-opacity:.50; -moz-opacity:.50; -ms-filter:”alpha(opacity=50)”; filter:alpha(opacity=50); opacity:.50;*/
 	font-size: 14px;
 	color: #fff;
 	border: solid 1px #EAEAEA;
@@ -246,9 +232,6 @@ div{text-align: left;}
 	width: 99%; 
 	height: 60px;
 	margin: 5px;
-	/*background-color:  rgba(246,227,15,0.3);
-	background-color: #fc0;
-	-khtml-opacity:.50; -moz-opacity:.50; -ms-filter:”alpha(opacity=50)”; filter:alpha(opacity=50); opacity:.50;*/
 	font-size: 14px;
 	color: #fff;
 	border: solid 1px #EAEAEA;
