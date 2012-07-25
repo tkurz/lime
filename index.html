@@ -1,57 +1,81 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-<title>CONNECTME Player</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>CONNECTME Player</title>
+    <script src="lib/underscoreJS/underscore.min.js"></script>
+    <script src="lib/jquery/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
+    <script type="text/javascript" src="lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
+    <script type="text/javascript" src="lib/vie/vie-latest.debug.js"></script>
 
-<script src="js/jquery.js"></script>    
-<link href="css/video-js.css" rel="stylesheet">  
-<script src="js/video.min.js"></script>   
-<!-- CDN-hosted versions disabled for now for extra speed -->
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
-<!--<link rel=stylesheet href="http://vjs.zencdn.net/3.2/video-js.css" type="text/css">
-<script src="http://vjs.zencdn.net/3.2/video.js"></script>-->
-<script type="text/javascript" src="js/utils.js"></script>
-<script src="js/connectme.js"></script> 	<!-- The extended player -->
-<link href="css/screen.css" rel="stylesheet">	
+    <link href="css/video-js.css" rel="stylesheet">
+    <script src="lib/videojs/video.js"></script>
 
-<script type="text/javascript" language="javascript">
-(function(){	//fix for a JQuery bug in Chrome - 'event.layerX and event.layerY are broken and deprecated in WebKit' -> remove layerX and layerY
-$.event.props = ['altKey', 'attrChange', 'attrName', 'bubbles', 'button', 'cancelable', 'charCode', 'clientX', 'clientY', 'ctrlKey', 'currentTarget', 'data', 'detail', 'eventPhase', 'fromElement', 'handler', 'keyCode', 'layerX', 'layerY', 'metaKey', 'newValue', 'offsetX', 'offsetY', 'pageX', 'pageY', 'prevValue', 'relatedNode', 'relatedTarget', 'screenX', 'screenY', 'shiftKey', 'srcElement', 'target', 'toElement', 'view', 'wheelDelta', 'which'];
-if ($.event.props[17] == 'layerX') {
-  $.event.props.splice(17, 2);
-}
-}());
-</script>  
-<script type="text/javascript" src="js/jquery-ui-1.8.21.min.js"></script>
-<script type="text/javascript" language="javascript">
+    <!-- CDN-hosted versions disabled for now for extra speed -->
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+    <!--<link rel=stylesheet href="http://vjs.zencdn.net/3.2/video-js.css" type="text/css">
+   <script src="http://vjs.zencdn.net/3.2/video.js"></script>-->
+    <script src="lib/player-extension.js"></script>
+    <!-- The extended player -->
+    <script src="lib/lime.js"></script>
+    
+    <!-- plugins -->
+	<script src="lib/ldplugin.js"></script>
+    <script src="lib/annotationoverlays.js"></script>
+    
+    
+    <link href="css/screen.css" rel="stylesheet">
 
-$(document).ready(function(){	
-	LimePlayer = new LIMEPlayer({
-	  Video: ["https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4"],	//, "video/tourism_video.webm"
-	  ContainerDiv: "mainwrapper",
-	  VideoPlayerSize: {"width": 640, "height": 360},
-	  VPlayer: "VideoJS",
-	  AnnotFrameworkURL: "http://labs.newmedialab.at/SKOS/",
-	  Widgets: ["infobox", "imagebox"],
-	  Platform: "web",
-	  DimensionsNWSE: {"AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300},
-	  AnnotationsVisible : true,
-	  TimeInterval: 1000,
-	});
-});
+    <script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>
+    
+    <script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
+    
+    <script type="text/javascript" language="javascript">
+/* 
+VIDEO1: https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4
+VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4 
+*/
+        $(document).ready(function () {
+            LimePlayer = new LIMEPlayer({
+                video:["https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4", "video/tourism_video.webm"],
+                containerDiv:"mainwrapper",
+                videoPlayerSize:{"width":640, "height":360},
+                vPlayer:"VideoJS",
+                annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
+                plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+				fullscreen: false,
+                platform:"web",
+                fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
+                widgetContainers:[
+                    {element:jQuery('#widget-container-1'), orientation:'vertical'},
+                    {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                ],
+                annotationsVisible:true,
+                timeInterval:1000
+            });
+            console.log(LimePlayer);
+        });
 
-</script>
+
+    </script>
 </head>
 <body>
 <div align="center" id="container">
-	<div id="header" class="header" align="left"><a href="./"><img src="img/connectme_logo_web.png" width="204" height="40" border="0" /></a></div>
+    <div id="header" class="header" align="left"><a href="./"><img src="img/connectme_logo_web.png" width="204"
+                                                                   height="40" border="0"/></a></div>
+    <div id="widget-container-1" class="widget-container vertical"></div>
     <div class="mainwrapper" id="mainwrapper" align="center"></div>
+    <div id="widget-container-2" class="widget-container horizontal"></div>
 </div>
 <div id="footer" align="center">
-	<div class="container" align="center"><a target="_blank" href="http://salzburgresearch.at"><img alt="Salzburg Research Forschungsgesellschaft" src="img/salzburgresearch.png" border="0"/></a></div>
+    <div class="container" align="center"><a target="_blank" href="http://salzburgresearch.at">
+    <img alt="Salzburg Research Forschungsgesellschaft" src="img/salzburgresearch.png" border="0"/></a></div>
+
 </div>
 </div>
+ 
 </body>
 </html>

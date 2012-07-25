@@ -1,17 +1,5 @@
-PROJECT
-=======
-lime is a player for semantically interlinked videos. It is developed within 
-the ConnectMe Project (http://connectme.sti2.org/).
+# Linked Media Player
 
-CONTACT
-=======
-Thomas Kurz
+For a detaile documentation on the architecture see [the project wiki](http://connectme.sti2.org/wiki/index.php/ConnectME_hypervideo_player)
 
-Salzburg Research Forschungsgesellschaft,
-Salzburg, Austria
-
-thomas.kurz@salzburgresearch.at
-
-LICENSE
-=======
-Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+For building run `coffee -co lib src/*.coffee`
