@@ -40,7 +40,9 @@ VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volk
 */
         $(document).ready(function () {
             LimePlayer = new LIMEPlayer({
-                video:["https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4", "video/tourism_video.webm"],
+                video:[ "https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4",
+                        "http://connectme.salzburgresearch.at/data/tourism_video.webm",
+                        "http://connectme.salzburgresearch.at/data/tourism_video.ogv"],
                 containerDiv:"mainwrapper",
                 videoPlayerSize:{"width":640, "height":360},
                 vPlayer:"VideoJS",
