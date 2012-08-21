@@ -10,6 +10,10 @@ Salzburg Research Forschungsgesellschaft
 Salzburg, Austria
 thomas.kurz@salzburgresearch.at
 
+Online demo
+===========
+[tkurz.github.com/lime](http://tkurz.github.com/lime/)
+
 LICENSE
 =======
 Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
