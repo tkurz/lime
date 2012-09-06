@@ -49,15 +49,12 @@ VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volk
                 // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                 annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
                 plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
-				fullscreen: false,
-                platform:"web",
                 fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
                 widgetContainers:[
                     {element:jQuery('#widget-container-1'), orientation:'vertical'},
                     {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                 ],
                 annotationsVisible:true,
-                timeInterval:1000
             });
             console.log(LimePlayer);
         });
@@ -66,6 +63,7 @@ VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volk
     </script>
 </head>
 <body>
+
 <div align="center" id="container">
     <div id="header" class="header" align="left"><a href="./"><img src="img/connectme_logo_web.png" width="204"
                                                                    height="40" border="0"/></a></div>
@@ -74,8 +72,10 @@ VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volk
     <div id="widget-container-2" class="widget-container horizontal"></div>
 </div>
 <div id="footer" align="center">
-    <div class="container" align="center"><a target="_blank" href="http://salzburgresearch.at">
-    <img alt="Salzburg Research Forschungsgesellschaft" src="img/salzburgresearch.png" border="0"/></a></div>
+    <div class="container" align="center">
+        <a target="_blank" href="http://salzburgresearch.at"><img alt="Salzburg Research Forschungsgesellschaft" src="img/salzburgresearch.png" border="0"/></a>
+        <a target='_blank' href='http://www.sti2.org/'><img alt='STI Research' src='img/sti-research.png' border='0'/></a>
+    </div>
 
 </div>
 </div>
