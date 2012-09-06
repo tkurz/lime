@@ -1,8 +1,8 @@
 appFiles  = [
   'src/lime.coffee'
-  'src/player-extension.coffee'
+  #'src/player-extension.coffee'
 ]
-target = "lib/connectme.js"
+target = "lib/lime.js"
 
 widgets = []
 
@@ -71,7 +71,7 @@ task 'widgetwatch', 'Watch and compile widgets', ->
 
 task 'doc', 'Build documentation', ->
     exec "docco-husky #{appFiles.join ' '}", (err, stdout, stderr) ->
-        util.error strerr if stderr
+        util.error stderr if stderr
         console.log stdout if stdout
 grrrr = (message = '') -> 
     util.error message
