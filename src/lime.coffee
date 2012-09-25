@@ -1,33 +1,60 @@
-### Linked Media Player
+# # Linked Media Player
 
-* handles the VideoJS player instance
-* fetches the annotations from the `options.annotFrameworkURL` SPARQL endpoint
-* Instantiate Plugins
+# * handles the VideoJS player instance
+# * fetches the annotations from the `options.annotFrameworkURL` SPARQL endpoint
+# * Instantiate Plugins
 
-###
+# ## Usage
+#
+#     LimePlayer = new LIMEPlayer({
+#       video:[ "http://connectme.salzburgresearch.at/data/tourism_video.webm",
+#         "http://connectme.salzburgresearch.at/data/tourism_video.ogv",
+#         "https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4"],
+#       containerDiv:"mainwrapper",
+#       annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
+#       plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+#       widgetContainers:[
+#         {element:jQuery('#widget-container-1'), orientation:'vertical'},
+#         {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+#       ],
+#     });
+#
 class window.LIMEPlayer
   constructor: (opts) ->
-    options = # default values
+    # Define the default options
+    options =
+      # The container DOM element to use
       containerDiv: "mainwrapper"
+      # Dimensions for the player
       videoPlayerSize: {"width": 640, "height": 360}
-      vPlayer: "VideoJS"
-      annotFrameworkURL: "http://labs.newmedialab.at/SKOS/" # LMF URL
-      plugins: [TestPlugin] # list of allowed widgets
-      platform: "web" # autodetecting
-      fullscreen: "false" # toggle true/false
-      fullscreenLayout: "AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300 # how big should be the annotation areas surrounding the video
+      # LMF URL
+      annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
+      # list of allowed widgets TODO Add possibility for defining configuration
+      plugins: [TestPlugin]
+      # autodetecting
+      platform: "web"
+      # toggle true/false
+      fullscreen: false
+      # how big should be the annotation areas surrounding the video
+      fullscreenLayout: "AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300
       widgetContainers: [{element: jQuery('#widget-container-1'), orientation: 'vertical'}]
-      usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0 # space used by annotations
+      # space used by annotations TODO: Why is this an option? Shouldn't it be a state (simply an instance variable) [Szaby]
+      usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0
       annotationsVisible : true
-      timeInterval: 1000
     @options = $.extend options, opts
 
-    @_prepareWidgetContainers()
+    @widgetContainers = @options.widgetContainers
 
+    # Run initialisation functions, depending on each other:
+    # * Initialize the DOM for the player and set up VideoJS
     @_initVideoPlayer =>
+      # * Load basic annotation list
       @_loadAnnotations =>
+        # * Initialize plugins
         @_initPlugins =>
+          # * Startup timeupdate event handler
           @_startScheduler()
+
 
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
@@ -52,23 +79,35 @@ class window.LIMEPlayer
         <video id='video_player' class='video-js vjs-default-skin' controls preload='none' width='640' height='360' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
-        <div class="annotation-wrapper" id="annotation-wrapper" style="display:none;">
-          <div class="north fullscreen-annotation"></div>
-          <div class="south fullscreen-annotation"></div>
-          <div class="east fullscreen-annotation"></div>
-          <div class="west fullscreen-annotation"></div>
-        </div>
+      </div>
+      <div class="annotation-wrapper" id="annotation-wrapper" style="display: none;">
+      <div class="north fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
+        <div class="west fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationSouth}px"></div>
+        <div class="east fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationEast}px"></div>
+        <div class="south fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
       </div>
     """
+
     # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
     _.defer =>
-      @player = _V_('video_player', flash: iFrameMode: true)
-      # _V_.options.flash.iFrameMode = true;  //fixes fullscreen issue for the Flash player - http://help.videojs.com/discussions/problems/1550-flash-version-fullscreen-doesnt-resume-at-current-timestamp
+      @player = _V_ 'video_player',
+        flash: iFrameMode: true
+        swf: "lib/videojs/video-js.swf"	# SORIN - added to fix flash fallback bug
       @player.addEvent "loadedmetadata", =>
         # @player.addComponent 'Annotations', player: @player
         @_initEventListeners()
         cb()
       @player.ready =>
+        # SORIN - adding Sidebars component to VideoJS, as well as the annotation toggler
+        @player.isFullScreen = @options.fullscreen
+        nonfullscreen_containers = LimePlayer.widgetContainers
+        @player.addComponent("AnnotationsSidebars")  # add component to display 4 regions of annotations
+        @player.controlBar.addComponent("AnnotationToggle")	# add button to toggle annotations on/off in the control bar
+        if(!@player.isFullScreen)
+          @player.AnnotationsSidebars.hide()
+        else
+          _this.player.AnnotationsSidebars.show()
+        # END added SORIN
         @player.play()
         console.info "Setting up VideoJS Player", @player
 
@@ -78,7 +117,7 @@ class window.LIMEPlayer
       e = jQuery.Event "timeupdate", currentTime: @player.currentTime()
       jQuery(@).trigger e
     @player.addEvent 'fullscreenchange', (e) =>
-      console.info 'fullscreenchange', e
+      # console.info 'fullscreenchange', e
       @_moveWidgets @player.isFullScreen
 
 
@@ -96,12 +135,33 @@ class window.LIMEPlayer
          ?f ?relation ?resource.
       }
     """
-    $.getJSON @options.annotFrameworkURL + "sparql/select?query=" + encodeURIComponent(query) + "&output=json", (data) =>
+    uri = "#{@options.annotFrameworkURL}sparql/select?query=#{encodeURIComponent(query)}&output=json"
+    $.getJSON uri, (data) =>
+      # $.getJSON "annotations.json", (data) =>
       list = data.results.bindings
       for i, annotation of list
         @annotations.push new Annotation annotation
+      console.info "Annotations loaded from", uri, @annotations
       cb()
   _moveWidgets: (isFullscreen) ->
+    # added SORIN - toggle the annotations between fullscreen and normal screen
+    console.log("fullscreen", isFullscreen, ", Visible "+LimePlayer.options.annotationsVisible);
+    if isFullscreen and LimePlayer.options.annotationsVisible		# entering fullscreen, switching to 4 fixed annotation areas
+      LimePlayer.widgetContainers = [
+        {element:jQuery('.west'), orientation:'vertical'}
+        {element:jQuery('.north'), orientation:'horizontal'}
+        {element:jQuery('.east'), orientation:'vertical'}
+        {element:jQuery('.south'), orientation:'horizontal'}
+      ]
+      LimePlayer.player.AnnotationsSidebars.show() # show annotation sidebars as overlays
+    else # restoring non-fullscreen view, using originally declared containers
+      LimePlayer.widgetContainers = nonfullscreen_containers
+      LimePlayer.player.AnnotationsSidebars.hide() # hiding sidebars
+    for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
+      if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
+        jQuery(annotation).trigger(jQuery.Event("becomeInactive", annotation: annotation))
+        jQuery(annotation).trigger(jQuery.Event("becomeActive", annotation: annotation))
+    # end added SORIN
     console.info "_moveWidgets", isFullscreen
 
   _initPlugins: (cb) ->
@@ -110,11 +170,28 @@ class window.LIMEPlayer
       @plugins.push new pluginClass @
     cb()
 
+  allocateWidgetSpace: `function(options){// # creates DOM elements for widgets
+    var _this = this
+      if(options == "GeoNamesMapPlugin" || options == "DBPediaAbstractPlugin") {
+        container = _(this.widgetContainers).detect(function(cont) {
+        //console.log("widget container" + _this._hasFreeSpace(cont, options));
+        return _this._hasFreeSpace(cont, options);
+        },1);
+        //console.log("geonames widget container" + _(this.widgetContainers)+"for container: " + container.element.selector);
+      } else {
+        container = _(this.widgetContainers).detect(function(cont) {
+          //console.log("widget container" + _this._hasFreeSpace(cont, options));
+          return _this._hasFreeSpace(cont, options);
+        },0);
+      }
 
-  _prepareWidgetContainers: ->
-    @widgetContainers = @options.widgetContainers
-
-  allocateWidgetSpace: (options) -> # creates DOM elements for widgets
+      //console.log("widget container" + container.element.selector);
+      if (container) {
+        container.element.prepend("<div class='lime-widget'></div>");
+        return jQuery('.lime-widget:first', container.element);
+      }
+    }`
+    ###
     container = _(@widgetContainers).detect (cont) =>
       @_hasFreeSpace cont, options
     if container
@@ -122,9 +199,20 @@ class window.LIMEPlayer
       jQuery('.lime-widget:first', container.element)
     else
       no
-
+    ###
   _hasFreeSpace: (container, options) ->
-    true
+    currentHeight = container.element.height()
+    maxHeight = parseInt (container.element.css("max-height"))
+    # console.log(maxHeight,currentHeight, $(window).height());
+    if (not maxHeight) || (maxHeight is NaN)
+      maxHeight = $(window).height() - 300
+    # if(LIMEPlayer.player.isFullScreen) maxHeight =
+    # console.log(maxHeight,currentHeight);
+    if maxHeight - currentHeight < 200
+      return false
+    # console.log(container.element.children().height());
+    else
+      return true
 
   getAnnotationsFor: (uri, cb) ->
 
@@ -171,18 +259,21 @@ class URI
   toString: ->
     @value
 
-### Abstract Lime Plugin ###
+# ## Abstract Lime Plugin
 class window.LimePlugin
   constructor: (@lime) ->
     @init()
+  # The init method has to be overwritten by each plugin.
   init: ->
     console.error "All Lime plugins have to implement the init method!"
 
-# Simple reference Lime plugin
+
+# # Simple reference Lime plugin called TestPlugin
+# This plugin listens for annotations becoming active and inactive and
 class window.TestPlugin extends window.LimePlugin
+  # The init method is called right after initialisation of the player
   init: ->
     console.info "Initialize TestPlugin"
-    console.info "annotations", @lime.annotations
     jQuery(@lime).bind 'timeupdate', (e) =>  # timeupdate event is triggered by the VideoJS -> $(LimePlayer)
       # console.info 'plugin timeupdate event', e.currentTime
     for annotation in @lime.annotations
@@ -191,7 +282,7 @@ class window.TestPlugin extends window.LimePlugin
         console.info e.annotation, 'became active'
         domEl = @lime.allocateWidgetSpace()
         if domEl
-          domEl.html "<a href='#{e.annotation.resource}'>#{e.annotation.resource}</a>"
+          domEl.html "<a href='#{e.annotation.resource}' target='_blank'>#{e.annotation.resource}</a>"
           if e.annotation.ldLoaded
             domEl.html @renderAnnotation e.annotation
           else
@@ -199,17 +290,20 @@ class window.TestPlugin extends window.LimePlugin
               domEl.html @renderAnnotation e.annotation
           e.annotation.widgets.TestPlugin = domEl
         else
-          debugger
+          # debugger
       jQuery(annotation).bind "becomeInactive", (e) =>
         console.info e.annotation, 'became inactive'
         e.annotation.widgets.TestPlugin.remove()
-        delete e.annotation.widgets.TestPlugin
+        if e.annotation.widgets
+          delete e.annotation.widgets.TestPlugin
+        else
+          debugger
         # TODO implement release-space / kill a widget
 
   renderAnnotation: (annotation) ->
-    console.info "rendering", annotation
+    # console.info "rendering", annotation
     props = annotation.entity[annotation.resource.value]
-    console.info props
+    # console.info props
     label = _(props['http://www.w3.org/2000/01/rdf-schema#label'])
     .detect (labelObj) ->
       labelObj.lang is 'en'
@@ -218,7 +312,7 @@ class window.TestPlugin extends window.LimePlugin
     depiction = props['http://xmlns.com/foaf/0.1/depiction']?[0].value
     # depiction = props['http://dbpedia.org/ontology/thumbnail']?[0].value
     page = props['http://xmlns.com/foaf/0.1/page']?[0].value
-    console.info label, depiction
+    # console.info label, depiction
     """
         <p>
           <a href="#{page}" target="_blank">#{label}</a>

@@ -1,0 +1,398 @@
+{
+	"http://dbpedia.org/resource/Flachau": {
+		"http://dbpedia.org/property/einwohner": [{
+			"value": "239",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://www.w3.org/ns/prov#wasDerivedFrom": [{
+			"value": "http://en.wikipedia.org/wiki/Flachaueoldid=479857472",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/wappen": [{
+			"value": "Wappen at flachau.png",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://www.w3.org/2002/07/owl#sameAs": [{
+			"value": "http://rdf.freebase.com/ns/m.02wbfg0",
+			"type": "uri"
+		},
+		{
+			"value": "http://dbpedia.org/resource/Flachau",
+			"type": "uri"
+		},
+		{
+			"value": "http://ru.dbpedia.org/resource/eeeeee_(eeeeeeeee)",
+			"type": "uri"
+		},
+		{
+			"value": "http://it.dbpedia.org/resource/Flachau",
+			"type": "uri"
+		},
+		{
+			"value": "http://fr.dbpedia.org/resource/Flachau",
+			"type": "uri"
+		},
+		{
+			"value": "http://de.dbpedia.org/resource/Flachau_(Salzburg)",
+			"type": "uri"
+		},
+		{
+			"value": "http://cs.dbpedia.org/resource/Flachau",
+			"type": "uri"
+		},
+		{
+			"value": "http://pl.dbpedia.org/resource/Flachau",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/gemeinderatanzahl": [{
+			"value": "17",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://xmlns.com/foaf/0.1/depiction": [{
+			"value": "http://upload.wikimedia.org/wikipedia/commons/b/b4/Wappen_at_flachau.png",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/wahljahr": [{
+			"value": "2004",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/bundesland": [{
+			"value": "Salzburg",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://dbpedia.org/property/partei": [{
+			"value": "http://dbpedia.org/resource/Austrian_People's_Party",
+			"type": "uri"
+		}],
+		"http://www.w3.org/2000/01/rdf-schema#label": [{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "hu"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "sv"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "nl"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "it"
+		},
+		{
+			"value": "eeeeee (eeeeeeeee)",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "ru"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "cs"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "fr"
+		},
+		{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "pl"
+		},
+		{
+			"value": "Flachau (Salzburg)",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "de"
+		}],
+		"http://dbpedia.org/property/plz": [{
+			"value": "5542",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://purl.org/dc/terms/subject": [{
+			"value": "http://dbpedia.org/resource/Category:St._Johann_im_Pongau_District",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/latMin": [{
+			"value": "20",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/wikiPageUsesTemplate": [{
+			"value": "http://dbpedia.org/resource/Template:Infobox_Town_AT",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/stand": [{
+			"value": "1",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://xmlns.com/foaf/0.1/isPrimaryTopicOf": [{
+			"value": "http://en.wikipedia.org/wiki/Flachau",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/lonDeg": [{
+			"value": "13",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/gemeinderat": [{
+			"value": "4",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{
+			"value": "http://dbpedia.org/ontology/Settlement",
+			"type": "uri"
+		},
+		{
+			"value": "http://schema.org/Place",
+			"type": "uri"
+		},
+		{
+			"value": "http://dbpedia.org/class/yago/YagoGeoEntity",
+			"type": "uri"
+		},
+		{
+			"value": "http://dbpedia.org/ontology/Place",
+			"type": "uri"
+		},
+		{
+			"value": "http://www.w3.org/2002/07/owl#Thing",
+			"type": "uri"
+		},
+		{
+			"value": "http://dbpedia.org/ontology/PopulatedPlace",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/ontology/thumbnail": [{
+			"value": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Wappen_at_flachau.png/200px-Wappen_at_flachau.png",
+			"type": "uri"
+		}],
+		"http://xmlns.com/foaf/0.1/homepage": [{
+			"value": "http://www.flachau.salzburg.at/",
+			"type": "uri"
+		}],
+		"http://www.w3.org/2000/01/rdf-schema#comment": [{
+			"value": "eeeeee — eeeeeee e eeeeeee, e eeeeeeeeeee eeeee eeeeeeeee. eeeeee e eeeeee eeeeee eeeee-eeeee-eeeeee. eeeeeeeee eeeeeeeeee 2625 eeeeeee (ee 15 eee 2001 eeee). eeeeeeee eeeeeee 117,2 ee². eeeeeeeeeee eee — 50 408.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "ru"
+		},
+		{
+			"value": "Flachau ist eine Gemeinde mit 2675 Einwohnern (Stand 1.  Jänner 2011) im Salzburger Land im Bezirk St.  Johann im Pongau in Österreich. Der Ort liegt im Skiverbund Ski amade, einem der größten Skigebiete Österreichs.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "de"
+		},
+		{
+			"value": "Flachau is a village in the district of St. Johann im Pongau in the Salzburg state, Austria, with a population of 2,639 (2010 data). Its numerous skiing facilities are part of the Ski Amade network of ski areas, the largest in Europe.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		},
+		{
+			"value": "Flachau – wies znajdujaca sie w kraju zwiazkowym Salzburg w Austria w powiecie Powiat Sankt Johann im Pongau. Liczy 2 625 osób i ma 117,2 km. Wies ta jest znana ze swojej rozbudowanej infrastruktury narciarskiej.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "pl"
+		},
+		{
+			"value": "Flachau je rakouská obec ve spolkove zemi Salcbursko, okrese St. Johann im Pongau. Na území obce se nachází Ski amade – jedno z nejvetších lyžarských stredisek v Rakousku.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "cs"
+		},
+		{
+			"value": "Flachau osztrák közseg Salzburg tartomány Pongau kerületeben.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "hu"
+		},
+		{
+			"value": "Flachau är en by i Sankt Johann im Pongau-distrikt i delstaten Salzburg, Österrike, med ett invånarantal av 2 625. Där finns ett stort antal skidanläggninggar, och orten ingår i skidnätverket Ski Amade.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "sv"
+		},
+		{
+			"value": "Flachau è un comune di 2.625 abitanti del Salisburghese.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "it"
+		},
+		{
+			"value": "Flachau est une ville autrichienne, situee dans le land de Salzbourg, il s'agit aussi d'une station de sports d'hiver, axee principalement sur le ski alpin. Il est un point de depart pour la decouverte d'un domaine skiable de 400 kilomètres de pistes. À noter que la ville accueille regulièrement des competitions internationales dont la coupe du monde de ski alpin. Il s'agit de la patrie du celèbre Hermann Maier. La station fait partie de l'Espace Salzburg Amade Sport World.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "fr"
+		},
+		{
+			"value": "Flachau is een gemeente in het district Sankt Johann im Pongau in de Oostenrijkse deelstaat Salzburg. Het dorp heeft 2600 inwoners. Bij Nederlanders is het voornamelijk bekend als ski-dorp. In de winter maakt Flachau deel uit van de Salzburger Ski Amade, een skigebied met 860 kilometer piste. In Flachau vindt elk jaar een afdaling plaats, meetellend voor de Wereldbeker skiën gehouden. De wordt gehouden op de \"Hermann Maier Weltcupstrecke\".",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "nl"
+		}],
+		"http://dbpedia.org/ontology/abstract": [{
+			"value": "eeeeee — eeeeeee e eeeeeee, e eeeeeeeeeee eeeee eeeeeeeee. eeeeee e eeeeee eeeeee eeeee-eeeee-eeeeee. eeeeeeeee eeeeeeeeee 2625 eeeeeee (ee 15 eee 2001 eeee). eeeeeeee eeeeeee 117,2 ee². eeeeeeeeeee eee — 50 408.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "ru"
+		},
+		{
+			"value": "Flachau – wies znajdujaca sie w kraju zwiazkowym Salzburg w Austria w powiecie Powiat Sankt Johann im Pongau. Liczy 2 625 osób i ma 117,2 km. Wies ta jest znana ze swojej rozbudowanej infrastruktury narciarskiej.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "pl"
+		},
+		{
+			"value": "Flachau ist eine Gemeinde mit 2675 Einwohnern (Stand 1.  Jänner 2011) im Salzburger Land im Bezirk St.  Johann im Pongau in Österreich. Der Ort liegt im Skiverbund Ski amade, einem der größten Skigebiete Österreichs.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "de"
+		},
+		{
+			"value": "Flachau is a village in the district of St. Johann im Pongau in the Salzburg state, Austria, with a population of 2,639 (2010 data). Its numerous skiing facilities are part of the Ski Amade network of ski areas, the largest in Europe.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		},
+		{
+			"value": "Flachau je rakouská obec ve spolkove zemi Salcbursko, okrese St. Johann im Pongau. Na území obce se nachází Ski amade – jedno z nejvetších lyžarských stredisek v Rakousku.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "cs"
+		},
+		{
+			"value": "Flachau osztrák közseg Salzburg tartomány Pongau kerületeben.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "hu"
+		},
+		{
+			"value": "Flachau är en by i Sankt Johann im Pongau-distrikt i delstaten Salzburg, Österrike, med ett invånarantal av 2 625. Där finns ett stort antal skidanläggninggar, och orten ingår i skidnätverket Ski Amade.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "sv"
+		},
+		{
+			"value": "Flachau è un comune di 2.625 abitanti del Salisburghese.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "it"
+		},
+		{
+			"value": "Flachau is een gemeente in het district Sankt Johann im Pongau in de Oostenrijkse deelstaat Salzburg. Het dorp heeft 2600 inwoners. Bij Nederlanders is het voornamelijk bekend als ski-dorp. In de winter maakt Flachau deel uit van de Salzburger Ski Amade, een skigebied met 860 kilometer piste. In Flachau vindt elk jaar een afdaling plaats, meetellend voor de Wereldbeker skiën gehouden. De wordt gehouden op de \"Hermann Maier Weltcupstrecke\". Deze afdaling is genoemd naar de bekendste skiër uit het dorp, Hermann Maier. Deze pist ligt bij de StarJet1, een van de vele liften in het gebied. Flachau bestaat uit de deelgemeentes Feuersang, Flachau, Flachauwinkl en Reitdorf. Naburige dorpen zijn Altenmarkt im Pongau, Eben im Pongau, Hüttau, Wagrain, Kleinarl, Untertauern, Zederhaus en Tweng. Flachau is een lange weg door een dal, aan het einde van een weg ligt de kleine dorpskern. Door het dorp loopt het riviertje de Enns.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "nl"
+		},
+		{
+			"value": "Flachau est une ville autrichienne, situee dans le land de Salzbourg, il s'agit aussi d'une station de sports d'hiver, axee principalement sur le ski alpin. Il est un point de depart pour la decouverte d'un domaine skiable de 400 kilomètres de pistes. À noter que la ville accueille regulièrement des competitions internationales dont la coupe du monde de ski alpin. Il s'agit de la patrie du celèbre Hermann Maier. La station fait partie de l'Espace Salzburg Amade Sport World.",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "fr"
+		}],
+		"http://dbpedia.org/property/name": [{
+			"value": "Flachau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://dbpedia.org/property/latDeg": [{
+			"value": "47",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/bezirk": [{
+			"value": "St. Johann im Pongau",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://dbpedia.org/property/vorwahl": [{
+			"value": "6457",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/ontology/wikiPageExternalLink": [{
+			"value": "http://www.flachau.com",
+			"type": "uri"
+		},
+		{
+			"value": "http://www.flachau.salzburg.at/",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/art": [{
+			"value": "Gemeinde",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://dbpedia.org/property/hasPhotoCollection": [{
+			"value": "http://www4.wiwiss.fu-berlin.de/flickrwrappr/photos/Flachau",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/ontology/country": [{
+			"value": "http://dbpedia.org/resource/Austria",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/website": [{
+			"value": "http://www.flachau.salzburg.at/",
+			"type": "uri"
+		}],
+		"http://dbpedia.org/property/lonMin": [{
+			"value": "23",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/kfz": [{
+			"value": "JO",
+			"datatype": "http://www.w3.org/2001/XMLSchema#string",
+			"type": "literal",
+			"lang": "en"
+		}],
+		"http://dbpedia.org/property/latSec": [{
+			"value": "34",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/lonSec": [{
+			"value": "32",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}],
+		"http://dbpedia.org/property/gemeindekennziffer": [{
+			"value": "50408",
+			"datatype": "http://www.w3.org/2001/XMLSchema#int",
+			"type": "literal"
+		}]
+	}
+}
