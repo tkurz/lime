@@ -41,6 +41,7 @@ class window.LIMEPlayer
       # space used by annotations TODO: Why is this an option? Shouldn't it be a state (simply an instance variable) [Szaby]
       usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0
       annotationsVisible : true
+      debug: false
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -117,7 +118,8 @@ class window.LIMEPlayer
       e = jQuery.Event "timeupdate", currentTime: @player.currentTime()
       jQuery(@).trigger e
     @player.addEvent 'fullscreenchange', (e) =>
-      # console.info 'fullscreenchange', e
+      fsce = jQuery.Event 'fullscreenchange', isFullScreen: @player.isFullScreen
+      jQuery(@player).trigger fsce
       @_moveWidgets @player.isFullScreen
 
 
@@ -170,27 +172,22 @@ class window.LIMEPlayer
       @plugins.push new pluginClass @
     cb()
 
-  allocateWidgetSpace: `function(options){// # creates DOM elements for widgets
-    var _this = this
-      if(options == "GeoNamesMapPlugin" || options == "DBPediaAbstractPlugin") {
-        container = _(this.widgetContainers).detect(function(cont) {
-        //console.log("widget container" + _this._hasFreeSpace(cont, options));
-        return _this._hasFreeSpace(cont, options);
-        },1);
-        //console.log("geonames widget container" + _(this.widgetContainers)+"for container: " + container.element.selector);
-      } else {
-        container = _(this.widgetContainers).detect(function(cont) {
-          //console.log("widget container" + _this._hasFreeSpace(cont, options));
-          return _this._hasFreeSpace(cont, options);
-        },0);
-      }
-
-      //console.log("widget container" + container.element.selector);
-      if (container) {
-        container.element.prepend("<div class='lime-widget'></div>");
-        return jQuery('.lime-widget:first', container.element);
-      }
-    }`
+  # options.preferred can contain a widget container
+  allocateWidgetSpace: (options) -> # creates DOM elements for widgets
+    if options and options.preferred and @_hasFreeSpace options.preferred, options
+      container = options.preferred
+    else
+      container = _(@widgetContainers).detect (cont) =>
+        #console.log("widget container" + _this._hasFreeSpace(cont, options));
+        @_hasFreeSpace cont, options
+    if container
+      container.element.prepend "<div class='lime-widget'></div>"
+      return jQuery ".lime-widget:first", container.element
+    else
+      console.error "There's not enough space for a widget to be shown!"
+      if @options.debug
+        debugger
+      return false
     ###
     container = _(@widgetContainers).detect (cont) =>
       @_hasFreeSpace cont, options
@@ -275,7 +272,7 @@ class window.TestPlugin extends window.LimePlugin
   init: ->
     console.info "Initialize TestPlugin"
     jQuery(@lime).bind 'timeupdate', (e) =>  # timeupdate event is triggered by the VideoJS -> $(LimePlayer)
-      # console.info 'plugin timeupdate event', e.currentTime
+      console.info 'plugin timeupdate event', e.currentTime
     for annotation in @lime.annotations
       # annotation
       jQuery(annotation).bind 'becomeActive', (e) =>
@@ -287,7 +284,7 @@ class window.TestPlugin extends window.LimePlugin
             domEl.html @renderAnnotation e.annotation
           else
             jQuery(e.annotation).bind 'ldloaded', (e2) =>
-              domEl.html @renderAnnotation e.annotation
+              domEl.html @renderAnnotation e2.annotation
           e.annotation.widgets.TestPlugin = domEl
         else
           # debugger
