@@ -1,6 +1,7 @@
 appFiles  = [
   'src/lime.coffee'
   #'src/player-extension.coffee'
+  'src/annotationoverlays.coffee'
 ]
 target = "lib/lime.js"
 
