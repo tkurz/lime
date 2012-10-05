@@ -99,3 +99,7 @@ p a:hover
 	width: 200px;
 	height: 150px;
 }
+
+.lime-widget.hover {
+    border: solid 1px #fff;
+}

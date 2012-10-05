@@ -11,7 +11,10 @@
 	box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;
 }
 
-.lime-widget-highlighted {
+.lime-widget {
+    border: solid 1px #000;
+}
+.lime-widget.highlighted {
 	border: 1px solid #cc3300;
 	margin: 5px;
 	margin-bottom: 10px;

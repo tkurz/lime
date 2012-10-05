@@ -42,6 +42,7 @@ class window.LIMEPlayer
       usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0
       annotationsVisible : true
       debug: false
+      preferredLanguage: "en"
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -224,9 +225,11 @@ class Annotation
     jQuery(@).bind "mouseenter", (e) =>
       for widgetname, widget of @widgets
         jQuery(widget).addClass "hover"
+        console.info 'mouseenter', widget
     jQuery(@).bind "mouseleave", (e) =>
       for widgetname, widget of @widgets
         jQuery(widget).removeClass "hover"
+        console.info 'mouseleave', widget
     if hash.fragment.type = 'uri'
       @fragment = new URI hash.fragment.value
       fragmentHash = @fragment.hash
