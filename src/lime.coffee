@@ -221,6 +221,12 @@ class Annotation
     @end = -1 # -1 means end of movie
     @state = 'inactive'
     @widgets = {} #stores what plugins use this annotation; hash of plugin: [widgets]
+    jQuery(@).bind "mouseenter", (e) =>
+      for widgetname, widget of @widgets
+        jQuery(widget).addClass "hover"
+    jQuery(@).bind "mouseleave", (e) =>
+      for widgetname, widget of @widgets
+        jQuery(widget).removeClass "hover"
     if hash.fragment.type = 'uri'
       @fragment = new URI hash.fragment.value
       fragmentHash = @fragment.hash

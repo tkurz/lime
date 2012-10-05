@@ -192,6 +192,12 @@ console.log(maxHeight,currentHeight);</p>
     <span class="vi">@end = </span><span class="o">-</span><span class="mi">1</span> <span class="c1"># -1 means end of movie</span>
     <span class="vi">@state = </span><span class="s">&#39;inactive&#39;</span>
     <span class="vi">@widgets = </span><span class="p">{}</span> <span class="c1">#stores what plugins use this annotation; hash of plugin: [widgets]</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;mouseenter&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">for</span> <span class="nx">widgetname</span><span class="p">,</span> <span class="nx">widget</span> <span class="k">of</span> <span class="nx">@widgets</span>
+        <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">addClass</span> <span class="s">&quot;hover&quot;</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;mouseleave&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">for</span> <span class="nx">widgetname</span><span class="p">,</span> <span class="nx">widget</span> <span class="k">of</span> <span class="nx">@widgets</span>
+        <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">removeClass</span> <span class="s">&quot;hover&quot;</span>
     <span class="k">if</span> <span class="nv">hash.fragment.type = </span><span class="s">&#39;uri&#39;</span>
       <span class="vi">@fragment = </span><span class="k">new</span> <span class="nx">URI</span> <span class="nx">hash</span><span class="p">.</span><span class="nx">fragment</span><span class="p">.</span><span class="nx">value</span>
       <span class="nv">fragmentHash = </span><span class="nx">@fragment</span><span class="p">.</span><span class="nx">hash</span>
@@ -273,4 +279,4 @@ console.log(maxHeight,currentHeight);</p>
 <span class="s">        &lt;/p&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Thu Oct 04 2012 08:36:02 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Fri Oct 05 2012 15:08:32 GMT+0200 (CEST)  </div></div></body></html>

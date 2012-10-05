@@ -12,7 +12,7 @@ class window.AnnotationOverlays extends window.LimePlugin
 
     #add separate VideoJS component that holds overlays
     @lime.player.AnnotationOverlaysComponent.show()
-    container = jQuery(".annotation-overlays-wrapper")
+    container = jQuery ".annotation-overlays-wrapper", @lime.player.el
 
     #div created by the AnnotationOverlaysComponent component of VideoJS
     limeplayer = @lime
@@ -23,15 +23,25 @@ class window.AnnotationOverlays extends window.LimePlugin
       jQuery(annotation).bind "becomeActive", (e) =>
         #console.info(e.annotation, 'became active');
         if e.annotation.isSpacial and (e.annotation.w > 0) and (e.annotation.h > 0)
-          container.prepend @renderAnnotation e.annotation
+          annotation = e.annotation
+          container.prepend @renderAnnotation annotation
 
           #display the overlay widget
-          domEl = jQuery(".spatial_annotation:first", container.element)
+          domEl = jQuery(".spatial_annotation:first", container)
 
           #get the DOM element that holds the overlay
-          domEl.hover -> #hover behaviour
-            $(this).fadeOut 50
-            $(this).fadeIn 50
+          domEl.mouseenter (e) => # hover behaviour
+            mouseenterEvent = jQuery.Event "mouseenter"
+            debugger unless annotation
+            $(annotation).trigger mouseenterEvent, ['test']
+
+            $(e.target).fadeOut 50
+            $(e.target).fadeIn 50
+
+          domEl.mouseleave (e) => # unhover behaviour
+            mouseleaveEvent = jQuery.Event "mouseleave"
+            debugger unless annotation
+            $(annotation).trigger mouseleaveEvent, ['test']
 
           domEl.click -> #click behaviour - highlight the related widgets by adding a class to them
             limeplayer.player.pause()
