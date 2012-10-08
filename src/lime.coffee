@@ -142,6 +142,8 @@ class window.LIMEPlayer
     $.getJSON uri, (data) =>
       # $.getJSON "annotations.json", (data) =>
       list = data.results.bindings
+      # list = _.filter list, (el) ->
+        # el.annotation.value in ["http://connectme.at/annotation/f06b99c2fd576042facae4225cb9fed2", "http://connectme.at/annotation/577e5d16435dfc2a0d24223926477f82"]
       for i, annotation of list
         @annotations.push new Annotation annotation
       console.info "Annotations loaded from", uri, @annotations
@@ -183,7 +185,9 @@ class window.LIMEPlayer
         @_hasFreeSpace cont, options
     if container
       container.element.prepend "<div class='lime-widget'></div>"
-      return jQuery ".lime-widget:first", container.element
+      res = jQuery ".lime-widget:first", container.element
+      console.info 'widgetspace allocated', res[0]
+      res
     else
       console.error "There's not enough space for a widget to be shown!"
       if @options.debug
@@ -225,11 +229,9 @@ class Annotation
     jQuery(@).bind "mouseenter", (e) =>
       for widgetname, widget of @widgets
         jQuery(widget).addClass "hover"
-        console.info 'mouseenter', widget
     jQuery(@).bind "mouseleave", (e) =>
       for widgetname, widget of @widgets
         jQuery(widget).removeClass "hover"
-        console.info 'mouseleave', widget
     if hash.fragment.type = 'uri'
       @fragment = new URI hash.fragment.value
       fragmentHash = @fragment.hash
@@ -252,6 +254,8 @@ class Annotation
 
     @resource = new URI hash.resource.value
     @relation = new URI hash.relation.value
+  toString: ->
+    @resource.value
 
 class URI
   constructor: (uri) ->

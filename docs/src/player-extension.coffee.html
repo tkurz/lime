@@ -1,94 +1,51 @@
-<!DOCTYPE html><html><head><title>player-extension.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>player-extension.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+<!DOCTYPE html><html><head><title>player-extension.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>player-extension.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>ConnectME annotation toggler button that shows/hides the annotations on Fullscreen</p>
 </td><td class="code"><div class="highlight"><pre><span class="nv">_V_.AnnotationToggle = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Button</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
   <span class="nv">buttonText: </span><span class="s">&quot;Annotations On/Off&quot;</span>
   <span class="nv">buildCSSClass: </span><span class="o">-&gt;</span>
     <span class="s">&quot;vjs-annotationstoggler &quot;</span> <span class="o">+</span> <span class="nx">@_super</span><span class="p">()</span>
 
   <span class="nv">onClick: </span><span class="o">-&gt;</span>
-    <span class="k">if</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">AnnotationsVisible</span> <span class="o">is</span> <span class="kc">false</span>
-      <span class="nv">LimePlayer.AnnotationsVisible = </span><span class="kc">true</span>
-      <span class="k">if</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span>
-        <span class="nx">@player</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;Annotations&quot;</span>
-      <span class="k">else</span>
-    <span class="k">else</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">Annotations</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">Annotations</span>
-      <span class="nv">LimePlayer.AnnotationsVisible = </span><span class="kc">false</span>
-<span class="p">)</span>
-
-<span class="nv">_V_.FullscreenToggle = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Button</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
-  <span class="nv">buttonText: </span><span class="s">&quot;Fullscreen&quot;</span>
-  <span class="nv">buildCSSClass: </span><span class="o">-&gt;</span>
-    <span class="s">&quot;vjs-fullscreen-control &quot;</span> <span class="o">+</span> <span class="nx">@_super</span><span class="p">()</span>
-
-  <span class="nv">onClick: </span><span class="o">-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">requestFullScreen</span><span class="p">()</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;Annotations&quot;</span>  <span class="k">if</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">AnnotationsVisible</span> <span class="o">is</span> <span class="kc">true</span>
-    <span class="k">else</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">cancelFullScreen</span><span class="p">()</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">Annotations</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
-<span class="p">)</span>
-
-<span class="nv">_V_.ControlBar = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
+    <span class="k">if</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">annotationsVisible</span> <span class="o">is</span> <span class="kc">false</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s">&quot;.vjs-annotationstoggler&quot;</span><span class="p">).</span><span class="nx">removeClass</span> <span class="s">&quot;annotationstoggler-off&quot;</span>
+      <span class="nv">LimePlayer.options.annotationsVisible = </span><span class="kc">true</span>
+      <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationOverlaysComponent</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationOverlaysComponent</span>
+      <span class="k">if</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span> <span class="c1">#show Annotations sidebars</span>
+        <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationsSidebars</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
+      <span class="k">else</span> <span class="c1">#only show in fullscreen</span>
+        <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationsSidebars</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+    <span class="k">else</span> <span class="c1">#toggle off Annotation overlays</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s">&quot;.vjs-annotationstoggler&quot;</span><span class="p">).</span><span class="nx">addClass</span> <span class="s">&quot;annotationstoggler-off&quot;</span>
+      <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationsSidebars</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+      <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationOverlaysComponent</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationOverlaysComponent</span>
+      <span class="nv">LimePlayer.options.annotationsVisible = </span><span class="kc">false</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;fullscreen &quot;</span> <span class="o">+</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span><span class="p">,</span> <span class="s">&quot;visible &quot;</span> <span class="o">+</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">annotationsVisible</span>
+<span class="p">)</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>ConnectME Annotation Sidebars for fullscreen mode - displays 4 fixed regions (NWSE) as containers for widgets</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">_V_.AnnotationsSidebars = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span> <span class="c1">#for  annotations on the sidebars</span>
   <span class="nv">options:</span>
     <span class="nv">loadEvent: </span><span class="s">&quot;play&quot;</span>
-    <span class="nv">components:</span>
-      <span class="nv">playToggle: </span><span class="p">{}</span>
-      <span class="nv">fullscreenToggle: </span><span class="p">{}</span>
-      <span class="nv">AnnotationToggle: </span><span class="p">{}</span>
-      <span class="nv">currentTimeDisplay: </span><span class="p">{}</span>
-      <span class="nv">durationDisplay: </span><span class="p">{}</span>
-      <span class="nv">remainingTimeDisplay: </span><span class="p">{}</span>
-      <span class="nv">progressControl: </span><span class="p">{}</span>
-      <span class="nv">volumeControl: </span><span class="p">{}</span>
-      <span class="nv">muteToggle: </span><span class="p">{}</span>
 
   <span class="nv">init: </span><span class="nf">(player, options) -&gt;</span>
     <span class="nx">@_super</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;fullscreenchange&quot;</span><span class="p">,</span> <span class="nx">@proxy</span><span class="p">(</span><span class="o">-&gt;</span> <span class="c1">#for hiding overlay annotations when not in fullscreen</span>
+      <span class="nx">@hide</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span> <span class="o">is</span> <span class="kc">false</span>
+    <span class="p">)</span>
     <span class="nx">player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;play&quot;</span><span class="p">,</span> <span class="nx">@proxy</span><span class="p">(</span><span class="o">-&gt;</span>
       <span class="nx">@fadeIn</span><span class="p">()</span>
       <span class="nx">@player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;mouseover&quot;</span><span class="p">,</span> <span class="nx">@proxy</span><span class="p">(</span><span class="nx">@fadeIn</span><span class="p">)</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;mouseout&quot;</span><span class="p">,</span> <span class="nx">@proxy</span><span class="p">(</span><span class="nx">@fadeOut</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="p">)</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>this.player.addEvent("mouseout", this.proxy(this.fadeOut));    //maybe we want to</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="vi">@player.AnnotationsSidebars = </span><span class="k">this</span> <span class="c1">#attach Component for sidebar annotations to player</span>
 
-  <span class="nv">createElement: </span><span class="o">-&gt;</span>
-    <span class="nx">_V_</span><span class="p">.</span><span class="nx">createElement</span> <span class="s">&quot;div&quot;</span><span class="p">,</span>
-      <span class="nv">className: </span><span class="s">&quot;vjs-controls&quot;</span>
+  <span class="nv">createElement: </span><span class="o">-&gt;</span> <span class="c1">#we just attach and show the &quot;annotation-wrapper&quot; div created in the _initVideoPlayer method</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;.annotation-wrapper&quot;</span><span class="p">,</span> <span class="nx">@el</span><span class="p">).</span><span class="nx">show</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
   <span class="nv">fadeIn: </span><span class="o">-&gt;</span>
     <span class="nx">@_super</span><span class="p">()</span>
-    <span class="nx">@player</span><span class="p">.</span><span class="nx">triggerEvent</span> <span class="s">&quot;controlsvisible&quot;</span>
 
   <span class="nv">fadeOut: </span><span class="o">-&gt;</span>
     <span class="nx">@_super</span><span class="p">()</span>
-    <span class="nx">@player</span><span class="p">.</span><span class="nx">triggerEvent</span> <span class="s">&quot;controlshidden&quot;</span>
 
   <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
     <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span>
 <span class="p">)</span>
 
-<span class="nv">_V_.Annotations = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
-  <span class="nv">options:</span>
-    <span class="nv">loadEvent: </span><span class="s">&quot;play&quot;</span>
-    <span class="nv">AnnotWest: </span><span class="kc">true</span>
-    <span class="nv">AnnotEast: </span><span class="kc">true</span>
-    <span class="nv">AnnotNorth: </span><span class="kc">true</span>
-    <span class="nv">AnnotSouth: </span><span class="kc">true</span>
-
-  <span class="nv">init: </span><span class="nf">(player, options) -&gt;</span>
-    <span class="nx">player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;fullscreenchange&quot;</span><span class="p">,</span> <span class="o">=&gt;</span>
-      <span class="nx">@hide</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span> <span class="o">is</span> <span class="kc">false</span>
-
-    <span class="nx">player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;play&quot;</span><span class="p">,</span> <span class="o">=&gt;</span>
-      <span class="nx">@fadeIn</span><span class="p">()</span>
-      <span class="nx">@player</span><span class="p">.</span><span class="nx">addEvent</span> <span class="s">&quot;mouseover&quot;</span><span class="p">,</span> <span class="nx">@proxy</span><span class="p">(</span><span class="nx">@fadeIn</span><span class="p">)</span>
-
-    <span class="nv">LimePlayer.AnnotationsVisible = </span><span class="kc">true</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>@player.Annotations = this</p>
-</td><td class="code"><div class="highlight"><pre>  <span class="nv">createElement: </span><span class="o">-&gt;</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.annotation-wrapper&#39;</span><span class="p">,</span><span class="nx">@el</span><span class="p">).</span><span class="nx">show</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-  <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
-    <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span>
-<span class="p">)</span>
-
-</pre></div></td></tr></tbody></table><div id="generated">generated Fri Aug 24 2012 13:40:47 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 15:56:56 GMT+0200 (CEST)  </div></div></body></html>

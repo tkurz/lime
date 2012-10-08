@@ -22,9 +22,11 @@ class window.AnnotationOverlays extends window.LimePlugin
 
           #display the overlay widget
           domEl = jQuery(".spatial_annotation:first", container)
+          jQuery(domEl).data 'annotation', annotation
 
           #get the DOM element that holds the overlay
           domEl.mouseenter (e) => # hover behaviour
+            annotation = jQuery(e.target).data().annotation
             mouseenterEvent = jQuery.Event "mouseenter"
             debugger unless annotation
             $(annotation).trigger mouseenterEvent, ['test']
