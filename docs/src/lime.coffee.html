@@ -242,8 +242,10 @@ console.log(maxHeight,currentHeight);</p>
   <span class="nv">toString: </span><span class="o">-&gt;</span>
     <span class="nx">@value</span></pre></div></td></tr><tr id="section-40"><td class="docs"><div class="pilwrap"><a href="#section-40" class="pilcrow">&#182;</a></div><h2>Abstract Lime Plugin</h2>
 </td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
-  <span class="nv">constructor: </span><span class="nf">(@lime, @options) -&gt;</span>
-    <span class="nx">@init</span><span class="p">()</span></pre></div></td></tr><tr id="section-41"><td class="docs"><div class="pilwrap"><a href="#section-41" class="pilcrow">&#182;</a></div><p>The init method has to be overwritten by each plugin.</p>
+  <span class="nv">constructor: </span><span class="nf">(@lime, options) -&gt;</span>
+    <span class="vi">@options = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">extend</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">@defaults</span>
+    <span class="nx">@init</span><span class="p">()</span>
+  <span class="nv">defaults: </span><span class="p">{}</span></pre></div></td></tr><tr id="section-41"><td class="docs"><div class="pilwrap"><a href="#section-41" class="pilcrow">&#182;</a></div><p>The init method has to be overwritten by each plugin.</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">init: </span><span class="o">-&gt;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;All Lime plugins have to implement the init method!&quot;</span></pre></div></td></tr><tr id="section-42"><td class="docs"><div class="pilwrap"><a href="#section-42" class="pilcrow">&#182;</a></div><h1>Simple reference Lime plugin called TestPlugin</h1>
 
@@ -291,4 +293,4 @@ console.log(maxHeight,currentHeight);</p>
 <span class="s">        &lt;/p&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 22:37:37 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 22:39:42 GMT+0200 (CEST)  </div></div></body></html>

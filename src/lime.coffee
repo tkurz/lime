@@ -277,8 +277,10 @@ class URI
 
 # ## Abstract Lime Plugin
 class window.LimePlugin
-  constructor: (@lime, @options) ->
+  constructor: (@lime, options) ->
+    @options = jQuery.extend options, @defaults
     @init()
+  defaults: {}
   # The init method has to be overwritten by each plugin.
   init: ->
     console.error "All Lime plugins have to implement the init method!"
