@@ -34,6 +34,7 @@
       <span class="nv">annotationsVisible : </span><span class="kc">true</span>
       <span class="nv">debug: </span><span class="kc">false</span>
       <span class="nv">preferredLanguage: </span><span class="s">&quot;en&quot;</span>
+      <span class="nv">builtinPlugins: </span><span class="p">[</span><span class="nx">AnnotationOverlays</span><span class="p">]</span>
     <span class="vi">@options = </span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">opts</span>
 
     <span class="vi">@widgetContainers = </span><span class="nx">@options</span><span class="p">.</span><span class="nx">widgetContainers</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>Run initialisation functions, depending on each other:
@@ -150,6 +151,8 @@ el.annotation.value in ["http://connectme.at/annotation/f06b99c2fd576042facae422
 
   <span class="nv">_initPlugins: </span><span class="nf">(cb) -&gt;</span>
     <span class="vi">@plugins = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">pluginClass</span> <span class="k">in</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">builtinPlugins</span>
+      <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nx">pluginClass</span> <span class="nx">@</span>
     <span class="k">for</span> <span class="nx">pluginClass</span> <span class="k">in</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">plugins</span>
       <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nx">pluginClass</span> <span class="nx">@</span>
     <span class="nx">cb</span><span class="p">()</span></pre></div></td></tr><tr id="section-29"><td class="docs"><div class="pilwrap"><a href="#section-29" class="pilcrow">&#182;</a></div><p>options.preferred can contain a widget container</p>
@@ -285,4 +288,4 @@ console.log(maxHeight,currentHeight);</p>
 <span class="s">        &lt;/p&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 15:56:56 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 16:03:11 GMT+0200 (CEST)  </div></div></body></html>

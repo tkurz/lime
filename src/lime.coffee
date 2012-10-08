@@ -43,6 +43,7 @@ class window.LIMEPlayer
       annotationsVisible : true
       debug: false
       preferredLanguage: "en"
+      builtinPlugins: [AnnotationOverlays]
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -171,6 +172,8 @@ class window.LIMEPlayer
 
   _initPlugins: (cb) ->
     @plugins = []
+    for pluginClass in @options.builtinPlugins
+      @plugins.push new pluginClass @
     for pluginClass in @options.plugins
       @plugins.push new pluginClass @
     cb()
