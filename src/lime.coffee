@@ -30,7 +30,9 @@ class window.LIMEPlayer
       # LMF URL
       annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
       # list of allowed widgets TODO Add possibility for defining configuration
-      plugins: [TestPlugin]
+      plugins: {
+        TestPlugin: {}
+      },
       # autodetecting
       platform: "web"
       # toggle true/false
@@ -43,7 +45,8 @@ class window.LIMEPlayer
       annotationsVisible : true
       debug: false
       preferredLanguage: "en"
-      builtinPlugins: [AnnotationOverlays]
+      builtinPlugins:
+        AnnotationOverlays: {}
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -172,10 +175,10 @@ class window.LIMEPlayer
 
   _initPlugins: (cb) ->
     @plugins = []
-    for pluginClass in @options.builtinPlugins
-      @plugins.push new pluginClass @
-    for pluginClass in @options.plugins
-      @plugins.push new pluginClass @
+    for pluginClass, options of @options.builtinPlugins
+      @plugins.push new window[pluginClass] @, options
+    for pluginClass, options of @options.plugins
+      @plugins.push new window[pluginClass] @, options
     cb()
 
   # options.preferred can contain a widget container
@@ -274,7 +277,7 @@ class URI
 
 # ## Abstract Lime Plugin
 class window.LimePlugin
-  constructor: (@lime) ->
+  constructor: (@lime, @options) ->
     @init()
   # The init method has to be overwritten by each plugin.
   init: ->

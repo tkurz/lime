@@ -25,7 +25,9 @@
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">containerDiv: </span><span class="s">&quot;mainwrapper&quot;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>Dimensions for the player</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">videoPlayerSize: </span><span class="p">{</span><span class="s">&quot;width&quot;</span><span class="o">:</span> <span class="mi">640</span><span class="p">,</span> <span class="s">&quot;height&quot;</span><span class="o">:</span> <span class="mi">360</span><span class="p">}</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>LMF URL</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">annotFrameworkURL: </span><span class="s">&quot;http://labs.newmedialab.at/SKOS/&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>list of allowed widgets TODO Add possibility for defining configuration</p>
-</td><td class="code"><div class="highlight"><pre>      <span class="nv">plugins: </span><span class="p">[</span><span class="nx">TestPlugin</span><span class="p">]</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>autodetecting</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nv">plugins: </span><span class="p">{</span>
+        <span class="nv">TestPlugin: </span><span class="p">{}</span>
+      <span class="p">},</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>autodetecting</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">platform: </span><span class="s">&quot;web&quot;</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>toggle true/false</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">fullscreen: </span><span class="kc">false</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>how big should be the annotation areas surrounding the video</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">fullscreenLayout: </span><span class="s">&quot;AnnotationNorth&quot;</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s">&quot;AnnotationWest&quot;</span><span class="o">:</span> <span class="mi">300</span><span class="p">,</span> <span class="s">&quot;AnnotationSouth&quot;</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s">&quot;AnnotationEast&quot;</span><span class="o">:</span> <span class="mi">300</span>
@@ -34,7 +36,8 @@
       <span class="nv">annotationsVisible : </span><span class="kc">true</span>
       <span class="nv">debug: </span><span class="kc">false</span>
       <span class="nv">preferredLanguage: </span><span class="s">&quot;en&quot;</span>
-      <span class="nv">builtinPlugins: </span><span class="p">[</span><span class="nx">AnnotationOverlays</span><span class="p">]</span>
+      <span class="nv">builtinPlugins:</span>
+        <span class="nv">AnnotationOverlays: </span><span class="p">{}</span>
     <span class="vi">@options = </span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">opts</span>
 
     <span class="vi">@widgetContainers = </span><span class="nx">@options</span><span class="p">.</span><span class="nx">widgetContainers</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>Run initialisation functions, depending on each other:
@@ -151,10 +154,10 @@ el.annotation.value in ["http://connectme.at/annotation/f06b99c2fd576042facae422
 
   <span class="nv">_initPlugins: </span><span class="nf">(cb) -&gt;</span>
     <span class="vi">@plugins = </span><span class="p">[]</span>
-    <span class="k">for</span> <span class="nx">pluginClass</span> <span class="k">in</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">builtinPlugins</span>
-      <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nx">pluginClass</span> <span class="nx">@</span>
-    <span class="k">for</span> <span class="nx">pluginClass</span> <span class="k">in</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">plugins</span>
-      <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nx">pluginClass</span> <span class="nx">@</span>
+    <span class="k">for</span> <span class="nx">pluginClass</span><span class="p">,</span> <span class="nx">options</span> <span class="k">of</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">builtinPlugins</span>
+      <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">pluginClass</span><span class="p">]</span> <span class="nx">@</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="k">for</span> <span class="nx">pluginClass</span><span class="p">,</span> <span class="nx">options</span> <span class="k">of</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">plugins</span>
+      <span class="nx">@plugins</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">pluginClass</span><span class="p">]</span> <span class="nx">@</span><span class="p">,</span> <span class="nx">options</span>
     <span class="nx">cb</span><span class="p">()</span></pre></div></td></tr><tr id="section-29"><td class="docs"><div class="pilwrap"><a href="#section-29" class="pilcrow">&#182;</a></div><p>options.preferred can contain a widget container</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">allocateWidgetSpace: </span><span class="nf">(options) -&gt;</span> <span class="c1"># creates DOM elements for widgets</span>
     <span class="k">if</span> <span class="nx">options</span> <span class="o">and</span> <span class="nx">options</span><span class="p">.</span><span class="nx">preferred</span> <span class="o">and</span> <span class="nx">@_hasFreeSpace</span> <span class="nx">options</span><span class="p">.</span><span class="nx">preferred</span><span class="p">,</span> <span class="nx">options</span>
@@ -239,7 +242,7 @@ console.log(maxHeight,currentHeight);</p>
   <span class="nv">toString: </span><span class="o">-&gt;</span>
     <span class="nx">@value</span></pre></div></td></tr><tr id="section-40"><td class="docs"><div class="pilwrap"><a href="#section-40" class="pilcrow">&#182;</a></div><h2>Abstract Lime Plugin</h2>
 </td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
-  <span class="nv">constructor: </span><span class="nf">(@lime) -&gt;</span>
+  <span class="nv">constructor: </span><span class="nf">(@lime, @options) -&gt;</span>
     <span class="nx">@init</span><span class="p">()</span></pre></div></td></tr><tr id="section-41"><td class="docs"><div class="pilwrap"><a href="#section-41" class="pilcrow">&#182;</a></div><p>The init method has to be overwritten by each plugin.</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">init: </span><span class="o">-&gt;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;All Lime plugins have to implement the init method!&quot;</span></pre></div></td></tr><tr id="section-42"><td class="docs"><div class="pilwrap"><a href="#section-42" class="pilcrow">&#182;</a></div><h1>Simple reference Lime plugin called TestPlugin</h1>
@@ -288,4 +291,4 @@ console.log(maxHeight,currentHeight);</p>
 <span class="s">        &lt;/p&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 16:03:11 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 22:37:37 GMT+0200 (CEST)  </div></div></body></html>

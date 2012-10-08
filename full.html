@@ -56,14 +56,14 @@
                 vPlayer:"VideoJS",
                 // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                 annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
-				plugins : [
-                    DBPediaDepictionPlugin,
-                    LDPlugin,
-                    GeoNamesMapPlugin,
-                    DBPediaAbstractPlugin,
-                    GoogleWeatherPlugin ,
-                    AnnotationModalWindow
-                ],
+				plugins : {
+                    DBPediaDepictionPlugin: {},
+                    LDPlugin: {},
+                    GeoNamesMapPlugin: {},
+                    DBPediaAbstractPlugin: {},
+                    GoogleWeatherPlugin: {},
+                    AnnotationModalWindow: {}
+                },
                 // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                 fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
                 widgetContainers:[
