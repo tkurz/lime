@@ -57,7 +57,9 @@
                 // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                 annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
 				plugins : {
-                    DBPediaDepictionPlugin: {},
+                    DBPediaDepictionPlugin: {
+                        preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                    },
                     LDPlugin: {},
                     GeoNamesMapPlugin: {},
                     DBPediaAbstractPlugin: {},

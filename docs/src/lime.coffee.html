@@ -91,7 +91,7 @@
         <span class="nx">cb</span><span class="p">()</span>
       <span class="nx">@player</span><span class="p">.</span><span class="nx">ready</span> <span class="o">=&gt;</span></pre></div></td></tr><tr id="section-22"><td class="docs"><div class="pilwrap"><a href="#section-22" class="pilcrow">&#182;</a></div><p>SORIN - adding Sidebars component to VideoJS, as well as the annotation toggler</p>
 </td><td class="code"><div class="highlight"><pre>        <span class="vi">@player.isFullScreen = </span><span class="nx">@options</span><span class="p">.</span><span class="nx">fullscreen</span>
-        <span class="nv">nonfullscreen_containers = </span><span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">widgetContainers</span>
+        <span class="vi">@_nonfullscreen_containers = </span><span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">widgetContainers</span>
         <span class="nx">@player</span><span class="p">.</span><span class="nx">addComponent</span><span class="p">(</span><span class="s">&quot;AnnotationsSidebars&quot;</span><span class="p">)</span>  <span class="c1"># add component to display 4 regions of annotations</span>
         <span class="nx">@player</span><span class="p">.</span><span class="nx">controlBar</span><span class="p">.</span><span class="nx">addComponent</span><span class="p">(</span><span class="s">&quot;AnnotationToggle&quot;</span><span class="p">)</span> <span class="c1"># add button to toggle annotations on/off in the control bar</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">@player</span><span class="p">.</span><span class="nx">isFullScreen</span><span class="p">)</span>
@@ -144,7 +144,7 @@ el.annotation.value in ["http://connectme.at/annotation/f06b99c2fd576042facae422
       <span class="p">]</span>
       <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationsSidebars</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span> <span class="c1"># show annotation sidebars as overlays</span>
     <span class="k">else</span> <span class="c1"># restoring non-fullscreen view, using originally declared containers</span>
-      <span class="nv">LimePlayer.widgetContainers = </span><span class="nx">nonfullscreen_containers</span>
+      <span class="nv">LimePlayer.widgetContainers = </span><span class="nx">@_nonfullscreen_containers</span>
       <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationsSidebars</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span> <span class="c1"># hiding sidebars</span>
     <span class="k">for</span> <span class="nx">annotation</span> <span class="k">in</span> <span class="nx">LimePlayer</span><span class="p">.</span><span class="nx">annotations</span> <span class="c1"># retrigger becomeActive event on each active annotation to force plugins to redraw</span>
       <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="s">&#39;active&#39;</span> <span class="c1"># to avoid duplicate display, we inactivate first, then reactivate them</span>
@@ -293,4 +293,4 @@ console.log(maxHeight,currentHeight);</p>
 <span class="s">        &lt;/p&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Mon Oct 08 2012 22:39:42 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Oct 09 2012 18:16:30 GMT+0200 (CEST)  </div></div></body></html>

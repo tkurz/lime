@@ -106,7 +106,7 @@ class window.LIMEPlayer
       @player.ready =>
         # SORIN - adding Sidebars component to VideoJS, as well as the annotation toggler
         @player.isFullScreen = @options.fullscreen
-        nonfullscreen_containers = LimePlayer.widgetContainers
+        @_nonfullscreen_containers = LimePlayer.widgetContainers
         @player.addComponent("AnnotationsSidebars")  # add component to display 4 regions of annotations
         @player.controlBar.addComponent("AnnotationToggle")	# add button to toggle annotations on/off in the control bar
         if(!@player.isFullScreen)
@@ -164,7 +164,7 @@ class window.LIMEPlayer
       ]
       LimePlayer.player.AnnotationsSidebars.show() # show annotation sidebars as overlays
     else # restoring non-fullscreen view, using originally declared containers
-      LimePlayer.widgetContainers = nonfullscreen_containers
+      LimePlayer.widgetContainers = @_nonfullscreen_containers
       LimePlayer.player.AnnotationsSidebars.hide() # hiding sidebars
     for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
       if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
@@ -284,7 +284,6 @@ class window.LimePlugin
   # The init method has to be overwritten by each plugin.
   init: ->
     console.error "All Lime plugins have to implement the init method!"
-
 
 # # Simple reference Lime plugin called TestPlugin
 # This plugin listens for annotations becoming active and inactive and
