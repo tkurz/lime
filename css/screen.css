@@ -32,9 +32,31 @@
 	width: 100%;
 }
 
-.annotation-overlays-wrapper {
-	padding: 0px;
-	margin: 0px;
+.spacial-annotation-overlays-wrapper {
+    padding: 0px;
+    margin: 0px;
+}
+.vjs-default-skin div.vjs-seek-handle {
+    z-index: 1;
+}
+.time-annotation-overlays-wrapper {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: transparent;
+    pointer-events: none;
+}
+.time-annotation {
+    position:absolute;
+    top:0;
+    background:black;
+    width:5px;
+    pointer-events: auto;
+    cursor: pointer;
 }
 .spatial_annotation {
 	box-shadow: rgba(255,255,255,0.5) 0px 0px 24px;
@@ -43,15 +65,20 @@
 	color: #ffffff;
 	border: solid 1px #fff;
 	cursor: pointer;
-	z-index: 8000;
+	z-index: 1;
 	position: absolute;
 	float: left;
 }
 
+.spatial_annotation, .concept-overlay {
+    font-size: 2em;
+}
 .spatial_annotation_highlight {
 	box-shadow: rgba(255,255,255,0.7) 0px 0px 24px;
 	border: dashed 1px #fff;
 }
+
+.time-annotation-overlays-wrapper
 
 /* style for annotations toggle */
 .vjs-default-skin .vjs-annotationstoggler {
@@ -312,3 +339,53 @@ a:hover {
 	/*padding: 20px;*/
 }
 
+/* Concept overlay */
+.concept-list-overlay {
+    display: block;
+    position: absolute;
+    bottom: 2.7em;
+    left: 50%;
+    margin-left: -30%;
+    z-index: 10;
+    border: 1px red solid;
+    width: 60%;
+    min-height: 15px;
+    background: rgb(238,238,238); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+    color: #000000;
+    border: 0px solid #999;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+    /* margin: 5px; */
+}
+.navcontainer ul {
+    list-style-type: none;
+    text-align: left;
+}
+
+.navcontainer ul li a {
+    background: transparent url(images/list-off.gif) left center no-repeat;
+    padding-left: 15px;
+    text-align: left;
+    font: normal 11px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+    text-decoration: none;
+    color: #999;
+}
+
+.navcontainer ul li a:hover {
+    background: transparent url(images/list-on.gif) left center no-repeat;
+    color: black;
+}
+
+.navcontainer ul li a#current {
+    background: transparent url(images/list-active.gif) left center no-repeat;
+    color: #666;
+}

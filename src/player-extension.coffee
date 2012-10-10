@@ -1,5 +1,5 @@
 # ConnectME annotation toggler button that shows/hides the annotations on Fullscreen
-_V_.AnnotationToggle = _V_.Button.extend(
+_V_.AnnotationToggle = _V_.Button.extend
   buttonText: "Annotations On/Off"
   buildCSSClass: ->
     "vjs-annotationstoggler " + @_super()
@@ -19,10 +19,10 @@ _V_.AnnotationToggle = _V_.Button.extend(
       LimePlayer.player.AnnotationOverlaysComponent.hide()  if LimePlayer.player.AnnotationOverlaysComponent
       LimePlayer.options.annotationsVisible = false
     console.log "fullscreen " + @player.isFullScreen, "visible " + LimePlayer.options.annotationsVisible
-)
+
 
 # ConnectME Annotation Sidebars for fullscreen mode - displays 4 fixed regions (NWSE) as containers for widgets
-_V_.AnnotationsSidebars = _V_.Component.extend( #for  annotations on the sidebars
+_V_.AnnotationsSidebars = _V_.Component.extend #for  annotations on the sidebars
   options:
     loadEvent: "play"
 
@@ -50,4 +50,3 @@ _V_.AnnotationsSidebars = _V_.Component.extend( #for  annotations on the sidebar
 
   lockShowing: ->
     @el.style.opacity = "1"
-)

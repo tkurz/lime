@@ -1,10 +1,15 @@
-<!DOCTYPE html><html><head><title>annotationoverlays.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>annotationoverlays.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+<!DOCTYPE html><html><head><title>annotationoverlays.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/ldplugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>annotationoverlays.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
 </td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">AnnotationOverlays</span> <span class="k">extends</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
   <span class="nv">init: </span><span class="o">-&gt;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize AnnotationOverlays&quot;</span>
-    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;AnnotationOverlaysComponent&quot;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>add separate VideoJS component that holds overlays</p>
-</td><td class="code"><div class="highlight"><pre>    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">AnnotationOverlaysComponent</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
-    <span class="nv">container = </span><span class="nx">jQuery</span> <span class="s">&quot;.annotation-overlays-wrapper&quot;</span><span class="p">,</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">el</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>div created by the AnnotationOverlaysComponent component of VideoJS</p>
+    <span class="nx">@initSpacialAnnotations</span><span class="p">()</span>
+    <span class="nx">@initTimeAnnotations</span><span class="p">()</span>
+    <span class="nx">@initConceptOverlay</span><span class="p">()</span>
+
+  <span class="nv">initSpacialAnnotations: </span><span class="o">-&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize SpacialAnnotationOverlays&quot;</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;SpacialAnnotationOverlaysComponent&quot;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>add separate VideoJS component that holds overlays</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">SpacialAnnotationOverlaysComponent</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
+    <span class="nv">container = </span><span class="nx">jQuery</span> <span class="s">&quot;.spacial-annotation-overlays-wrapper&quot;</span><span class="p">,</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">el</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>div created by the SpacialAnnotationOverlaysComponent component of VideoJS</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nv">limeplayer = </span><span class="nx">@lime</span>
     <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@lime</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;timeupdate&quot;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
 
@@ -20,7 +25,6 @@
 </td><td class="code"><div class="highlight"><pre>          <span class="nx">domEl</span><span class="p">.</span><span class="nx">mouseenter</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="c1"># hover behaviour</span>
             <span class="nv">annotation = </span><span class="nx">jQuery</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">data</span><span class="p">().</span><span class="nx">annotation</span>
             <span class="nv">mouseenterEvent = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">Event</span> <span class="s">&quot;mouseenter&quot;</span>
-            <span class="nx">debugger</span> <span class="nx">unless</span> <span class="nx">annotation</span>
             <span class="nx">$</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">mouseenterEvent</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;test&#39;</span><span class="p">]</span>
 
             <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">fadeOut</span> <span class="mi">50</span>
@@ -28,7 +32,6 @@
 
           <span class="nx">domEl</span><span class="p">.</span><span class="nx">mouseleave</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="c1"># unhover behaviour</span>
             <span class="nv">mouseleaveEvent = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">Event</span> <span class="s">&quot;mouseleave&quot;</span>
-            <span class="nx">debugger</span> <span class="nx">unless</span> <span class="nx">annotation</span>
             <span class="nx">$</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">mouseleaveEvent</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;test&#39;</span><span class="p">]</span>
 
           <span class="nx">domEl</span><span class="p">.</span><span class="nx">click</span> <span class="o">-&gt;</span> <span class="c1">#click behaviour - highlight the related widgets by adding a class to them</span>
@@ -52,7 +55,79 @@
         <span class="k">else</span>
           <span class="kc">false</span>
 
-  <span class="nv">renderAnnotation: </span><span class="nf">(annotation) -&gt;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>percent values for overlays
+  <span class="nv">initTimeAnnotations: </span><span class="o">-&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize TimeAnnotationOverlays&quot;</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">controlBar</span><span class="p">.</span><span class="nx">progressControl</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;TimeAnnotationOverlaysComponent&quot;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>add separate VideoJS component that holds overlays</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">TimeAnnotationOverlaysComponent</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>container is the DOM element for collecting the annotations on the timeline</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">container = </span><span class="nx">jQuery</span> <span class="s">&quot;.time-annotation-overlays-wrapper&quot;</span><span class="p">,</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">controlBar</span><span class="p">.</span><span class="nx">progressControl</span><span class="p">.</span><span class="nx">el</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>place all annotations on the timeline</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">fullLength = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">getLength</span><span class="p">()</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="nx">fullLength</span>
+    <span class="k">for</span> <span class="nx">annotation</span> <span class="k">in</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">annotations</span>
+      <span class="nv">leftPercent = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">/</span> <span class="nx">fullLength</span> <span class="o">*</span> <span class="mi">100</span>
+      <span class="nx">container</span><span class="p">.</span><span class="nx">prepend</span> <span class="s">&quot;&lt;div class=&#39;time-annotation&#39; style=&#39;left:</span><span class="si">#{</span><span class="nx">leftPercent</span><span class="si">}</span><span class="s">%;&#39;&gt;&amp;nbsp;&lt;/div&gt;&quot;</span>
+      <span class="nv">domEl = </span><span class="nx">jQuery</span> <span class="s">&#39;.time-annotation:first&#39;</span><span class="p">,</span> <span class="nx">container</span>
+      <span class="nx">jQuery</span><span class="p">(</span><span class="nx">domEl</span><span class="p">).</span><span class="nx">data</span> <span class="s">&#39;annotation&#39;</span><span class="p">,</span> <span class="nx">annotation</span>
+
+      <span class="nx">domEl</span><span class="p">.</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nv">annotation = </span><span class="nx">jQuery</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">data</span><span class="p">().</span><span class="nx">annotation</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>Jump to the beginning of the fragment</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nx">@lime</span><span class="p">.</span><span class="nx">seek</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span>
+        <span class="nx">@lime</span><span class="p">.</span><span class="nx">play</span><span class="p">()</span>
+
+      <span class="nx">domEl</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&#39;mouseenter&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nv">annotation = </span><span class="nx">jQuery</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">data</span><span class="p">().</span><span class="nx">annotation</span>
+        <span class="nv">mouseenterEvent = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">Event</span> <span class="s">&quot;mouseenter&quot;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">mouseenterEvent</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;test&#39;</span><span class="p">]</span>
+        <span class="nx">@fillConceptOverlay</span> <span class="nx">@renderConceptOverlay</span> <span class="nx">annotation</span>
+        <span class="nx">@showConceptOverlay</span><span class="p">()</span>
+
+      <span class="nx">domEl</span><span class="p">.</span><span class="nx">mouseleave</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nv">annotation = </span><span class="nx">jQuery</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">data</span><span class="p">().</span><span class="nx">annotation</span>
+        <span class="nv">mouseleaveEvent = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">Event</span> <span class="s">&quot;mouseleave&quot;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">mouseleaveEvent</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;test&#39;</span><span class="p">]</span>
+        <span class="nx">@hideConceptOverlay</span><span class="p">()</span>
+
+  <span class="nv">initConceptOverlay: </span><span class="o">-&gt;</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">addComponent</span> <span class="s">&quot;ConceptOverlayComponent&quot;</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">ConceptOverlayComponent</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+    <span class="vi">@conceptOverlayEl = </span><span class="nx">jQuery</span> <span class="s">&quot;.concept-overlay&quot;</span><span class="p">,</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">el</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@conceptOverlayEl</span><span class="p">).</span><span class="nx">mouseenter</span> <span class="o">=&gt;</span>
+      <span class="nx">@showConceptOverlay</span><span class="p">()</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@conceptOverlayEl</span><span class="p">).</span><span class="nx">mouseleave</span> <span class="o">=&gt;</span>
+      <span class="nx">@hideConceptOverlay</span><span class="p">()</span>
+
+  <span class="nv">showConceptOverlay: </span><span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="nx">@hideTimeoutHandle</span>
+      <span class="nx">clearTimeout</span> <span class="nx">@hideTimeoutHandle</span>
+      <span class="vi">@hideTimeoutHandle = </span><span class="kc">undefined</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">ConceptOverlayComponent</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>@conceptOverlayEl.show()</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">hideConceptOverlay: </span><span class="o">-&gt;</span>
+    <span class="vi">@hideTimeoutHandle = </span><span class="nx">setTimeout</span> <span class="o">=&gt;</span>
+      <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">ConceptOverlayComponent</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+      <span class="nx">@hideTimeoutHandle</span>
+    <span class="p">,</span> <span class="mi">2000</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>@conceptOverlayEl.hide()</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">fillConceptOverlay: </span><span class="nf">(content) -&gt;</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">@conceptOverlayEl</span><span class="p">).</span><span class="nx">html</span> <span class="nx">content</span>
+
+  <span class="nv">renderConceptOverlay: </span><span class="nf">(annotation) -&gt;</span>
+    <span class="nv">currentTime = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span>
+    <span class="nv">activeAnnotations = </span><span class="nx">_</span><span class="p">.</span><span class="nx">filter</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">annotations</span><span class="p">,</span> <span class="nf">(ann) -&gt;</span>
+      <span class="nx">ann</span><span class="p">.</span><span class="nx">start</span> <span class="o">&lt;=</span> <span class="nx">currentTime</span> <span class="o">and</span> <span class="nx">ann</span><span class="p">.</span><span class="nx">end</span> <span class="o">&gt;</span> <span class="nx">currentTime</span>
+    <span class="nv">activeAnnotations = </span><span class="nx">_</span><span class="p">(</span><span class="nx">activeAnnotations</span><span class="p">).</span><span class="nx">sortBy</span> <span class="nf">(ann) -&gt;</span>
+      <span class="mi">0</span> <span class="o">-</span> <span class="nx">ann</span><span class="p">.</span><span class="nx">start</span>
+    <span class="nv">res = </span><span class="s">&quot;&quot;</span>
+    <span class="k">for</span> <span class="nx">ann</span> <span class="k">in</span> <span class="nx">activeAnnotations</span>
+      <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;li&gt;</span>
+<span class="s">        &lt;span&gt;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/span&gt;</span>
+<span class="s">      &lt;/li&gt;</span>
+<span class="s">      &quot;&quot;&quot;</span>
+    <span class="nv">res = </span><span class="nx">jQuery</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;ul class=&quot;navlist&quot;&gt;</span><span class="si">#{</span><span class="nx">res</span><span class="si">}</span><span class="s">&lt;/ul&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="s">&#39;li:first&#39;</span><span class="p">,</span><span class="nx">res</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">html</span><span class="p">()</span>
+
+  <span class="nv">renderAnnotation: </span><span class="nf">(annotation) -&gt;</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>percent values for overlays
 console.info("rendering", annotation);</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">ldLoaded</span>
       <span class="nv">props = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">entity</span><span class="p">[</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">]</span>
@@ -60,21 +135,38 @@ console.info("rendering", annotation);</p>
       <span class="p">.</span><span class="nx">detect</span><span class="p">((</span><span class="nx">labelObj</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">labelObj</span><span class="p">.</span><span class="nx">lang</span> <span class="o">is</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">preferredLanguage</span>
       <span class="p">).</span><span class="nx">value</span>
-    <span class="nv">label = </span><span class="s">&quot;&quot;</span>  <span class="k">if</span> <span class="nx">label</span> <span class="o">is</span> <span class="o">`</span><span class="kc">undefined</span><span class="o">`</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>label will be put inside the spacial annotation</p>
+    <span class="nv">label = </span><span class="s">&quot;&quot;</span>  <span class="k">if</span> <span class="nx">label</span> <span class="o">is</span> <span class="o">`</span><span class="kc">undefined</span><span class="o">`</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><p>label will be put inside the spacial annotation</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nv">unit = </span><span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">isPercent</span> <span class="k">then</span> <span class="s">&quot;%&quot;</span> <span class="k">else</span> <span class="s">&quot;px&quot;</span>
-    <span class="s">&quot;&lt;div class=&#39;spatial_annotation&#39; style=&#39;position: absolute; width: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">w</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; height: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">h</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; left: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; top: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">label</span> <span class="o">+</span> <span class="s">&quot;&lt;/div&gt;&quot;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>AnnotationOverlaysComponent VideoJS component -  displays overlays on top of video</p>
-</td><td class="code"><div class="highlight"><pre><span class="nv">_V_.AnnotationOverlaysComponent = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
+    <span class="s">&quot;&lt;div class=&#39;spatial_annotation&#39; style=&#39;position: absolute; width: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">w</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; height: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">h</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; left: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;; top: &quot;</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">label</span> <span class="o">+</span> <span class="s">&quot;&lt;/div&gt;&quot;</span></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><p>SpacialAnnotationOverlaysComponent VideoJS component -  displays overlays on top of video</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">_V_.SpacialAnnotationOverlaysComponent = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span>
   <span class="nv">options:</span>
     <span class="nv">loadEvent: </span><span class="s">&quot;play&quot;</span>
 
   <span class="nv">init: </span><span class="nf">(player, options) -&gt;</span>
     <span class="nx">@_super</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">options</span>
-    <span class="vi">@player.AnnotationOverlaysComponent = </span><span class="k">this</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>attach Component for sidebar annotations to player</p>
+    <span class="vi">@player.SpacialAnnotationOverlaysComponent = </span><span class="k">this</span></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><p>attach Component for sidebar annotations to player</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">createElement: </span><span class="o">-&gt;</span> <span class="c1">#we create a &quot;spacial-annotation-overlays-wrapper&quot; div which will hold the overlays written in via jQuery</span>
+    <span class="nx">_V_</span><span class="p">.</span><span class="nx">createElement</span> <span class="s">&quot;div&quot;</span><span class="p">,</span>
+      <span class="nv">className: </span><span class="s">&quot;spacial-annotation-overlays-wrapper&quot;</span>
+
+  <span class="nv">fadeIn: </span><span class="o">-&gt;</span>
+    <span class="nx">@_super</span><span class="p">()</span>
+
+  <span class="nv">fadeOut: </span><span class="o">-&gt;</span>
+    <span class="nx">@_super</span><span class="p">()</span>
+
+  <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
+    <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span></pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><p>TimeAnnotationOverlaysComponent VideoJS component -  displays overlays on top of video</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">_V_.TimeAnnotationOverlaysComponent = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span>
+  <span class="nv">options:</span>
+    <span class="nv">loadEvent: </span><span class="s">&quot;play&quot;</span>
+
+  <span class="nv">init: </span><span class="nf">(player, options) -&gt;</span>
+    <span class="nx">@_super</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="vi">@player.TimeAnnotationOverlaysComponent = </span><span class="k">this</span></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><p>attach Component for sidebar annotations to player</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">createElement: </span><span class="o">-&gt;</span> <span class="c1">#we create a &quot;annotation-overlays-wrapper&quot; div which will hold the overlays written in via jQuery</span>
-    <span class="nv">d = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s">&quot;div&quot;</span><span class="p">,</span>
-      <span class="nv">className: </span><span class="s">&quot;annotation-overlays-wrapper&quot;</span>
-    <span class="p">)</span>
-    <span class="nx">d</span>
+    <span class="nx">_V_</span><span class="p">.</span><span class="nx">createElement</span> <span class="s">&quot;div&quot;</span><span class="p">,</span>
+      <span class="nv">className: </span><span class="s">&quot;time-annotation-overlays-wrapper&quot;</span>
 
   <span class="nv">fadeIn: </span><span class="o">-&gt;</span>
     <span class="nx">@_super</span><span class="p">()</span>
@@ -84,6 +176,47 @@ console.info("rendering", annotation);</p>
 
   <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
     <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span>
-<span class="p">)</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Tue Oct 09 2012 18:16:30 GMT+0200 (CEST)  </div></div></body></html>
+<span class="nv">_V_.ConceptOverlayComponent = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nx">extend</span>
+  <span class="nv">options:</span>
+    <span class="nv">loadEvent: </span><span class="s">&quot;play&quot;</span>
+
+  <span class="nv">init: </span><span class="nf">(player, options) -&gt;</span>
+    <span class="nx">@_super</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="vi">@player.ConceptOverlayComponent = </span><span class="k">this</span></pre></div></td></tr><tr id="section-19"><td class="docs"><div class="pilwrap"><a href="#section-19" class="pilcrow">&#182;</a></div><p>attach Component for sidebar annotations to player</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">createElement: </span><span class="o">-&gt;</span> <span class="c1">#we create a &quot;annotation-overlays-wrapper&quot; div which will hold the overlays written in via jQuery</span>
+    <span class="nv">domEl = </span><span class="nx">_V_</span><span class="p">.</span><span class="nx">createElement</span> <span class="s">&quot;div&quot;</span><span class="p">,</span>
+      <span class="nv">className: </span><span class="s">&quot;concept-overlay concept-list-overlay&quot;</span>
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">domEl</span><span class="p">).</span><span class="nx">html</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;div class=&quot;navcontainer&quot;&gt;</span>
+<span class="s">        &lt;ul class=&quot;navlist&quot;&gt;</span>
+<span class="s">          &lt;li class=&quot;active&quot;&gt;</span>
+<span class="s">            &lt;a href=&quot;</span><span class="err">#</span><span class="s">&quot; class=&quot;current&quot;&gt;Item one&lt;/a&gt;</span>
+<span class="s">          &lt;/li&gt;</span>
+<span class="s">          &lt;li&gt;</span>
+<span class="s">            &lt;a href=&quot;</span><span class="err">#</span><span class="s">&quot;&gt;Item two&lt;/a&gt;</span>
+<span class="s">          &lt;/li&gt;</span>
+<span class="s">          &lt;li&gt;</span>
+<span class="s">            &lt;a href=&quot;</span><span class="err">#</span><span class="s">&quot;&gt;Item three&lt;/a&gt;</span>
+<span class="s">          &lt;/li&gt;</span>
+<span class="s">          &lt;li&gt;</span>
+<span class="s">            &lt;a href=&quot;</span><span class="err">#</span><span class="s">&quot;&gt;Item four&lt;/a&gt;</span>
+<span class="s">          &lt;/li&gt;</span>
+<span class="s">          &lt;li&gt;</span>
+<span class="s">            &lt;a href=&quot;</span><span class="err">#</span><span class="s">&quot;&gt;Item five&lt;/a&gt;</span>
+<span class="s">          &lt;/li&gt;</span>
+<span class="s">        &lt;/ul&gt;</span>
+<span class="s">      &lt;/div&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="nx">domEl</span>
+
+  <span class="nv">fadeIn: </span><span class="o">-&gt;</span>
+    <span class="nx">@_super</span><span class="p">()</span>
+
+  <span class="nv">fadeOut: </span><span class="o">-&gt;</span>
+    <span class="nx">@_super</span><span class="p">()</span>
+
+  <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
+    <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Wed Oct 10 2012 18:14:41 GMT+0200 (CEST)  </div></div></body></html>

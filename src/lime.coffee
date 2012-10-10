@@ -47,6 +47,7 @@ class window.LIMEPlayer
       preferredLanguage: "en"
       builtinPlugins:
         AnnotationOverlays: {}
+        LDPlugin: {}
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -61,6 +62,17 @@ class window.LIMEPlayer
           # * Startup timeupdate event handler
           @_startScheduler()
 
+  getLength: ->
+    @player.duration()
+
+  seek: (pos) ->
+    if pos isnt undefined
+      @player.currentTime pos
+
+  currentTime: ->
+    @player.currentTime()
+  play: ->
+    @player.play()
 
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
@@ -181,10 +193,10 @@ class window.LIMEPlayer
       @plugins.push new window[pluginClass] @, options
     cb()
 
-  # options.preferred can contain a widget container
+  # options.preferredContainer can contain a widget container
   allocateWidgetSpace: (options) -> # creates DOM elements for widgets
-    if options and options.preferred and @_hasFreeSpace options.preferred, options
-      container = options.preferred
+    if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
+      container = options.preferredContainer
     else
       container = _(@widgetContainers).detect (cont) =>
         #console.log("widget container" + _this._hasFreeSpace(cont, options));
@@ -292,7 +304,7 @@ class window.TestPlugin extends window.LimePlugin
   init: ->
     console.info "Initialize TestPlugin"
     jQuery(@lime).bind 'timeupdate', (e) =>  # timeupdate event is triggered by the VideoJS -> $(LimePlayer)
-      console.info 'plugin timeupdate event', e.currentTime
+      # console.info 'plugin timeupdate event', e.currentTime
     for annotation in @lime.annotations
       # annotation
       jQuery(annotation).bind 'becomeActive', (e) =>
@@ -320,7 +332,6 @@ class window.TestPlugin extends window.LimePlugin
   renderAnnotation: (annotation) ->
     # console.info "rendering", annotation
     props = annotation.entity[annotation.resource.value]
-    # console.info props
     label = _(props['http://www.w3.org/2000/01/rdf-schema#label'])
     .detect (labelObj) ->
       labelObj.lang is 'en'
