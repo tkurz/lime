@@ -130,16 +130,36 @@ class window.AnnotationOverlays extends window.LimePlugin
       0 - ann.start
     res = ""
     for ann in activeAnnotations
+      res += "<tr><td class='icon'>"
+      res += "<img src='#{ann.getDepiction()}' style='height:20px;' />" if ann.getDepiction()
       res += """
-      <li>
-        <span>#{ann.getLabel()}</span>
-      </li>
+        </td>
+        <td class='timeframe'>
+          #{@timeformat(ann.start)} - #{@timeformat(ann.end)}
+        </td>
+        <td class='label'>
       """
+      if ann.getPage()
+        res += "<a href='#{ann.getPage()}'>#{ann.getLabel()}</a>"
+      else
+        res += "<span>#{ann.getLabel()}</span>"
+      res += "</td></tr>"
     res = jQuery """
-      <ul class="navlist">#{res}</ul>
+      <table class="navlist">#{res}</table>
     """
     jQuery('li:first',res).addClass('active')
     res.html()
+  timeformat: (s) ->
+    x = s
+    s = x % 60
+    x = (x - s) / 60
+    m = x % 60
+    h = (x - m) / 60
+    res = ""
+    res += "#{h}:" if h
+    res += "#{m}:#{s}"
+
+
 
   renderAnnotation: (annotation) ->
     #percent values for overlays

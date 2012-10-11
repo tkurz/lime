@@ -116,16 +116,36 @@
       <span class="mi">0</span> <span class="o">-</span> <span class="nx">ann</span><span class="p">.</span><span class="nx">start</span>
     <span class="nv">res = </span><span class="s">&quot;&quot;</span>
     <span class="k">for</span> <span class="nx">ann</span> <span class="k">in</span> <span class="nx">activeAnnotations</span>
+      <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&lt;tr&gt;&lt;td class=&#39;icon&#39;&gt;&quot;</span>
+      <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&lt;img src=&#39;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getDepiction</span><span class="p">()</span><span class="si">}</span><span class="s">&#39; style=&#39;height:20px;&#39; /&gt;&quot;</span> <span class="k">if</span> <span class="nx">ann</span><span class="p">.</span><span class="nx">getDepiction</span><span class="p">()</span>
       <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">      &lt;li&gt;</span>
-<span class="s">        &lt;span&gt;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/span&gt;</span>
-<span class="s">      &lt;/li&gt;</span>
+<span class="s">        &lt;/td&gt;</span>
+<span class="s">        &lt;td class=&#39;timeframe&#39;&gt;</span>
+<span class="s">          </span><span class="si">#{</span><span class="nx">@timeformat</span><span class="p">(</span><span class="nx">ann</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="si">}</span><span class="s"> - </span><span class="si">#{</span><span class="nx">@timeformat</span><span class="p">(</span><span class="nx">ann</span><span class="p">.</span><span class="nx">end</span><span class="p">)</span><span class="si">}</span><span class="s"></span>
+<span class="s">        &lt;/td&gt;</span>
+<span class="s">        &lt;td class=&#39;label&#39;&gt;</span>
 <span class="s">      &quot;&quot;&quot;</span>
+      <span class="k">if</span> <span class="nx">ann</span><span class="p">.</span><span class="nx">getPage</span><span class="p">()</span>
+        <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&lt;a href=&#39;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getPage</span><span class="p">()</span><span class="si">}</span><span class="s">&#39;&gt;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/a&gt;&quot;</span>
+      <span class="k">else</span>
+        <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&lt;span&gt;</span><span class="si">#{</span><span class="nx">ann</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/span&gt;&quot;</span>
+      <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;&lt;/td&gt;&lt;/tr&gt;&quot;</span>
     <span class="nv">res = </span><span class="nx">jQuery</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">      &lt;ul class=&quot;navlist&quot;&gt;</span><span class="si">#{</span><span class="nx">res</span><span class="si">}</span><span class="s">&lt;/ul&gt;</span>
+<span class="s">      &lt;table class=&quot;navlist&quot;&gt;</span><span class="si">#{</span><span class="nx">res</span><span class="si">}</span><span class="s">&lt;/table&gt;</span>
 <span class="s">    &quot;&quot;&quot;</span>
     <span class="nx">jQuery</span><span class="p">(</span><span class="s">&#39;li:first&#39;</span><span class="p">,</span><span class="nx">res</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nv">timeformat: </span><span class="nf">(s) -&gt;</span>
+    <span class="nv">x = </span><span class="nx">s</span>
+    <span class="nv">s = </span><span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span>
+    <span class="nv">x = </span><span class="p">(</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">s</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span>
+    <span class="nv">m = </span><span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span>
+    <span class="nv">h = </span><span class="p">(</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">m</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span>
+    <span class="nv">res = </span><span class="s">&quot;&quot;</span>
+    <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">h</span><span class="si">}</span><span class="s">:&quot;</span> <span class="k">if</span> <span class="nx">h</span>
+    <span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">m</span><span class="si">}</span><span class="s">:</span><span class="si">#{</span><span class="nx">s</span><span class="si">}</span><span class="s">&quot;</span>
+
+
 
   <span class="nv">renderAnnotation: </span><span class="nf">(annotation) -&gt;</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>percent values for overlays
 console.info("rendering", annotation);</p>
@@ -219,4 +239,4 @@ console.info("rendering", annotation);</p>
   <span class="nv">lockShowing: </span><span class="o">-&gt;</span>
     <span class="vi">@el.style.opacity = </span><span class="s">&quot;1&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Wed Oct 10 2012 18:14:41 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Thu Oct 11 2012 16:18:56 GMT+0200 (CEST)  </div></div></body></html>
