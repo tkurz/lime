@@ -9,6 +9,8 @@ triggers an <code>ldLoaded</code> event on the annotation</p>
       <span class="nx">jQuery</span><span class="p">.</span><span class="nx">ajax</span>
         <span class="nv">url: </span><span class="nx">requestUrl</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>contentType: "application/json"</p>
 </td><td class="code"><div class="highlight"><pre>        <span class="nv">success: </span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
+          <span class="k">if</span> <span class="k">typeof</span> <span class="nx">res</span> <span class="o">is</span> <span class="s">&#39;string&#39;</span>
+            <span class="nv">res = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">res</span>
           <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">length</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">res</span>
             <span class="nv">annotation.entity = </span><span class="nx">res</span>
@@ -45,4 +47,4 @@ triggers an <code>ldLoaded</code> event on the annotation</p>
 <span class="k">class</span> <span class="nx">RDF</span>
   <span class="nv">constructor: </span><span class="nf">(hash) -&gt;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Thu Oct 11 2012 16:18:56 GMT+0200 (CEST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Wed Oct 17 2012 19:04:34 GMT+0200 (CEST)  </div></div></body></html>

@@ -10,6 +10,8 @@ class window.LDPlugin extends window.LimePlugin
         url: requestUrl
         # contentType: "application/json"
         success: (res) =>
+          if typeof res is 'string'
+            res = JSON.parse res
           if _.keys(res).length
             console.info annotation.resource.value, res
             annotation.entity = res
