@@ -24,11 +24,12 @@
             }
             cmfUrl = cmfUrl.replace(/\/$/, '') + '/';
             function loadVideos() {
+                var container = jQuery('#videolist');
+                container.html("");
                 cmfUrl = jQuery('#cmf-url').val();
                 this.cmf = new CMF(cmfUrl);
                 // this.cmf.test();
                 function renderVideoThumbs(list){
-                    var container = jQuery('#videolist');
                     var lang = jQuery('#lang').val();
                     var template = _.template(jQuery('.videolist-template').html());
 
