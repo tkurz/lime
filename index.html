@@ -29,8 +29,10 @@
                 // this.cmf.test();
                 function renderVideoThumbs(list){
                     var container = jQuery('#videolist');
+                    var lang = jQuery('#lang').val();
                     var template = _.template(jQuery('.videolist-template').html());
-                    container.html(template({list:list, cmfUrl: cmfUrl}));
+
+                    container.html(template({list:list, cmfUrl: cmfUrl, lang: lang}));
                 }
                 this.cmf.getAnnotatedVideos(function(err, res){
                     if(err){
@@ -50,9 +52,9 @@
         <table>
             <% _.each(list, function(video) { %>
                 <tr>
-                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank"><%= video.title.value %></a></td>
-                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank"><img src="<%= video.thumbnail.value %>" /></a></td>
-                    <td><a href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank">simple player</a></td>
+                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank"><%= video.title.value %></a></td>
+                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank"><img src="<%= video.thumbnail.value %>" /></a></td>
+                    <td><a href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">simple player</a></td>
                 </tr>
             <% }); %>
         </table>
@@ -68,11 +70,11 @@
 			<div id="widget-container-1" class="widget-container vertical"></div>
 			<div class="mainwrapper" id="mainwrapper" align="center">
                 <div>
-                    CMF URL: <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/> <button id="load">Load</button>
+                    CMF URL: <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/><br/>
+                    Language code: <input type="text" id="lang" value="en" style="width: 30px;"/><br/>
+                    <button id="load">Load</button>
                 </div>
-                The lime Video player is testable in two versions:
-                <a href="simple.html">Simple</a> with only basic  (testing) plugin set and
-                <a href="full.html">full featured</a> loading additional plugins, which are partly very project specific plugin implementations.
+                Here you see the annotated videos for the above specified CMF end-point:
                 <div id="videolist"></div>
             </div>
 			<div id="widget-container-2" class="widget-container vertical"></div>

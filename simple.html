@@ -42,6 +42,7 @@
         $(document).ready(function () {
             var videoUrl = UTILS.getParameterByName('videoUrl');
             var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
+            var lang = UTILS.getParameterByName('lang') || 'en';
             var cmf = new CMF(cmfurl);
             cmf.getLocatorsForVideoOrLocator(videoUrl, function(err, locators){
                 console.info("locators", locators);
@@ -70,6 +71,7 @@
                             {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                         ],
                         annotationsVisible:true,
+                        preferredLanguage: lang
                     });
                     console.log(LimePlayer);
                 });
