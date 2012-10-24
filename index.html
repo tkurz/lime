@@ -6,6 +6,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <title>CONNECTME Player</title>
     <script src="lib/underscoreJS/underscore.min.js"></script>
+    <script src="src/utils.js"></script>
+    <script src="lib/videojs/video.js"></script>
+    <script src="lib/lime.js"></script>
     <script src="lib/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
 
@@ -13,6 +16,47 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
     <link href="css/screen.css" rel="stylesheet">
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            var cmfUrl = UTILS.getParameterByName("cmfUrl");
+            if(cmfUrl) {
+                jQuery('#cmf-url').val(cmfUrl);
+            }
+            cmfUrl = cmfUrl.replace(/\/$/, '') + '/';
+            function loadVideos() {
+                cmfUrl = jQuery('#cmf-url').val();
+                this.cmf = new CMF(cmfUrl);
+                // this.cmf.test();
+                function renderVideoThumbs(list){
+                    var container = jQuery('#videolist');
+                    var template = _.template(jQuery('.videolist-template').html());
+                    container.html(template({list:list, cmfUrl: cmfUrl}));
+                }
+                this.cmf.getAnnotatedVideos(function(err, res){
+                    if(err){
+                        console.error("Error loading annotated videos", err);
+                        alert("Error loading annotated videos: " + err);
+                        return;
+                    }
+                    console.info('videos', res);
+                    renderVideoThumbs(res);
+                });
+            }
+            jQuery('button#load').click(loadVideos);
+            loadVideos();
+        });
+    </script>
+    <script class="videolist-template" type="html">
+        <table>
+            <% _.each(list, function(video) { %>
+                <tr>
+                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank"><%= video.title.value %></a></td>
+                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank"><img src="<%= video.thumbnail.value %>" /></a></td>
+                    <td><a href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>" target="_blank">simple player</a></td>
+                </tr>
+            <% }); %>
+        </table>
+    </script>
 	</head>
 
 	<body>
@@ -23,9 +67,13 @@
 		<div text-align="center" id="container">
 			<div id="widget-container-1" class="widget-container vertical"></div>
 			<div class="mainwrapper" id="mainwrapper" align="center">
+                <div>
+                    CMF URL: <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/> <button id="load">Load</button>
+                </div>
                 The lime Video player is testable in two versions:
                 <a href="simple.html">Simple</a> with only basic  (testing) plugin set and
                 <a href="full.html">full featured</a> loading additional plugins, which are partly very project specific plugin implementations.
+                <div id="videolist"></div>
             </div>
 			<div id="widget-container-2" class="widget-container vertical"></div>
 		</div>

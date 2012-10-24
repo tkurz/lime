@@ -47,34 +47,51 @@
 		VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4 
 		*/
         $(document).ready(function () {
-            LimePlayer = new LIMEPlayer({
-				video : ["https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4", 
-						 "http://connectme.salzburgresearch.at/data/tourism_video.webm"],
-                containerDiv:"mainwrapper",
-                videoPlayerSize:{"width":640, "height":360},
-                vPlayer:"VideoJS",
-                // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
-                annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
-				plugins : {
-                    DBPediaDepictionPlugin: {
-                        preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                    },
-                    LDPlugin: {},
-                    GeoNamesMapPlugin: {},
-                    DBPediaAbstractPlugin: {},
-                    GoogleWeatherPlugin: {},
-                    AnnotationModalWindow: {}
-                },
-                // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
-                fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
-                widgetContainers:[
-                    {element:jQuery('#widget-container-1'), orientation:'horizontal'},
-                    {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                ],
-                annotationsVisible:true,
-                preferredLanguage: 'en'
-            });
-            console.log(LimePlayer);
+            var videoUrl = UTILS.getParameterByName('videoUrl');
+            var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
+            var cmf = new CMF(cmfurl);
+            cmf.getLocatorsForVideoOrLocator(videoUrl, function(err, locators){
+                console.info("locators", locators);
+                if(err || locators.length == 0) {
+                    console.error("Error getting video locators", err, locators);
+                    alert("Error getting video locators for " + videoUrl);
+                    return
+                }
+                cmf.getAnnotationsForVideoOrLocator(videoUrl, function(err, annotations){
+                    annotations = _(annotations).map(function(ann){
+                        return new Annotation(ann);
+                    });
+                    console.info("Annotations", annotations);
+                    LimePlayer = new LIMEPlayer({
+                        video : locators,
+                        annotations: annotations,
+                        containerDiv:"mainwrapper",
+                        videoPlayerSize:{"width":640, "height":360},
+                        vPlayer:"VideoJS",
+                        // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
+                        annotFrameworkURL: cmfurl,
+                        plugins : {
+                            DBPediaDepictionPlugin: {
+                                preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                            },
+                            LDPlugin: {},
+                            GeoNamesMapPlugin: {},
+                            DBPediaAbstractPlugin: {},
+                            GoogleWeatherPlugin: {},
+                            AnnotationModalWindow: {}
+                        },
+                        // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+                        fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
+                        widgetContainers:[
+                            {element:jQuery('#widget-container-1'), orientation:'horizontal'},
+                            {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                        ],
+                        annotationsVisible:true,
+                        preferredLanguage: 'de'
+                    });
+                    console.log(LimePlayer);
+                });
+            })
         });
     </script>
 	</head>

@@ -21,12 +21,15 @@
 #
 class window.LIMEPlayer
   constructor: (opts) ->
+    cmf = new CMF "http://connectme.salzburgresearch.at/CMF"
     # Define the default options
     options =
       # The container DOM element to use
       containerDiv: "mainwrapper"
       # Dimensions for the player
       videoPlayerSize: {"width": 640, "height": 360}
+      # Array of Annotation instances
+      annotations: []
       # LMF URL
       annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
       # list of allowed widgets TODO Add possibility for defining configuration
@@ -89,8 +92,8 @@ class window.LIMEPlayer
 
   _initVideoPlayer: (cb) ->
     displaysrc=''
-    for source, i in @options.video
-      displaysrc = displaysrc + "<source src=#{source} type='video/#{source.match(/.([a-z|A-Z|0-9]*)$/)[1]}' />"
+    for locator, i in @options.video
+      displaysrc = displaysrc + "<source src=#{locator.source} type='#{locator.type}' />"
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     $("##{@options.containerDiv}").append """
       <div class='videowrapper' id='videowrapper'>
@@ -142,7 +145,9 @@ class window.LIMEPlayer
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
-    @annotations = []
+    @annotations = @options.annotations
+    cb()
+    ###
     query = """
       PREFIX oac: <http://www.openannotation.org/ns/>
       PREFIX ma: <http://www.w3.org/ns/ma-ont#>
@@ -164,6 +169,7 @@ class window.LIMEPlayer
         @annotations.push new Annotation annotation
       console.info "Annotations loaded from", uri, @annotations
       cb()
+    ###
   _moveWidgets: (isFullscreen) ->
     # added SORIN - toggle the annotations between fullscreen and normal screen
     console.log("fullscreen", isFullscreen, ", Visible "+LimePlayer.options.annotationsVisible);
@@ -236,7 +242,7 @@ class window.LIMEPlayer
 
   getAnnotationsFor: (uri, cb) ->
 
-class Annotation
+class window.Annotation
   constructor: (hash) ->
     @annotation = hash.annotation.value
     # default start and end
@@ -331,15 +337,11 @@ class window.TestPlugin extends window.LimePlugin
 
   renderAnnotation: (annotation) ->
     # console.info "rendering", annotation
-    props = annotation.entity[annotation.resource.value]
-    label = _(props['http://www.w3.org/2000/01/rdf-schema#label'])
-    .detect (labelObj) ->
-      labelObj.lang is 'en'
-    .value
+    props = annotation.entity # [annotation.resource.value]
+    label = annotation.getLabel()
 
-    depiction = props['http://xmlns.com/foaf/0.1/depiction']?[0].value
-    # depiction = props['http://dbpedia.org/ontology/thumbnail']?[0].value
-    page = props['http://xmlns.com/foaf/0.1/page']?[0].value
+    depiction = annotation.getDepiction()
+    page = annotation.getPage()
     # console.info label, depiction
     """
         <p>

@@ -1,6 +1,7 @@
 appFiles  = [
   'src/lime.coffee'
   'src/player-extension.coffee'
+  'src/cmf.coffee'
   'src/annotationoverlays.coffee'
   'src/ldplugin.coffee'
 ]

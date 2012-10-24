@@ -20,24 +20,20 @@ class window.LDPlugin extends window.LimePlugin
 
             lime = @lime
             annotation.getLabel = ->
-              props = @entity[@resource.value]
-              label = _(props['http://www.w3.org/2000/01/rdf-schema#label'])
+              label = _(@entity['rdfs:label'])
               .detect (labelObj) ->
-                labelObj.lang is lime.options.preferredLanguage
-              .value
-              label
+                labelObj["@language"] is lime.options.preferredLanguage
+              label = label["@value"]
 
             annotation.getDescription = ->
 
             annotation.getDepiction = ->
-              props = @entity[@resource.value]
-              depiction = props['http://xmlns.com/foaf/0.1/depiction']?[0].value
+              depiction = @entity['http://xmlns.com/foaf/0.1/depiction']?["@id"]
               # props['http://dbpedia.org/ontology/thumbnail']?[0].value
               depiction
 
             annotation.getPage = ->
-              props = @entity[@resource.value]
-              page = props['http://xmlns.com/foaf/0.1/page']?[0].value
+              page = @entity['http://xmlns.com/foaf/0.1/homepage']?["@id"]
               page
 
 
