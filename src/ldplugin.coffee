@@ -20,12 +20,19 @@ class window.LDPlugin extends window.LimePlugin
 
             lime = @lime
             annotation.getLabel = ->
-              label = _(@entity['rdfs:label'])
-              .detect (labelObj) ->
-                labelObj["@language"] is lime.options.preferredLanguage
-              label = label["@value"]
+              label = _(@entity['rdfs:label']).detect (labelObj) -> labelObj["@language"] is lime.options.preferredLanguage
+              unless label
+                label = _(@entity['rdfs:label']).detect (labelObj) -> labelObj["@language"] is "en"
+                if label then return label["@value"] + " (Not found in " + lime.options.preferredLanguage.toUpperCase() + ")"
+              return label?["@value"] || "No label found"
 
             annotation.getDescription = ->
+              label = _(@entity['http://dbpedia.org/ontology/abstract']).detect (labelObj) -> labelObj["@language"] is lime.options.preferredLanguage
+              unless label
+                label = _(@entity['http://dbpedia.org/ontology/abstract']).detect (labelObj) -> labelObj["@language"] is "en"
+                if label then label["@value"] += " (Not found in " + lime.options.preferredLanguage.toUpperCase() + ")"
+              label = label?["@value"] || "No label found"
+
 
             annotation.getDepiction = ->
               depiction = @entity['http://xmlns.com/foaf/0.1/depiction']?["@id"]
