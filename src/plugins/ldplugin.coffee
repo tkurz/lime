@@ -35,7 +35,7 @@ class window.LDPlugin extends window.LimePlugin
 
 
             annotation.getDepiction = ->
-              depiction = @entity['http://xmlns.com/foaf/0.1/depiction']?["@id"]
+              depiction = @entity['foaf:depiction']?["@id"]
               # props['http://dbpedia.org/ontology/thumbnail']?[0].value
               depiction
 

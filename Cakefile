@@ -3,11 +3,13 @@ appFiles  = [
   'src/player-extension.coffee'
   'src/cmf.coffee'
   'src/annotationoverlays.coffee'
-  'src/ldplugin.coffee'
+  'src/plugins/ldplugin.coffee'
 ]
 target = "lib/lime.js"
 
-widgets = []
+widgets = [
+  'src/plugins/dbpediainfoplugin.coffee'
+]
 
 fs         = require 'fs'
 {exec}     = require 'child_process'
