@@ -120,8 +120,9 @@ class window.CMF
     res = []
     query = @_getVideoLocators(resource)
     @_runSPARQL query, (err, res) ->
-      locators = _(res).map (l) ->
-        source: l.source.value, type:l.type.value
+      unless err
+        locators = _(res).map (l) ->
+          source: l.source.value, type:l.type.value
       resCB err, locators
   _getVideoLocators: (resource) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
@@ -136,8 +137,9 @@ class window.CMF
     res = []
     query = @_getAllVideoLocators locator
     @_runSPARQL query, (err, res) ->
-      locators = _(res).map (l) ->
-        source: l.source.value, type:l.type.value
+      unless err
+        locators = _(res).map (l) ->
+          source: l.source.value, type:l.type.value
       resCB err, locators
   _getAllVideoLocators: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
