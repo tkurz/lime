@@ -37,6 +37,7 @@
     <script src="lib/plugins/dbpediaabstractplugin.js"></script>
     <script src="lib/plugins/googleweatherplugin.js"></script>
     <script src="lib/plugins/annotationmodalwindow.js"></script>
+    <script src="lib/plugins/lsiimageplugin.js"></script>
 
     <link href="css/screen.css" rel="stylesheet">
     <script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>
@@ -77,6 +78,9 @@
                             GoogleWeatherPlugin: {},
                             AnnotationModalWindow: {},
                             DBPediaInfoPlugin: {
+                                preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                            },
+                            LSIImagePlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                             }
                         },
