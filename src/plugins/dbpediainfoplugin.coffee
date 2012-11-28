@@ -1,14 +1,11 @@
 class window.DBPediaInfoPlugin extends window.LimePlugin
   init: ->
-    @name = 'DBPediaAbstractPlugin'
-    annotation = undefined
-    console.info "Initialize DBPediaAbstractPlugin"
-
-
+    @name = 'DBPediaInfoPlugin'
+    console.info "Initialize #{@name}"
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
         if e.annotation.resource.value.indexOf("geonames") < 0
-          domEl = @lime.allocateWidgetSpace("DBPediaAbstractPlugin")
+          domEl = @lime.allocateWidgetSpace @name
           if domEl
 
             if e.annotation.ldLoaded
@@ -26,7 +23,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             e.annotation.widgets.DBPediaAbstractPlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
-
         #console.info(e.annotation, 'became inactive');
         if e.annotation.widgets.DBPediaAbstractPlugin
           e.annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
