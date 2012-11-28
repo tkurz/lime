@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><title>ldplugin.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/ldplugin.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>ldplugin.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>Fetches annotation resource entities (if exist) from a LD endpoint,
+hangs them on each annotation
+sets a <code>ldLoaded</code> property to true on the annotation
+triggers an <code>ldLoaded</code> event on the annotation</p>
+</td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LDPlugin</span> <span class="k">extends</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
+  <span class="nv">init: </span><span class="o">=&gt;</span>
+    <span class="nv">loadAnnotation = </span><span class="p">(</span><span class="nx">annotation</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nv">requestUrl = </span><span class="s2">&quot;#{@lime.options.annotFrameworkURL}meta/application/json?uri=#{encodeURIComponent annotation.resource.value}&quot;</span>
+      <span class="nx">jQuery</span><span class="p">.</span><span class="nx">ajax</span>
+        <span class="nv">url: </span><span class="nx">requestUrl</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>contentType: "application/json"</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nv">success: </span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
+          <span class="k">if</span> <span class="k">typeof</span> <span class="nx">res</span> <span class="o">is</span> <span class="s1">&#39;string&#39;</span>
+            <span class="nv">res = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">res</span>
+          <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">length</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">res</span>
+            <span class="nv">annotation.entity = </span><span class="nx">res</span>
+            <span class="nv">annotation.ldLoaded = </span><span class="kc">true</span>
+            <span class="nx">jQuery</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">jQuery</span><span class="p">.</span><span class="nx">Event</span> <span class="s2">&quot;ldloaded&quot;</span><span class="p">,</span> <span class="nv">entity: </span><span class="nx">res</span>
+
+            <span class="nv">lime = </span><span class="nx">@lime</span>
+            <span class="nv">annotation.getLabel = </span><span class="o">-&gt;</span>
+              <span class="nv">label = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;rdfs:label&#39;</span><span class="p">]).</span><span class="nx">detect</span> <span class="nf">(labelObj) -&gt;</span> <span class="nx">labelObj</span><span class="p">[</span><span class="s2">&quot;@language&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">preferredLanguage</span>
+              <span class="nx">unless</span> <span class="nx">label</span>
+                <span class="nv">label = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;rdfs:label&#39;</span><span class="p">]).</span><span class="nx">detect</span> <span class="nf">(labelObj) -&gt;</span> <span class="nx">labelObj</span><span class="p">[</span><span class="s2">&quot;@language&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="s2">&quot;en&quot;</span>
+                <span class="k">if</span> <span class="nx">label</span> <span class="k">then</span> <span class="k">return</span> <span class="nx">label</span><span class="p">[</span><span class="s2">&quot;@value&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; (Not found in &quot;</span> <span class="o">+</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">preferredLanguage</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+              <span class="k">return</span> <span class="nx">label</span><span class="o">?</span><span class="p">[</span><span class="s2">&quot;@value&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="s2">&quot;No label found&quot;</span>
+
+            <span class="nv">annotation.getDescription = </span><span class="o">-&gt;</span>
+              <span class="nv">label = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;http://dbpedia.org/ontology/abstract&#39;</span><span class="p">]).</span><span class="nx">detect</span> <span class="nf">(labelObj) -&gt;</span> <span class="nx">labelObj</span><span class="p">[</span><span class="s2">&quot;@language&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">preferredLanguage</span>
+              <span class="nx">unless</span> <span class="nx">label</span>
+                <span class="nv">label = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;http://dbpedia.org/ontology/abstract&#39;</span><span class="p">]).</span><span class="nx">detect</span> <span class="nf">(labelObj) -&gt;</span> <span class="nx">labelObj</span><span class="p">[</span><span class="s2">&quot;@language&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="s2">&quot;en&quot;</span>
+                <span class="k">if</span> <span class="nx">label</span> <span class="k">then</span> <span class="nx">label</span><span class="p">[</span><span class="s2">&quot;@value&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; (Not found in &quot;</span> <span class="o">+</span> <span class="nx">lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">preferredLanguage</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+              <span class="nv">label = </span><span class="nx">label</span><span class="o">?</span><span class="p">[</span><span class="s2">&quot;@value&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="s2">&quot;No label found&quot;</span>
+
+
+            <span class="nv">annotation.getDepiction = </span><span class="o">-&gt;</span>
+              <span class="nv">depiction = </span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;http://xmlns.com/foaf/0.1/depiction&#39;</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="s2">&quot;@id&quot;</span><span class="p">]</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>props['http://dbpedia.org/ontology/thumbnail']?[0].value</p>
+</td><td class="code"><div class="highlight"><pre>              <span class="nx">depiction</span>
+
+            <span class="nv">annotation.getPage = </span><span class="o">-&gt;</span>
+              <span class="nv">page = </span><span class="nx">@entity</span><span class="p">[</span><span class="s1">&#39;http://xmlns.com/foaf/0.1/homepage&#39;</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="s2">&quot;@id&quot;</span><span class="p">]</span>
+              <span class="nx">page</span>
+
+
+    <span class="nv">error: </span><span class="nf">(err) -&gt;</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="nx">arguments</span>
+    <span class="k">for</span> <span class="nx">annotation</span> <span class="k">in</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">annotations</span>
+      <span class="nx">loadAnnotation</span> <span class="nx">annotation</span>
+
+<span class="k">class</span> <span class="nx">RDF</span>
+  <span class="nv">constructor: </span><span class="nf">(hash) -&gt;</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Nov 27 2012 11:32:28 GMT+0100 (CET)  </div></div></body></html>
