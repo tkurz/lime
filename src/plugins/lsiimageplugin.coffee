@@ -35,13 +35,7 @@ class window.LSIImagePlugin extends window.LimePlugin
     returnResult = ""
     #console.info("rendering", annotation);
     unless annotation is `undefined`
-      props = annotation.entity[annotation.resource.value]
-
-      #console.log(props);
-      label = _(props["http://www.w3.org/2000/01/rdf-schema#label"]).detect((labelObj) ->
-        labelObj.lang is "en"
-      ).value
-
+      
       #	depiction = ( _ref = props['http://xmlns.com/foaf/0.1/depiction']) != null ? _ref[0].value :
       #	void 0;
       #	page = ( _ref1 = props['http://xmlns.com/foaf/0.1/page']) != null ? _ref1[0].value :
