@@ -66,9 +66,12 @@ task 'widgetwatch', 'Watch and compile widgets', ->
   if widgets.length
     console.info "coffee -wc #{widgets.join ' '}"
     spawn = require('child_process').spawn
+    ###
     params = widgets.slice 0
     params.unshift '-wc'
     p = spawn "coffee", params
+    ###
+    p = spawn "coffee", ['-wc', '-o', 'lib/plugins', 'src/plugins/']
     p.stdout.on 'data', (data) ->
       console.log "" + data
     p.stderr.on 'data', (data) ->
@@ -76,6 +79,6 @@ task 'widgetwatch', 'Watch and compile widgets', ->
 
 
 task 'doc', 'Build documentation', ->
-  exec "docco-husky #{appFiles.join ' '}", (err, stdout, stderr) ->
+  exec "docco-husky #{appFiles.join ' '} src/plugins/*.coffee", (err, stdout, stderr) ->
     util.error stderr if stderr
     console.log stdout if stdout
