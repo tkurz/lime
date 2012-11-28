@@ -72,14 +72,13 @@
                         // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                         annotFrameworkURL: cmfurl,
                         plugins : {
-                            DBPediaDepictionPlugin: {
-                                preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                            },
                             LDPlugin: {},
                             GeoNamesMapPlugin: {},
-                            DBPediaAbstractPlugin: {},
                             GoogleWeatherPlugin: {},
-                            AnnotationModalWindow: {}
+                            AnnotationModalWindow: {},
+                            DBPediaInfoPlugin: {
+                                preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                            }
                         },
                         // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                         fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
@@ -103,9 +102,9 @@
 		</div>
 
 		<div text-align="center" id="container">
-			<div id="widget-container-1" class="widget-container vertical"></div>
+			<div id="widget-container-1" class="widget-container vertical"> &nbsp;</div>
 			<div class="mainwrapper" id="mainwrapper" align="center"></div>
-			<div id="widget-container-2" class="widget-container vertical"></div>
+			<div id="widget-container-2" class="widget-container vertical"> &nbsp;</div>
 		</div>
 
 		<div id="footer" align="center">
