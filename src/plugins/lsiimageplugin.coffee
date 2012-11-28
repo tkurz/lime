@@ -148,7 +148,6 @@ class window.LSIImagePlugin extends window.LimePlugin
       width: maskWidth
       height: maskHeight
 
-
     #transition effect
     $(mask).fadeIn 100
     $(mask).fadeTo "fast", 0.8
@@ -166,7 +165,6 @@ class window.LSIImagePlugin extends window.LimePlugin
 
     #if close button is clicked
     $(".close").click (e) =>
-
       #Cancel the link behavior
       e.preventDefault()
       $(mask).hide()
@@ -181,7 +179,6 @@ class window.LSIImagePlugin extends window.LimePlugin
       $(modalcontainer).empty()
 
     $(window).resize (e) =>
-
       #Get the screen height and width
       maskHeight = $(document).height()
       maskWidth = $(document).width()
