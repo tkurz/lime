@@ -125,7 +125,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e) =>
-      $(this).hide()
+      $(mask).hide()
       $(modalcontainer).hide()
       $(modalcontainer).empty()
 

@@ -51,7 +51,8 @@ class window.LSIImagePlugin extends window.LimePlugin
         xmlhttp = new XMLHttpRequest()
       else # code for IE6, IE5
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.onreadystatechange (e) =>
+      xmlhttp.addEventListener 'readystatechange', ->
+        console.log xmlhttp.readyState
         if xmlhttp.readyState is 4 and xmlhttp.status is 200
           xmlDoc = xmlhttp.responseXML
           console.log xmlDoc
@@ -176,7 +177,7 @@ class window.LSIImagePlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e) =>
-      $(this).hide()
+      $(mask).hide()
       $(modalcontainer).hide()
       $(modalcontainer).empty()
 
