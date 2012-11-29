@@ -47,27 +47,22 @@ class window.LSIImagePlugin extends window.LimePlugin
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
-      if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest()
-      else # code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.addEventListener 'readystatechange', ->
-        console.log xmlhttp.readyState
-        if xmlhttp.readyState is 4 and xmlhttp.status is 200
-          xmlDoc = xmlhttp.responseXML
-          console.log xmlDoc
-          x = xmlDoc.getElementsByTagName("Description")
+
+      request = $.get lodResource
+      request.success (data) ->
+          x = data.Description
           result = """
                    <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
                    <ul style="overflow: hidden; padding-left: 20px; padding-right: 10px;">
                    """
           i = 0
+          image = " "
           while i < 9
-            image = x[i].getAttribute("rdf:about")
+            image = x[i].about
             result += """
                       <li style="float: left; list-style: none; margin: 0 15px 30px 0;">
                       <a href="#" class="lsiLink">
-                      <img class="lsiLink" src="#{annotation.getLabel()}" alt="description" style="width: 80px; height: 70px; border: 3px solid #777"/>
+                      <img class="lsiLink" src="#{image}" alt="description" style="width: 80px; height: 70px; border: 3px solid #777"/>
                       </a>
                       </li>
                       """
@@ -77,7 +72,7 @@ class window.LSIImagePlugin extends window.LimePlugin
                     </ul>
                     </div>
                     <div id="displayArea" style="position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; ">
-                    <img id="bigImage" src="#{annotation.getDepiction()}" style="display: block; min-height: 300px; max-height: 330px; max-width: 600px; margin-top: 10px; margin-left: auto; margin-right: auto; border: 5px solid white;"/>
+                    <img id="bigImage" src="#{image}" style="display: block; min-height: 300px; max-height: 330px; max-width: 600px; margin-top: 10px; margin-left: auto; margin-right: auto; border: 5px solid white;"/>
                     </div>
                     """
           modalContent = $("#modalContent")
