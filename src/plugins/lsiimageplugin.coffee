@@ -24,15 +24,72 @@ class window.LSIImagePlugin extends window.LimePlugin
               @lime.player.pause()
               @displayModal annotation
 
-            annotation.widgets.DBPediaAbstractPlugin = domEl
+            annotation.widgets.LSIImagePlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
         #console.info(annotation, 'became inactive');
-        if annotation.widgets.DBPediaAbstractPlugin
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/pic_gr.png"
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
+        if annotation.widgets.LSIImagePlugin
+          annotation.widgets.LSIImagePlugin.find(".utility-icon").attr "src", "img/pic_gr.png"
+          annotation.widgets.LSIImagePlugin.find(".utility-text").css "color", "#c6c4c4"
           return
+
+  showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
+    try
+      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Canyoning.rdf"  if lodResource.indexOf("Canyoning") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Freeskiing.rdf"  if lodResource.indexOf("Freeskiing") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Mountainbiking.rdf"  if lodResource.indexOf("Mountainbiking") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Rafting.rdf"  if lodResource.indexOf("Rafting") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sauna.rdf"  if lodResource.indexOf("Sauna") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Skateboarding.rdf"  if lodResource.indexOf("Skateboarding") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sledding.rdf"  if lodResource.indexOf("Sledding") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
+      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
+
+      request = $.get lodResource
+      request.success (data) ->
+          x = data.Description
+          result = """
+                   <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
+                   <ul style="overflow: hidden; padding-left: 20px; padding-right: 10px;">
+                   """
+          i = 0
+          image = " "
+          while i < 9
+            image = x[i].about
+            result += """
+                      <li style="float: left; list-style: none; margin: 0 15px 30px 0;">
+                      <a href="#" class="lsiLink">
+                      <img class="lsiLink" src="#{image}" alt="description" style="width: 80px; height: 70px; border: 3px solid #777"/>
+                      </a>
+                      </li>
+                      """
+
+            i++
+          result += """
+                    </ul>
+                    </div>
+                    <div id="displayArea" style="position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; ">
+                    <img id="bigImage" src="#{image}" style="display: block; min-height: 300px; max-height: 330px; max-width: 600px; margin-top: 10px; margin-left: auto; margin-right: auto; border: 5px solid white;"/>
+                    </div>
+                    """
+          modalContent = $("#modalContent")
+          $(modalContent).append result
+          $(".lsiLink").click (e) =>
+
+            #Cancel the link behavior
+            e.preventDefault()
+            lsiImageSource = $(e.target).attr("src")
+            $("#bigImage").attr "src", lsiImageSource
+
+
+      xmlhttp.open "GET", lodResource, true
+      xmlhttp.send()
+
   renderAnnotation: (annotation) ->
     returnResult = ""
     #console.info("rendering", annotation);
@@ -63,87 +120,130 @@ class window.LSIImagePlugin extends window.LimePlugin
                      """
     return returnResult;
 
-  showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
-    try
-      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Canyoning.rdf"  if lodResource.indexOf("Canyoning") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Freeskiing.rdf"  if lodResource.indexOf("Freeskiing") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Mountainbiking.rdf"  if lodResource.indexOf("Mountainbiking") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Rafting.rdf"  if lodResource.indexOf("Rafting") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sauna.rdf"  if lodResource.indexOf("Sauna") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Skateboarding.rdf"  if lodResource.indexOf("Skateboarding") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sledding.rdf"  if lodResource.indexOf("Sledding") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
-      lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
-      if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest()
-      else # code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.onreadystatechange = ->
-        if xmlhttp.readyState is 4 and xmlhttp.status is 200
-          xmlDoc = xmlhttp.responseXML
-          console.log xmlDoc
-          x = xmlDoc.getElementsByTagName("Description")
-          result = """
-                   <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
-                    <ul style="overflow: hidden; padding-left: 20px; padding-right: 10px;">
-                   """
-          i = 0
-          while i < 9
-            image = x[i].getAttribute("rdf:about")
-            result += """
-                      <li style="float: left; list-style: none; margin: 0 15px 30px 0;">
-                        <a href="#" class="lsiLink">
-                          <img class="lsiLink" src="#{annotation.getLabel()}" alt="description" style="width: 80px; height: 70px; border: 3px solid #777"/>
-                        </a>
-                      </li>
-                      """
-
-            i++
+showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
+  try
+    lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Canyoning.rdf"  if lodResource.indexOf("Canyoning") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Freeskiing.rdf"  if lodResource.indexOf("Freeskiing") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Mountainbiking.rdf"  if lodResource.indexOf("Mountainbiking") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Rafting.rdf"  if lodResource.indexOf("Rafting") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sauna.rdf"  if lodResource.indexOf("Sauna") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Skateboarding.rdf"  if lodResource.indexOf("Skateboarding") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Sledding.rdf"  if lodResource.indexOf("Sledding") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
+    lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
+    if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp = new XMLHttpRequest()
+    else # code for IE6, IE5
+      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+    xmlhttp.onreadystatechange = ->
+      if xmlhttp.readyState is 4 and xmlhttp.status is 200
+        xmlDoc = xmlhttp.responseXML
+        console.log xmlDoc
+        x = xmlDoc.getElementsByTagName("Description")
+        result = """
+                 <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
+                  <ul style="overflow: hidden; padding-left: 20px; padding-right: 10px;">
+                 """
+        i = 0
+        while i < 9
+          image = x[i].getAttribute("rdf:about")
           result += """
-                      </ul>
-                    </div>
-                    <div id="displayArea" style="position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; ">
-                      <img id="bigImage" src="#{annotation.getDepiction()}" style="display: block; min-height: 300px; max-height: 330px; max-width: 600px; margin-top: 10px; margin-left: auto; margin-right: auto; border: 5px solid white;"/>
-                    </div>
+                    <li style="float: left; list-style: none; margin: 0 15px 30px 0;">
+                      <a href="#" class="lsiLink">
+                        <img class="lsiLink" src="#{annotation.getLabel()}" alt="description" style="width: 80px; height: 70px; border: 3px solid #777"/>
+                      </a>
+                    </li>
                     """
-          modalContent = $("#modalContent")
-          $(modalContent).append result
-          $(".lsiLink").click (e) =>
 
-            #Cancel the link behavior
-            e.preventDefault()
-            lsiImageSource = $(e.target).attr("src")
-            $("#bigImage").attr "src", lsiImageSource
+          i++
+        result += """
+                    </ul>
+                  </div>
+                  <div id="displayArea" style="position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; ">
+                    <img id="bigImage" src="#{annotation.getDepiction()}" style="display: block; min-height: 300px; max-height: 330px; max-width: 600px; margin-top: 10px; margin-left: auto; margin-right: auto; border: 5px solid white;"/>
+                  </div>
+                  """
+        modalContent = $("#modalContent")
+        $(modalContent).append result
+        $(".lsiLink").click (e) =>
+
+          #Cancel the link behavior
+          e.preventDefault()
+          lsiImageSource = $(e.target).attr("src")
+          $("#bigImage").attr "src", lsiImageSource
 
 
-      xmlhttp.open "GET", lodResource, true
-      xmlhttp.send()
-  # bad luck
+    xmlhttp.open "GET", lodResource, true
+    xmlhttp.send()
+# bad luck
 
-  displayModal: (annotation) -> # Modal window script usin jquery
-    # Get Modal Window
-    #var modalcontainer;
-    if @lime.player.isFullScreen
-      modalcontainer = $(".modalwindow")
-    else
-      modalcontainer = $("#modalWindow")
+displayModal: (annotation) -> # Modal window script usin jquery
+  # Get Modal Window
+  #var modalcontainer;
+  if @lime.player.isFullScreen
+    modalcontainer = $(".modalwindow")
+  else
+    modalcontainer = $("#modalWindow")
 
-    # Get mask element
-    mask = undefined
-    if @lime.player.isFullScreen
-      mask = $(".mask")
-    else
-      mask = $("#mask")
-    $(modalcontainer).css "height", "70%"
-    $(modalcontainer).css "max-height", "400px"
+  # Get mask element
+  mask = undefined
+  if @lime.player.isFullScreen
+    mask = $(".mask")
+  else
+    mask = $("#mask")
+  $(modalcontainer).css "height", "70%"
+  $(modalcontainer).css "max-height", "400px"
+  $(modalcontainer).empty()
+  $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
+  $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; text-align: center;\">"
+  $(modalcontainer).append "</div>"
+
+  #Get the screen height and width
+  maskHeight = $(window).height()
+  maskWidth = $(window).width()
+
+  #Set heigth and width to mask to fill up the whole screen
+  $(mask).css
+    width: maskWidth
+    height: maskHeight
+
+
+  #transition effect
+  $(mask).fadeIn 100
+  $(mask).fadeTo "fast", 0.8
+
+  #Get the window height and width
+  winH = $(window).height()
+  winW = $(window).width()
+
+  #Set the popup window to center
+  $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
+  $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
+
+  #transition effect
+  $(modalcontainer).fadeIn 100
+
+  #if close button is clicked
+  $(".close").click (e) =>
+
+    #Cancel the link behavior
+    e.preventDefault()
+    $(mask).hide()
+    $(modalcontainer).hide()
     $(modalcontainer).empty()
-    $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
-    $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; text-align: center;\">"
-    $(modalcontainer).append "</div>"
+
+
+  #if mask is clicked
+  $(mask).click (e) =>
+    $(mask).hide()
+    $(modalcontainer).hide()
+    $(modalcontainer).empty()
+
+  $(window).resize (e) =>
 
     #Get the screen height and width
     maskHeight = $(window).height()
@@ -154,56 +254,12 @@ class window.LSIImagePlugin extends window.LimePlugin
       width: maskWidth
       height: maskHeight
 
-
     #transition effect
     $(mask).fadeIn 100
     $(mask).fadeTo "fast", 0.8
 
-    #Get the window height and width
-    winH = $(window).height()
-    winW = $(window).width()
-
     #Set the popup window to center
     $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
     $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
-
-    #transition effect
-    $(modalcontainer).fadeIn 100
-
-    #if close button is clicked
-    $(".close").click (e) =>
-
-      #Cancel the link behavior
-      e.preventDefault()
-      $(mask).hide()
-      $(modalcontainer).hide()
-      $(modalcontainer).empty()
-
-
-    #if mask is clicked
-    $(mask).click (e) =>
-      $(this).hide()
-      $(modalcontainer).hide()
-      $(modalcontainer).empty()
-
-    $(window).resize (e) =>
-
-      #Get the screen height and width
-      maskHeight = $(document).height()
-      maskWidth = $(document).width()
-
-      #Set height and width to mask to fill up the whole screen
-      $(mask).css
-        width: maskWidth
-        height: maskHeight
-
-
-      #Get the window height and width
-      winH = $(window).height()
-      winW = $(window).width()
-
-      #Set the popup window to center
-      $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
-      $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
     @showDepictionInModalWindow annotation
