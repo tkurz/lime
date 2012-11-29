@@ -314,23 +314,26 @@ class window.TestPlugin extends window.LimePlugin
     for annotation in @lime.annotations
       # annotation
       jQuery(annotation).bind 'becomeActive', (e) =>
-        console.info e.annotation, 'became active'
+        annotation = e.target
+        console.info annotation, 'became active'
         domEl = @lime.allocateWidgetSpace()
         if domEl
-          domEl.html "<a href='#{e.annotation.resource}' target='_blank'>#{e.annotation.resource}</a>"
-          if e.annotation.ldLoaded
-            domEl.html @renderAnnotation e.annotation
+          domEl.html "<a href='#{annotation.resource}' target='_blank'>#{annotation.resource}</a>"
+          if annotation.ldLoaded
+            domEl.html @renderAnnotation annotation
           else
-            jQuery(e.annotation).bind 'ldloaded', (e2) =>
-              domEl.html @renderAnnotation e2.annotation
-          e.annotation.widgets.TestPlugin = domEl
+            jQuery(annotation).bind 'ldloaded', (e2) =>
+              annotation = e2.target
+              domEl.html @renderAnnotation annotation
+          annotation.widgets.TestPlugin = domEl
         else
           # debugger
       jQuery(annotation).bind "becomeInactive", (e) =>
-        console.info e.annotation, 'became inactive'
-        e.annotation.widgets.TestPlugin.remove()
-        if e.annotation.widgets
-          delete e.annotation.widgets.TestPlugin
+        annotation = e.target
+        console.info annotation, 'became inactive'
+        annotation.widgets.TestPlugin.remove()
+        if annotation.widgets
+          delete annotation.widgets.TestPlugin
         else
           debugger
         # TODO implement release-space / kill a widget

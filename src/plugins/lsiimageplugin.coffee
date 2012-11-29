@@ -6,30 +6,32 @@ class window.LSIImagePlugin extends window.LimePlugin
 
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
-        if e.annotation.resource.value.indexOf("geonames") < 0
+        annotation = e.target
+        if annotation.resource.value.indexOf("geonames") < 0
           domEl = @lime.allocateWidgetSpace()
           if domEl
 
-            if e.annotation.ldLoaded
-              domEl.html @renderAnnotation(e.annotation)
+            if annotation.ldLoaded
+              domEl.html @renderAnnotation(annotation)
               $(domEl).slideDown 500
             else
-              jQuery(e.annotation).bind "ldloaded", (e2) =>
-                domEl.html @renderAnnotation(e.annotation)
+              jQuery(annotation).bind "ldloaded", (e) =>
+                annotation = e.target
+                domEl.html @renderAnnotation(annotation)
                 $(domEl).slideDown 500
             # insert widget click function
             domEl.click => #click behaviour - highlight the related widgets by adding a class to them
               @lime.player.pause()
-              @displayModal e.annotation
+              @displayModal annotation
 
-            e.annotation.widgets.DBPediaAbstractPlugin = domEl
+            annotation.widgets.DBPediaAbstractPlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
-
-        #console.info(e.annotation, 'became inactive');
-        if e.annotation.widgets.DBPediaAbstractPlugin
-          e.annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/pic_gr.png"
-          e.annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
+        annotation = e.target
+        #console.info(annotation, 'became inactive');
+        if annotation.widgets.DBPediaAbstractPlugin
+          annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/pic_gr.png"
+          annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
           return
   renderAnnotation: (annotation) ->
     returnResult = ""
