@@ -1,14 +1,11 @@
 class window.DBPediaInfoPlugin extends window.LimePlugin
   init: ->
     @name = 'DBPediaInfoPlugin'
-    annotation = undefined
-    console.info "Initialize DBPediaInfoPlugin"
-
-
+    console.info "Initialize #{@name}"
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
         if e.annotation.resource.value.indexOf("geonames") < 0
-          domEl = @lime.allocateWidgetSpace("DBPediaInfoPlugin")
+          domEl = @lime.allocateWidgetSpace @name
           if domEl
 
             if e.annotation.ldLoaded
@@ -26,11 +23,11 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             e.annotation.widgets.DBPediaInfoPlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
-
-        #console.info(e.annotation, 'became inactive');
-        if e.annotation.widgets.DBPediaInfoPlugin
-          e.annotation.widgets.DBPediaInfoPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
-          e.annotation.widgets.DBPediaInfoPlugin.find(".utility-text").css "color", "#c6c4c4"
+		    annotation = e.target
+		    #console.info(annotation, 'became inactive');
+        if annotation.widgets.DBPediaInfoPlugin
+          annotation.widgets.DBPediaInfoPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
+          annotation.widgets.DBPediaInfoPlugin.find(".utility-text").css "color", "#c6c4c4"
           return
 
   showAbstractInModalWindow: (annotation, modalContainer) ->
@@ -125,7 +122,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e) =>
-      $(mask).hide()
+      $(this).hide()
       $(modalcontainer).hide()
       $(modalcontainer).empty()
 

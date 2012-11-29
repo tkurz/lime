@@ -26,5 +26,9 @@
     "license": "Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)",
     "engine": {
         "node": ">=0.4"
+    },
+    "docco_husky": {
+        "show_timestamp": false,
+        "project_name": "LIME - Linked Media Player"
     }
 }
