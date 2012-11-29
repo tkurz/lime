@@ -51,6 +51,7 @@ class window.LIMEPlayer
       builtinPlugins:
         AnnotationOverlays: {}
         LDPlugin: {}
+      widget: {}
     @options = $.extend options, opts
 
     @widgetContainers = @options.widgetContainers
@@ -200,7 +201,9 @@ class window.LIMEPlayer
     cb()
 
   # options.preferredContainer can contain a widget container
-  allocateWidgetSpace: (options) -> # creates DOM elements for widgets
+  allocateWidgetSpace: (plugin, options) -> # creates DOM elements for widgets
+    unless plugin instanceof window.LimePlugin
+      console.error "allocateWidgetSpace needs the first parameter to be the plugin itself requesting for the widget."
     if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
       container = options.preferredContainer
     else
@@ -209,9 +212,10 @@ class window.LIMEPlayer
         @_hasFreeSpace cont, options
     if container
       container.element.prepend "<div class='lime-widget'></div>"
-      res = jQuery ".lime-widget:first", container.element
-      console.info 'widgetspace allocated', res[0]
-      res
+      domEl = jQuery ".lime-widget:first", container.element
+      console.info 'widgetspace allocated', domEl[0]
+      opts = _(@options.widget).extend options
+      return new LimeWidget plugin, domEl, opts
     else
       console.error "There's not enough space for a widget to be shown!"
       if @options.debug
@@ -293,6 +297,40 @@ class URI
   toString: ->
     @value
 
+# A Lime widget makes the look and behaviour of the widgets from all plugins somewhat uniform.
+class LimeWidget
+  constructor: (@plugin, @element, options) ->
+    @options = _(@options).extend options
+    @_init()
+
+    @element.html """
+    <div class="#{@name}">
+      <table style="margin:0 auto; width: 100%;">
+        <tr>
+          <td><b class="utility-text">#{@options.title}</b></td>
+          <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: right; width: 25px; height: 25px; " ></td>
+        </tr>
+      </table>
+    </div>
+    """
+
+  html: (content) ->
+    @element.html content
+  options:
+    showSpeed: 500
+    label: 'Default label'
+  _init: ->
+    @state = 'hidden'
+  show: ->
+    @element.slideDown @options.showSpeed
+    @state = 'visible'
+  hide: ->
+    @element.slideUp @options.showSpeed
+  deactivate: ->
+    @element.find(".utility-icon").attr "src", "img/info_gr.png"
+    @element.find(".utility-text").css "color", "#c6c4c4"
+    console.info "It's to be implemented, how a widget should look like when it's deactivated..."
+
 # ## Abstract Lime Plugin
 class window.LimePlugin
   constructor: (@lime, options) ->
@@ -312,7 +350,6 @@ class window.TestPlugin extends window.LimePlugin
     jQuery(@lime).bind 'timeupdate', (e) =>  # timeupdate event is triggered by the VideoJS -> $(LimePlayer)
       # console.info 'plugin timeupdate event', e.currentTime
     for annotation in @lime.annotations
-      # annotation
       jQuery(annotation).bind 'becomeActive', (e) =>
         annotation = e.target
         console.info annotation, 'became active'
@@ -321,10 +358,12 @@ class window.TestPlugin extends window.LimePlugin
           domEl.html "<a href='#{annotation.resource}' target='_blank'>#{annotation.resource}</a>"
           if annotation.ldLoaded
             domEl.html @renderAnnotation annotation
+            jQuery(domEl).slideDown 500
           else
             jQuery(annotation).bind 'ldloaded', (e2) =>
               annotation = e2.target
               domEl.html @renderAnnotation annotation
+              jQuery(domEl).slideDown 500
           annotation.widgets.TestPlugin = domEl
         else
           # debugger

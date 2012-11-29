@@ -6,29 +6,31 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.target
         if annotation.resource.value.indexOf("geonames") < 0
-          domEl = @lime.allocateWidgetSpace @name
-          if domEl
-
+          widget = @lime.allocateWidgetSpace @,
+            thumbnail: "img/info.png" # should go into CSS
+            title: "#{annotation.getLabel()} Info"
+          if widget
             if annotation.ldLoaded
-              domEl.html @renderAnnotation(annotation)
-              $(domEl).slideDown 500
+              # widget.html @renderAnnotation(annotation)
+              widget.show()
             else
-              jQuery(annotation).bind "ldloaded", (e2) =>
-                domEl.html @renderAnnotation(annotation)
-                $(domEl).slideDown 500
+              jQuery(annotation).bind "ldloaded", (e) =>
+                annotation = e.target
+                widget.html @renderAnnotation(annotation)
+                widget.show()
             # insert widget click function
-            domEl.click => #click behaviour - highlight the related widgets by adding a class to them
+            widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
               @lime.player.pause()
               @displayModal annotation
 
-            annotation.widgets.DBPediaAbstractPlugin = domEl
+            annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
         #console.info(annotation, 'became inactive');
-        if annotation.widgets.DBPediaAbstractPlugin
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
+        widget = annotation.widgets[@name]
+        if widget
+          widget.deactivate()
           return
 
   showAbstractInModalWindow: (annotation, modalContainer) ->
@@ -47,7 +49,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
   renderAnnotation: (annotation) ->
     unless annotation is `undefined`
       res = """
-            <div class="DBPediaAbstractWidget">
+            <div class="#{@name}">
               <table style="margin:0 auto; width: 100%;">
                 <tr>
                   <td><b class="utility-text">#{annotation.getLabel()} Info </b></td>
