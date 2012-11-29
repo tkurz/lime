@@ -117,7 +117,6 @@ class window.LSIImagePlugin extends window.LimePlugin
       xmlhttp.open "GET", lodResource, true
       xmlhttp.send()
 
-
   displayModal: (annotation) -> # Modal window script usin jquery
     # Get Modal Window
     #var modalcontainer;
