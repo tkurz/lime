@@ -23,14 +23,14 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
               @lime.player.pause()
               @displayModal e.annotation
 
-            e.annotation.widgets.DBPediaAbstractPlugin = domEl
+            e.annotation.widgets.DBPediaInfoPlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
 
         #console.info(e.annotation, 'became inactive');
-        if e.annotation.widgets.DBPediaAbstractPlugin
-          e.annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
-          e.annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
+        if e.annotation.widgets.DBPediaInfoPlugin
+          e.annotation.widgets.DBPediaInfoPlugin.find(".utility-icon").attr "src", "img/info_gr.png"
+          e.annotation.widgets.DBPediaInfoPlugin.find(".utility-text").css "color", "#c6c4c4"
           return
 
   showAbstractInModalWindow: (annotation, modalContainer) ->
