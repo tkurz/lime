@@ -61,8 +61,7 @@ task 'build', 'Build single application file from source files', ->
               if err
                 util.log 'Couldn\'t delete the lib/tmp.coffee file/'
               util.log 'Done building coffee file.'
-            invoke 'doc'
-
+            # invoke 'doc'
 
 task 'widgetwatch', 'Watch and compile widgets', ->
   spawn = require('child_process').spawn
