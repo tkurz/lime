@@ -23,7 +23,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
               @lime.player.pause()
               @displayModal annotation
 
-            annotation.widgets[@name] = widget
+          annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
