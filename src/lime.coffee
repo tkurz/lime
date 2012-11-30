@@ -341,7 +341,8 @@ class LimeWidget
   hide: ->
     @element.slideUp @options.showSpeed
   deactivate: ->
-    @element.find(".utility-icon").attr "src", "img/info_gr.png"
+    @grayThumbnail = @options.thumbnail.replace('.png', '')
+    @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
     @element.find(".utility-text").css "color", "#c6c4c4"
     console.info "It's to be implemented, how a widget should look like when it's deactivated..."
 
