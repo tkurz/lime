@@ -174,4 +174,4 @@ class window.LSIImagePlugin extends window.LimePlugin
       $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
-      @showDepictionInModalWindow annotation
+    @showDepictionInModalWindow annotation
