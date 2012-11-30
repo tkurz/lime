@@ -66,18 +66,6 @@ class window.LIMEPlayer
           # * Startup timeupdate event handler
           @_startScheduler()
 
-  getLength: ->
-    @player.duration()
-
-  seek: (pos) ->
-    if pos isnt undefined
-      @player.currentTime pos
-
-  currentTime: ->
-    @player.currentTime()
-  play: ->
-    @player.play()
-
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
     jQuery(@).bind 'timeupdate', (e) ->
@@ -132,6 +120,23 @@ class window.LIMEPlayer
         # END added SORIN
         @player.play()
         console.info "Setting up VideoJS Player", @player
+
+      # Tunnel basic player methods
+      @pause = ->
+        @player.pause()
+
+      @play = ->
+        @player.play()
+
+      @getLength = ->
+        @player.duration()
+
+      @seek = (pos) ->
+        if pos isnt undefined
+          @player.currentTime pos
+
+      @currentTime = ->
+        @player.currentTime()
 
   _initEventListeners: ->
     @player.addEvent 'timeupdate', (playerEvent) =>
@@ -313,6 +318,15 @@ class LimeWidget
       </table>
     </div>
     """
+    jQuery(@element).data 'widget', @
+    jQuery(@element).data 'plugin', @plugin
+    jQuery(@element).click (e) =>
+      widget = jQuery(e.target).data().widget
+      plugin = jQuery(e.target).data().plugin
+      @plugin.lime.pause()
+      jQuery(@).trigger 'activate',
+        plugin: plugin
+        widget: widget
 
   html: (content) ->
     @element.html content

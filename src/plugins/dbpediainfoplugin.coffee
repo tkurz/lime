@@ -10,17 +10,18 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             thumbnail: "img/info.png" # should go into CSS
             title: "#{annotation.getLabel()} Info"
           if widget
+            widget.annotation = annotation
             if annotation.ldLoaded
-              widget.html @renderAnnotation(annotation)
+              # widget.html @renderAnnotation(annotation)
               widget.show()
             else
               jQuery(annotation).bind "ldloaded", (e) =>
                 annotation = e.target
-                widget.html @renderAnnotation(annotation)
+                # widget.html @renderAnnotation(annotation)
                 widget.show()
             # insert widget click function
-            widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-              @lime.player.pause()
+            jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
+              annotation = e.target.annotation
               @displayModal annotation
 
           annotation.widgets[@name] = widget
@@ -45,20 +46,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
     #$(modalContent).append("<div style=\"margin: 10px; font-family:verdana; font-size:20px; color: white\">" + comment + "</div>");
     $(modalContent).append result
-
-  renderAnnotation: (annotation) ->
-    unless annotation is `undefined`
-      res = """
-            <div class="#{@name}">
-              <table style="margin:0 auto; width: 100%;">
-                <tr>
-                  <td><b class="utility-text">#{annotation.getLabel()} Info </b></td>
-                  <td><img class="utility-icon" src="img/info.png" style="float: right; width: 25px; height: 25px; " ></td>
-                </tr>
-              </table>
-            </div>
-            """
-      return res
 
   displayModal: (annotation) -> # Modal window script usin jquery
 

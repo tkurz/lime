@@ -13,16 +13,15 @@ class window.LSIImagePlugin extends window.LimePlugin
             title: "#{annotation.getLabel()} Pics"
         if widget
           if annotation.ldLoaded
-            widget.html @renderAnnotation(annotation)
+            # widget.html @renderAnnotation(annotation)
             widget.show()
           else
             jQuery(annotation).bind "ldloaded", (e) =>
               annotation = e.target
-              widget.html @renderAnnotation(annotation)
+              # widget.html @renderAnnotation(annotation)
               widget.show()
           # insert widget click function
-          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-            @lime.player.pause()
+          jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
             @displayModal annotation
 
         annotation.widgets[@name] = widget
@@ -96,36 +95,6 @@ class window.LSIImagePlugin extends window.LimePlugin
 
         error: (jqXHR, textStatus, errorThrown) ->
           $(modalContent).append "AJAX Error: #{textStatus}"
-
-  renderAnnotation: (annotation) ->
-    returnResult = ""
-    #console.info("rendering", annotation);
-    if annotation
-      labelObj = _(annotation.entity["rdfs:label"]).detect((labelObject) =>
-        labelObject['@language'] is @lime.options.preferredLanguage
-      )
-      label = labelObj['@value']
-
-      #	depiction = ( _ref = props['http://xmlns.com/foaf/0.1/depiction']) != null ? _ref[0].value :
-      #	void 0;
-      #	page = ( _ref1 = props['http://xmlns.com/foaf/0.1/page']) != null ? _ref1[0].value :
-      #	void 0;
-      #console.info(label, depiction);
-      returnResult = """
-                     <div class="LSIImageWidget">
-                      <table style="margin:0 auto; width: 100%;">
-                        <tr>
-                          <td>
-                            <b class="utility-text">#{annotation.getLabel()} Pics </b>
-                          </td>
-                          <td>
-                            <img class="utility-icon" src="img/pic.png" style="float: right; width: 25px; height: 25px; " >
-                         </td>
-                        </tr>
-                      </table>
-                     </div>
-                     """
-    return returnResult;
 
   displayModal: (annotation) -> # Modal window script usin jquery
     # Get Modal Window
