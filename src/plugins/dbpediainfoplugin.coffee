@@ -11,8 +11,8 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             title: "#{annotation.getLabel()} Info"
           if widget
             if annotation.ldLoaded
-              domEl.html @renderAnnotation(annotation)
-              $(domEl).slideDown 500
+              widget.html @renderAnnotation(annotation)
+              widget.show()
             else
               jQuery(annotation).bind "ldloaded", (e) =>
                 annotation = e.target
