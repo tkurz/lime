@@ -38,6 +38,7 @@ class window.LSIImagePlugin extends window.LimePlugin
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
     try
       lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+      ###
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Canyoning.rdf"  if lodResource.indexOf("Canyoning") > 0
@@ -50,9 +51,15 @@ class window.LSIImagePlugin extends window.LimePlugin
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
+      ###
 
-      request = $.get lodResource
-      request.success (data) ->
+      # request = $.get lodResource
+      # request.success (data) ->
+      $.ajax lodResource,
+        type: 'GET'
+        dataType: 'xml'
+        success: (data, textStatus, jqXHR) ->
+          console.log("success "+ textStatus)
           x = data.Description
           result = """
                    <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
@@ -87,9 +94,8 @@ class window.LSIImagePlugin extends window.LimePlugin
             lsiImageSource = $(e.target).attr("src")
             $("#bigImage").attr "src", lsiImageSource
 
-
-      xmlhttp.open "GET", lodResource, true
-      xmlhttp.send()
+        error: (jqXHR, textStatus, errorThrown) ->
+          $(modalContent).append "AJAX Error: #{textStatus}"
 
   renderAnnotation: (annotation) ->
     returnResult = ""
@@ -121,69 +127,26 @@ class window.LSIImagePlugin extends window.LimePlugin
                      """
     return returnResult;
 
-displayModal: (annotation) -> # Modal window script usin jquery
-  # Get Modal Window
-  #var modalcontainer;
-  if @lime.player.isFullScreen
-    modalcontainer = $(".modalwindow")
-  else
-    modalcontainer = $("#modalWindow")
+  displayModal: (annotation) -> # Modal window script usin jquery
+    # Get Modal Window
+    #var modalcontainer;
+    if @lime.player.isFullScreen
+      modalcontainer = $(".modalwindow")
+    else
+      modalcontainer = $("#modalWindow")
 
-  # Get mask element
-  mask = undefined
-  if @lime.player.isFullScreen
-    mask = $(".mask")
-  else
-    mask = $("#mask")
-  $(modalcontainer).css "height", "70%"
-  $(modalcontainer).css "max-height", "400px"
-  $(modalcontainer).empty()
-  $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
-  $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; text-align: center;\">"
-  $(modalcontainer).append "</div>"
-
-  #Get the screen height and width
-  maskHeight = $(window).height()
-  maskWidth = $(window).width()
-
-  #Set heigth and width to mask to fill up the whole screen
-  $(mask).css
-    width: maskWidth
-    height: maskHeight
-
-
-  #transition effect
-  $(mask).fadeIn 100
-  $(mask).fadeTo "fast", 0.8
-
-  #Get the window height and width
-  winH = $(window).height()
-  winW = $(window).width()
-
-  #Set the popup window to center
-  $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
-  $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
-
-  #transition effect
-  $(modalcontainer).fadeIn 100
-
-  #if close button is clicked
-  $(".close").click (e) =>
-
-    #Cancel the link behavior
-    e.preventDefault()
-    $(mask).hide()
-    $(modalcontainer).hide()
+    # Get mask element
+    mask = undefined
+    if @lime.player.isFullScreen
+      mask = $(".mask")
+    else
+      mask = $("#mask")
+    $(modalcontainer).css "height", "70%"
+    $(modalcontainer).css "max-height", "400px"
     $(modalcontainer).empty()
-
-
-  #if mask is clicked
-  $(mask).click (e) =>
-    $(mask).hide()
-    $(modalcontainer).hide()
-    $(modalcontainer).empty()
-
-  $(window).resize (e) =>
+    $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
+    $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; text-align: center;\">"
+    $(modalcontainer).append "</div>"
 
     #Get the screen height and width
     maskHeight = $(window).height()
@@ -198,8 +161,48 @@ displayModal: (annotation) -> # Modal window script usin jquery
     $(mask).fadeIn 100
     $(mask).fadeTo "fast", 0.8
 
+    #Get the window height and width
+    winH = $(window).height()
+    winW = $(window).width()
+
     #Set the popup window to center
     $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
     $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
-    @showDepictionInModalWindow annotation
+    #transition effect
+    $(modalcontainer).fadeIn 100
+
+    #if close button is clicked
+    $(".close").click (e) =>
+      #Cancel the link behavior
+      e.preventDefault()
+      $(mask).hide()
+      $(modalcontainer).hide()
+      $(modalcontainer).empty()
+
+
+    #if mask is clicked
+    $(mask).click (e) =>
+      $(mask).hide()
+      $(modalcontainer).hide()
+      $(modalcontainer).empty()
+
+    $(window).resize (e) =>
+      #Get the screen height and width
+      maskHeight = $(window).height()
+      maskWidth = $(window).width()
+
+      #Set heigth and width to mask to fill up the whole screen
+      $(mask).css
+        width: maskWidth
+        height: maskHeight
+
+      #transition effect
+      $(mask).fadeIn 100
+      $(mask).fadeTo "fast", 0.8
+
+      #Set the popup window to center
+      $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
+      $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
+
+      @showDepictionInModalWindow annotation
