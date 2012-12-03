@@ -6,17 +6,16 @@ class window.LDPlugin extends window.LimePlugin
   init: =>
     loadAnnotation = (annotation) =>
       requestUrl = "#{@lime.options.annotFrameworkURL}meta/application/json?uri=#{encodeURIComponent annotation.resource.value}"
+      annotation.entityPromise = jQuery.Deferred()
       jQuery.ajax
         url: requestUrl
+        timeout: 2000
         # contentType: "application/json"
         success: (res) =>
           if typeof res is 'string'
             res = JSON.parse res
           if _.keys(res).length
             console.info annotation.resource.value, res
-            annotation.entity = res
-            annotation.ldLoaded = true
-            jQuery(annotation).trigger jQuery.Event "ldloaded", entity: res
 
             lime = @lime
             annotation.getLabel = ->
@@ -43,9 +42,14 @@ class window.LDPlugin extends window.LimePlugin
               page = @entity['http://xmlns.com/foaf/0.1/homepage']?["@id"]
               page
 
+            # TODO remove when all plugins are changed to using the promise
+            annotation.entity = res
+            annotation.ldLoaded = true
+            jQuery(annotation).trigger jQuery.Event "ldloaded", entity: res
 
-    error: (err) ->
-          console.error arguments
+        error: (jqXhr, message) ->
+          alert "Linked data plugin couldn't load the entity because of '#{message}'"
+          console.error "LDPlugin error", message
     for annotation in @lime.annotations
       loadAnnotation annotation
 

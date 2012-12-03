@@ -9,7 +9,7 @@
     <script src="lib/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
     <script type="text/javascript" src="lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
-    <script type="text/javascript" src="lib/vie/vie-latest.debug.js"></script>
+    <script type="text/javascript" src="lib/vie/vie-2.0.0.debug.js"></script>
 
 	<!-- Plugin dependencies -->
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -51,6 +51,13 @@
             var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
             var lang = UTILS.getParameterByName('lang') || 'en';
             var cmf = new CMF(cmfurl);
+
+            var getSavedAnnotations = function(cb){
+                jQuery.getJSON('annotations.json', function(res){
+                    console.info('annotation JSON', res.results.bindings);
+                    cb(res.results.bindings);
+                });
+            };
             cmf.getLocatorsForVideoOrLocator(videoUrl, function(err, locators){
                 console.info("locators", locators);
                 if(err || locators.length == 0) {
@@ -58,7 +65,8 @@
                     alert("Error getting video locators for " + videoUrl);
                     return
                 }
-                cmf.getAnnotationsForVideoOrLocator(videoUrl, function(err, annotations){
+                // cmf.getAnnotationsForVideoOrLocator(videoUrl, function(err, annotations){
+                getSavedAnnotations(function(annotations){
                     annotations = _(annotations).map(function(ann){
                         return new Annotation(ann);
                     });
@@ -72,16 +80,15 @@
                         // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                         annotFrameworkURL: cmfurl,
                         plugins : {
-                            LDPlugin: {},
                             GeoNamesMapPlugin: {},
                             GoogleWeatherPlugin: {},
                             AnnotationModalWindow: {},
                             DBPediaInfoPlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                             },
-                            LSIImagePlugin: {
+                            /*LSIImagePlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                            }
+                            }*/
                         },
                         // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                         fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
