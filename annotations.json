@@ -71,12 +71,6 @@
 				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=33,36" }
 			}, 
 			{
-				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/ecc97e1bd9c77f352695cb41cb9c08d0" }, 
-				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/page\/Category:Mountains_of_Salzburg" }, 
-				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=5,8" }
-			}, 
-			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/0200ce3b3891841124f2ddba1d180bd1" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Cross-country_skiing" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
@@ -90,7 +84,7 @@
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/19102518083efd079fa9e1dc851f1c05" }, 
-				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Apres_ski" }, 
+				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Après_ski" },
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
 				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=142,148" }
 			}, 
@@ -114,7 +108,7 @@
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/241051cb1d09e09f64c0910d132dcac5" }, 
-				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Nordic_skating" }, 
+				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Tour_skating" },
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
 				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=58,62" }
 			}, 

@@ -51,11 +51,12 @@
         annotation.entity = _.detect(res, function(ent) {
           return ent.fromReference(ent.getSubject()) === entityUri;
         });
+        console.info(annotation.entity, res);
         annotation.getLabel = function() {
           return VIE.Util.getPreferredLangForPreferredProperty(annotation.entity, ['rdfs:label'], [_this.lime.options.preferredLanguage, 'en']);
         };
         annotation.getDescription = function() {
-          return VIE.Util.getPreferredLangForPreferredProperty(annotation.entity, ['dbpedia:abstract', 'rdfs:comment'], [_this.lime.options.preferredLanguage, 'en']);
+          return VIE.Util.getPreferredLangForPreferredProperty(annotation.entity, ['dbpedia:abstract'], [_this.lime.options.preferredLanguage, 'en']);
         };
         annotation.getDepiction = function() {
           var depiction, singleDepiction;
@@ -72,10 +73,9 @@
           }
           return annotation.entity.fromReference(singleDepiction);
         };
-        annotation.getPage = function() {
+        return annotation.getPage = function() {
           return annotation.entity.get('foaf:homepage') || annotation.entity.fromReference(annotation.entity.getSubject());
         };
-        return annotation.entityPromise.resolve(annotation.entity);
       });
       return;
       requestUrl = "" + this.lime.options.annotFrameworkURL + "meta/application/json?uri=" + (encodeURIComponent(annotation.resource.value));

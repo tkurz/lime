@@ -7,8 +7,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         annotation = e.target
         if annotation.resource.value.indexOf("geonames") < 0
           annotation.entityPromise.done (entity) =>
-            annotation = entity
-            debugger # TODO check if entity is correct
             widget = @lime.allocateWidgetSpace @,
               thumbnail: "img/info.png" # should go into CSS
               title: "#{annotation.getLabel()} Info"

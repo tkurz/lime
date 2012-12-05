@@ -8,22 +8,23 @@
         jQuery(annotation).bind "becomeActive", (e) =>
           annotation = e.target
           if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-            domEl = @lime.allocateWidgetSpace("GoogleWeatherPlugin")
-            if domEl
-              if annotation.ldLoaded
-                domEl.html @renderAnnotation(annotation)
-                $(domEl).slideDown 500
-              else
-                jQuery(annotation).bind "ldloaded", (e) =>
-                  annotation = e.target
+            annotation.entityPromise.done (entity) =>
+              domEl = @lime.allocateWidgetSpace @
+              if domEl
+                if annotation.ldLoaded
                   domEl.html @renderAnnotation(annotation)
                   $(domEl).slideDown 500
-              # insert widget click function
-              domEl.click => #click behaviour - highlight the related widgets by adding a class to them
-                @lime.player.pause()
-                @displayModal annotation
+                else
+                  jQuery(annotation).bind "ldloaded", (e) =>
+                    annotation = e.target
+                    domEl.html @renderAnnotation(annotation)
+                    $(domEl).slideDown 500
+                # insert widget click function
+                domEl.click => #click behaviour - highlight the related widgets by adding a class to them
+                  @lime.player.pause()
+                  @displayModal annotation
 
-              annotation.widgets.DBPediaAbstractPlugin = domEl
+                annotation.widgets.DBPediaAbstractPlugin = domEl
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target

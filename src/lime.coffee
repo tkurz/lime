@@ -47,6 +47,7 @@ class window.LIMEPlayer
       usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0
       annotationsVisible : true
       debug: false
+      local: false
       preferredLanguage: "en"
       builtinPlugins:
         AnnotationOverlays: {}
@@ -82,11 +83,11 @@ class window.LIMEPlayer
   _initVideoPlayer: (cb) ->
     displaysrc=''
     for locator, i in @options.video
-      displaysrc = displaysrc + "<source src=#{locator.source} type='#{locator.type}' />"
+      displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     $("##{@options.containerDiv}").append """
       <div class='videowrapper' id='videowrapper'>
-        <video id='video_player' class='video-js vjs-default-skin' controls preload='none' width='640' height='360' poster='img/connectme-video-poster.jpg'>
+        <video id='video_player' class='video-js vjs-default-skin' controls preload='metadata' width='640' height='360' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
       </div>
@@ -328,6 +329,14 @@ class LimeWidget
         plugin: plugin
         widget: widget
 
+    # Wrap element methods for convenience on the widget
+    defMethod = (o, m) =>
+      @[m] = ->
+        console.info "calling #{m} on ", o
+        o[m].call o, arguments
+    for m in ['addClass', 'html', 'removeClass']
+      defMethod @element, m
+
   html: (content) ->
     @element.html content
   options:
@@ -341,7 +350,7 @@ class LimeWidget
   hide: ->
     @element.slideUp @options.showSpeed
   deactivate: ->
-    @grayThumbnail = @options.thumbnail.replace('.png', '')
+    grayThumbnail = @options.thumbnail.replace('.png', '')
     @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
     @element.find(".utility-text").css "color", "#c6c4c4"
     console.info "It's to be implemented, how a widget should look like when it's deactivated..."

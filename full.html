@@ -47,32 +47,50 @@
 		VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4 
 		*/
         $(document).ready(function () {
+            var local = JSON.parse(UTILS.getParameterByName('local'));
             var videoUrl = UTILS.getParameterByName('videoUrl');
             var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
             var lang = UTILS.getParameterByName('lang') || 'en';
             var cmf = new CMF(cmfurl);
 
-            var getSavedAnnotations = function(cb){
-                jQuery.getJSON('annotations.json', function(res){
-                    console.info('annotation JSON', res.results.bindings);
-                    cb(res.results.bindings);
-                });
+            var getAnnotations = function(cb){
+                if(local){
+                    jQuery.getJSON('annotations.json', function(res){
+                        console.info('annotation JSON', res.results.bindings);
+                        cb(false, res.results.bindings);
+                    });
+                } else {
+                    cmf.getAnnotationsForVideoOrLocator(videoUrl, cb);
+                }
             };
-            cmf.getLocatorsForVideoOrLocator(videoUrl, function(err, locators){
+            var getLocators = function(cb){
+                if(local){
+                    var locators = [
+                        {"source":"videos/6306_519_20120508125738_ogg.ogv","type":"video/ogv"},
+                        {"source":"videos/6306_519_20120508125738_standard.mp4","type":"video/mp4"},
+                        {"source":"videos/6306_519_20120508125738_webm.webm","type":"video/webm"}
+                    ];
+                    cb(false, locators);
+                } else {
+                    cmf.getLocatorsForVideoOrLocator(videoUrl, cb);
+                }
+            };
+            getLocators(function(err, locators){
                 console.info("locators", locators);
                 if(err || locators.length == 0) {
                     console.error("Error getting video locators", err, locators);
                     alert("Error getting video locators for " + videoUrl);
                     return
                 }
-                // cmf.getAnnotationsForVideoOrLocator(videoUrl, function(err, annotations){
-                getSavedAnnotations(function(annotations){
+
+                getAnnotations(function(err, annotations){
                     annotations = _(annotations).map(function(ann){
                         return new Annotation(ann);
                     });
                     console.info("Annotations", annotations);
                     LimePlayer = new LIMEPlayer({
                         video : locators,
+                        local: local,
                         annotations: annotations,
                         containerDiv:"mainwrapper",
                         videoPlayerSize:{"width":640, "height":360},

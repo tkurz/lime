@@ -45,8 +45,8 @@ class window.AnnotationOverlays extends window.LimePlugin
             limeplayer.player.pause()
             for i of annotation.widgets
               unless i is "AnnotationOverlays"
-                widgets = annotation.widgets[i]
-                widgets.addClass("highlighted").delay(2000).queue (next) ->
+                widget = annotation.widgets[i]
+                widget.addClass("highlighted").delay(2000).queue (next) ->
                   $(@).removeClass "highlighted"
                   next()
 
@@ -131,7 +131,7 @@ class window.AnnotationOverlays extends window.LimePlugin
     res = ""
     for ann in activeAnnotations
       res += "<tr><td class='icon'>"
-      res += "<img src='#{ann.getDepiction()}' style='height:20px;' />" if ann.getDepiction()
+      res += "<img src='#{ann.getDepiction()}' style='height:20px;' />" if ann.getDepiction
       res += """
         </td>
         <td class='timeframe'>
@@ -139,10 +139,10 @@ class window.AnnotationOverlays extends window.LimePlugin
         </td>
         <td class='label'>
       """
-      if ann.getPage()
+      if ann.getPage
         res += "<a href='#{ann.getPage()}'>#{ann.getLabel()}</a>"
       else
-        res += "<span>#{ann.getLabel()}</span>"
+        res += "<span>#{ann.getLabel?() or ann}</span>"
       res += "</td></tr>"
     res = jQuery """
       <table class="navlist">#{res}</table>
