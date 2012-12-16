@@ -100,51 +100,26 @@ class window.LIMEPlayer
     """
 
     # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
-    _.defer =>
-      @player = _V_ 'video_player',
-        flash: iFrameMode: true
-        swf: "lib/videojs/video-js.swf"	# SORIN - added to fix flash fallback bug
-      @player.addEvent "loadedmetadata", =>
-        # @player.addComponent 'Annotations', player: @player
-        @_initEventListeners()
-        cb()
-      @player.ready =>
-        # SORIN - adding Sidebars component to VideoJS, as well as the annotation toggler
-        @player.isFullScreen = @options.fullscreen
-        @_nonfullscreen_containers = LimePlayer.widgetContainers
-        @player.addComponent("AnnotationsSidebars")  # add component to display 4 regions of annotations
-        @player.controlBar.addComponent("AnnotationToggle")	# add button to toggle annotations on/off in the control bar
-        if(!@player.isFullScreen)
-          @player.AnnotationsSidebars.hide()
-        else
-          _this.player.AnnotationsSidebars.show()
-        # END added SORIN
-        @player.play()
-        console.info "Setting up VideoJS Player", @player
-
-      # Tunnel basic player methods
-      @pause = ->
-        @player.pause()
-
-      @play = ->
-        @player.play()
-
-      @getLength = ->
-        @player.duration()
-
-      @seek = (pos) ->
-        if pos isnt undefined
-          @player.currentTime pos
-
-      @currentTime = ->
-        @player.currentTime()
+    window.LIMEPlayer.VideoJSInit 'video_player', {}, (err, playerInstance) =>
+      if err
+        alert err
+        return
+      @player = playerInstance
+      @_initEventListeners()
+      @_nonfullscreen_containers = LimePlayer.widgetContainers
+      ###
+      if(!@player.isFullScreen)
+        @player.AnnotationsSidebars.hide()
+      else
+        _this.player.AnnotationsSidebars.show()
+      ###
+      cb()
 
   _initEventListeners: ->
-    @player.addEvent 'timeupdate', (playerEvent) =>
-      # console.info playerEvent
+    jQuery(@player).bind 'timeupdate', (playerEvent) =>
       e = jQuery.Event "timeupdate", currentTime: @player.currentTime()
       jQuery(@).trigger e
-    @player.addEvent 'fullscreenchange', (e) =>
+    jQuery(@player).bind 'fullscreenchange', (e) =>
       fsce = jQuery.Event 'fullscreenchange', isFullScreen: @player.isFullScreen
       jQuery(@player).trigger fsce
       @_moveWidgets @player.isFullScreen
@@ -250,7 +225,12 @@ class window.LIMEPlayer
     else
       return true
 
-  getAnnotationsFor: (uri, cb) ->
+  play: ->
+    @player.play()
+  pause: ->
+    @player.pause()
+  seek: (pos) ->
+    @player.seek(pos)
 
 class window.Annotation
   constructor: (hash) ->
