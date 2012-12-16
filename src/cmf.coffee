@@ -41,7 +41,7 @@ class window.CMF
     WHERE { ?instance a mao:MediaResource.
     ?instance mao:title ?title.
     ?instance mao:hasFragment ?fragment.
-    ?instance yoovis:hasThumbnail ?thumbnail.
+    OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}
     ?annotation a oac:Annotation.
     ?annotation oac:target ?fragment.
     ?annotation oac:body ?body}
@@ -92,7 +92,7 @@ class window.CMF
     @_runSPARQL(query, resCB)
   _annotationsForVideo: (resource) -> """PREFIX oac: <http://www.openannotation.org/ns/>
       PREFIX ma: <http://www.w3.org/ns/ma-ont#>
-      SELECT ?annotation ?fragment ?resource ?relation
+      SELECT DISTINCT ?annotation ?fragment ?resource ?relation
       WHERE { <#{resource}>  ma:hasFragment ?f.
          ?f ma:locator ?fragment.
          ?annotation oac:target ?f.
@@ -107,7 +107,7 @@ class window.CMF
   _annotationsForLocator: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
     PREFIX ma: <http://www.w3.org/ns/ma-ont#>
-    SELECT ?annotation ?fragment ?resource ?relation
+    SELECT DISTINCT ?annotation ?fragment ?resource ?relation
     WHERE { ?videoresource ma:locator <#{locator}>.
        ?videoresource ma:hasFragment ?f.
        ?f ma:locator ?fragment.
@@ -127,7 +127,7 @@ class window.CMF
   _getVideoLocators: (resource) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
     PREFIX ma: <http://www.w3.org/ns/ma-ont#>
-    SELECT ?source ?type
+    SELECT DISTINCT ?source ?type
     WHERE { <#{resource}>  ma:locator ?source.
     ?source ma:hasFormat ?type}
     ORDER BY ?source"""
@@ -144,7 +144,7 @@ class window.CMF
   _getAllVideoLocators: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
     PREFIX ma: <http://www.w3.org/ns/ma-ont#>
-    SELECT ?source ?type
+    SELECT DISTINCT ?source ?type
     WHERE {
     ?resource ma:locator <#{locator}>.
     ?resource  ma:locator ?source.

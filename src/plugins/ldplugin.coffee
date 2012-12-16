@@ -12,11 +12,14 @@ class window.LDPlugin extends window.LimePlugin
       @vie = new VIE()
       @vie.use new @vie.StanbolService
         url: @options.stanbolUrl
+
     for annotation in @lime.annotations
+      annotation.lime = @lime
       @loadAnnotation annotation
 
   defaults:
     stanbolUrl: "http://dev.iks-project.eu/stanbolfull"
+    followRedirects: ['dbpedia:wikiPageRedirects', 'rdfs:seeAlso', 'owl:sameAs']
 
   loadAnnotation: (annotation) ->
     annotation.entityPromise = jQuery.Deferred()
@@ -24,26 +27,76 @@ class window.LDPlugin extends window.LimePlugin
     error = (err) ->
       console.error "Couldn't load entity #{entityUri}", err
       # $.get('http://dev.iks-project.eu/cors/www.tvtrip.es/flachau-hotels/funsport-bike-skihotelanlage-tauernhof', function(res){console.info(window.test=res)})
-    @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
-      annotation.entity = _.detect res, (ent) -> ent.fromReference(ent.getSubject()) is entityUri
+
+    recursiveFetch = (entityUri, props, depth, cb) =>
+      results = []
+      success = (res) =>
+        entity = _.detect res, (ent) -> ent.fromReference(ent.getSubject()) is ent.fromReference(entityUri)
+        results.push entity
+        if depth is 0
+          cb _.flatten(results)
+        else
+          redirects = []
+          for prop in props
+            redirects.push entity.get prop
+          redirects = _.flatten(redirects)
+          redirects = _.uniq(redirects)
+          redirects = _.compact(redirects)
+
+          waitfor = redirects.length
+          if waitfor
+            for redirUrl in redirects
+              recursiveFetch redirUrl, props, depth-1, (r) ->
+                results.push r
+                waitfor--
+                if waitfor is 0
+                  cb _(results).flatten()
+          else
+            cb _(results).flatten()
+
+      @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success(success)
+
+
+    recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
+      annotation.entities = res
+      # @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
 
       # Add methods on the annotation to get label, description, etc in the player's preferred language
-      annotation.getLabel = =>
-        VIE.Util.getPreferredLangForPreferredProperty(annotation.entity, ['rdfs:label'], [@lime.options.preferredLanguage, 'en'])
-      annotation.getDescription = =>
-        VIE.Util.getPreferredLangForPreferredProperty(annotation.entity, ['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'])
-      annotation.getDepiction = =>
-        depiction = annotation.entity.get 'foaf:depiction'
-        if _.isArray depiction
-          singleDepiction = _.detect depiction, (d) -> d.indexOf('thumb') isnt -1
-          unless singleDepiction
-            singleDepiction = depiction[0]
-        else
-          singleDepiction = depiction
-        annotation.entity.fromReference(singleDepiction)
-      annotation.getPage = =>
-        annotation.entity.get('foaf:homepage') or annotation.entity.fromReference(annotation.entity.getSubject())
-      annotation.entityPromise.resolve annotation.entity
+      annotation.getLabel = ->
+        for entity in @entities
+          value = VIE.Util.getPreferredLangForPreferredProperty(entity, ['rdfs:label'], [@lime.options.preferredLanguage, 'en'])
+          if value isnt "n/a"
+            return value
+        return 'No label found.'
+      annotation.getDescription = ->
+        for entity in @entities
+          value = VIE.Util.getPreferredLangForPreferredProperty(entity, ['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'])
+          if value isnt "n/a"
+            return value
+        return 'No label found.'
+      annotation.getDepiction = ->
+        for entity in @entities
+          result = ""
+          depiction = entity.get 'foaf:depiction'
+          if depiction
+            if _.isArray depiction
+              singleDepiction = _.detect depiction, (d) -> d.indexOf('thumb') isnt -1
+              unless singleDepiction
+                singleDepiction = depiction[0]
+            else
+              singleDepiction = depiction
+            result = entity.fromReference(singleDepiction)
+          if result
+            return result
+        return null
+      annotation.getPage = ->
+        for entity in @entities
+          value = entity.get('foaf:homepage')
+          if value
+            return value
+        @entities[0].fromReference(entity.getSubject())
+
+      annotation.entityPromise.resolve annotation.entities
     return
     requestUrl = "#{@lime.options.annotFrameworkURL}meta/application/json?uri=#{encodeURIComponent annotation.resource.value}"
     jQuery.ajax
