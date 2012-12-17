@@ -11,12 +11,12 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             title: "#{annotation.getLabel()} Info"
           if widget
             if annotation.ldLoaded
-              widget.html @renderAnnotation(annotation)
+            #  widget.html @renderAnnotation(annotation)
               widget.show()
             else
               jQuery(annotation).bind "ldloaded", (e) =>
                 annotation = e.target
-                widget.html @renderAnnotation(annotation)
+             #   widget.html @renderAnnotation(annotation)
                 widget.show()
             # insert widget click function
             widget.element.click => #click behaviour - highlight the related widgets by adding a class to them

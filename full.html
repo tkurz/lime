@@ -32,6 +32,7 @@
     <!-- The extended player -->
     <script src="lib/lime.js"></script>
     <!-- plugins -->
+    <srcipt src="lib/plugins/ldplugin.js"></srcipt>
     <script src="lib/plugins/geonamesmapplugin.js"></script>
     <script src="lib/plugins/dbpediainfoplugin.js"></script>
     <script src="lib/plugins/googleweatherplugin.js"></script>
@@ -86,8 +87,8 @@
                         // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                         fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
                         widgetContainers:[
-                            {element:jQuery('#widget-container-1'), orientation:'horizontal'},
-                            {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                            {element:jQuery('#widget-container-2'), orientation:'horizontal'},
+                            {element:jQuery('#widget-container-1'), orientation:'horizontal'}
                         ],
                         annotationsVisible:true,
                         preferredLanguage: lang
@@ -105,7 +106,11 @@
 		</div>
 
 		<div text-align="center" id="container">
-			<div id="widget-container-1" class="widget-container vertical"> &nbsp;</div>
+			<div id="widget-container-1" class="widget-container vertical">
+                <div class="stats"> <img src="img/statistics.png" style="width: 30px; height: 30px;" /> </div>
+                <div class="settings"> <img src="img/settings.png" style="width: 30px; height: 30px;" /> </div>
+                <div class="admin"> <img src="img/admin.png" style="width: 30px; height: 30px;" /> </div>
+            </div>
 			<div class="mainwrapper" id="mainwrapper" align="center"></div>
 			<div id="widget-container-2" class="widget-container vertical"> &nbsp;</div>
 		</div>

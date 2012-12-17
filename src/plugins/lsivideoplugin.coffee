@@ -13,12 +13,12 @@ class window.LSIImagePlugin extends window.LimePlugin
             title: "#{annotation.getLabel()} Pics"
         if widget
           if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
+            widget.html @renderAnnotation(annotation)
             widget.show()
           else
             jQuery(annotation).bind "ldloaded", (e) =>
               annotation = e.target
-             # widget.html @renderAnnotation(annotation)
+              widget.html @renderAnnotation(annotation)
               widget.show()
           # insert widget click function
           widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
@@ -37,7 +37,7 @@ class window.LSIImagePlugin extends window.LimePlugin
 
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
     try
-      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=video&limit=9&ner=yes"
       ###
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0

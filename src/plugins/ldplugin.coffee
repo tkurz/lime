@@ -43,6 +43,12 @@ class window.LDPlugin extends window.LimePlugin
               page = @entity['http://xmlns.com/foaf/0.1/homepage']?["@id"]
               page
 
+            annotation.getName = ->
+              label = _(@entity['http://www.geonames.org/ontology#alternateName']).detect (labelObj) -> labelObj["@language"] is lime.options.preferredLanguage
+              unless label
+                label = _(@entity['http://www.geonames.org/ontology#alternateName']).detect (labelObj) -> labelObj["@language"] is "en"
+                if label then return label["@value"] + " (Not found in " + lime.options.preferredLanguage.toUpperCase() + ")"
+              return label?["@value"] || "No label found"
 
     error: (err) ->
           console.error arguments
