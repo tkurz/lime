@@ -75,12 +75,12 @@ class window.StatisticsPlugin extends window.LimePlugin
 
 
     #if mask is clicked
-    $(mask).click (e)=>
+    $(mask).click (e) =>
       $(mask).hide()
       $(modalcontainer).hide()
       $(modalcontainer).empty()
 
-    $(window).resize (e)=>
+    $(window).resize (e) =>
 
       #var box = modalcontainer;
 

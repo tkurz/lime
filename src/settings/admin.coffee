@@ -81,9 +81,7 @@ class window.AdminPlugin extends window.LimePlugin
       $(modalcontainer).empty()
 
     $(window).resize (e)=>
-
       #var box = modalcontainer;
-
       #Get the screen height and width
       maskHeight = $(document).height()
       maskWidth = $(document).width()
