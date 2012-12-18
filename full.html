@@ -38,6 +38,10 @@
     <script src="lib/plugins/googleweatherplugin.js"></script>
     <script src="lib/plugins/annotationmodalwindow.js"></script>
     <script src="lib/plugins/lsiimageplugin.js"></script>
+    <!-- settings -->
+    <script src="lib/settings/admin.js"></script>
+    <script src="lib/settings/statistics.js"></script>
+    <script src="lib/settings/usersettings.js"></script>
 
     <link href="css/screen.css" rel="stylesheet">
     <script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>
@@ -82,7 +86,10 @@
                             },
                             LSIImagePlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                            }
+                            },
+                            AdminPlugin: {},
+                            StatisticsPlugin: {},
+                            UserSettingsPlugin: {}
                         },
                         // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                         fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
@@ -108,7 +115,7 @@
 		<div text-align="center" id="container">
 			<div id="widget-container-1" class="widget-container vertical">
                 <div class="stats"> <img src="img/statistics.png" style="width: 30px; height: 30px;" /> </div>
-                <div class="settings"> <img src="img/settings.png" style="width: 30px; height: 30px;" /> </div>
+                <div class="usersettings"> <img src="img/settings.png" style="width: 30px; height: 30px;" /> </div>
                 <div class="admin"> <img src="img/admin.png" style="width: 30px; height: 30px;" /> </div>
             </div>
 			<div class="mainwrapper" id="mainwrapper" align="center"></div>

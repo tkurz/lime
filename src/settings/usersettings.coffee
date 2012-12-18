@@ -1,57 +1,43 @@
-class window.GoogleWeatherPlugin extends window.LimePlugin
+class window.UserSettingsPlugin extends window.LimePlugin
   init: ->
-    @name = 'GoogleWeatherPlugin'
+    @name = 'UserSettingsPlugin'
     annotation = undefined
-    console.info "Initialize GoogleWeatherPlugin"
+    console.info "Initialize UserSettingsPlugin"
 
-    for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-          widget = @lime.allocateWidgetSpace @,
-            thumbnail: "img/weather.png" # should go into CSS
-            title: "#{annotation.getLabel()} Weather"
-        if widget
-          if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
-            widget.show()
-          else
-            jQuery(annotation).bind "ldloaded", (e) =>
-              annotation = e.target
-              # widget.html @renderAnnotation(annotation)
-              widget.show()
-          # insert widget click function
-          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-            @lime.player.pause()
-            @displayModal annotation
+    # insert widget click function
+    $("div .usersettings").click => #click behaviour - highlight the related widgets by adding a class to them
+      @lime.player.pause()
+      @displayUserSettingsInModal()
 
-        annotation.widgets[@name] = widget
+  renderUserSettingsInModalWindow: ->
+    result = """
+          <div class="settingscontent" style="color: white;">
+          <p class="settingstitle" style="font-size: 20px; "> Video Settings </p>
+          <p class="settingssection" style="font-size: 16px; "> Annotations </p>
+          <div style="margin: 0 auto; width: 75%;">
+          <form style="margin: 0 auto; text-align: center; font-size: 14px;">
+          <input type="checkbox" class="annotationspatialoverlay " checked="checked"> Show annotation overlays on the video &nbsp; &nbsp; &nbsp;
+          <input type="checkbox" class="annotationtimelineoverlay setting" checked="checked"> Show annotation overlays on the timeline
+          </form>
+          </div>
+          <br>
+          <p class="settingssection" style="font-size: 16px; "> Widgets </p>
+          <div style="margin: 0 auto; width: 50%;">
+          <form style="margin: 0 auto; text-align: left; font-size: 14px; margin-left: 45%;" >
+          <div><input type="checkbox" class="informationwidgets setting" checked="checked"> Show information widgets  </div>
+          <div><input type="checkbox" class="picturewidgets setting" checked="checked"> Show picture widgets  </div>
+          <div><input type="checkbox" class="mapwidgets setting" checked="checked" > Show map widgets  </div>
+          <div><input type="checkbox" class="weatherwidgets setting" checked="checked"> Show weather widgets  </div>
+          <div><input type="checkbox" class="videowidgets setting" checked="checked"> Show video widgets</div>
+          </form>
+          </div>
+          </div>
+    """;
+    modalContent = $("#modalContent");
+    modalContent.css('overflow','auto');
+    modalContent.append(result);
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.deactivate()
-          return
-
-
-
-  showWeatherInModalWindow: (outputElement) ->
-    output = document.getElementById(outputElement)
-    latlng = new google.maps.LatLng(latitude, longitude)
-
-    #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
-    myOptions =
-      zoom: 11
-      center: latlng
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-
-    map = new google.maps.Map(output, myOptions)
-    weatherLayer = new google.maps.weather.WeatherLayer(temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS)
-    weatherLayer.setMap map
-
-  displayModal: (annotation) -> # Modal window script usin jquery
+  displayUserSettingsInModal: -> # Modal window script usin jquery
     # Get Modal Window
     #var modalcontainer;
     if @lime.player.isFullScreen
@@ -111,9 +97,10 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
 
 
     #if mask is clicked
-    $(mask).click (e)=>
-      $(this).hide()
+    $(mask).click (e) =>
+      $(mask).hide()
       $(modalcontainer).hide()
+      $(modalcontainer).empty()
 
     $(window).resize (e)=>
 
@@ -138,4 +125,4 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
-    showWeatherInModalWindow "modalContent"
+    @renderUserSettingsInModalWindow()

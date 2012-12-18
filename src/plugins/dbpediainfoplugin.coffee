@@ -46,19 +46,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     #$(modalContent).append("<div style=\"margin: 10px; font-family:verdana; font-size:20px; color: white\">" + comment + "</div>");
     $(modalContent).append result
 
-  renderAnnotation: (annotation) ->
-    unless annotation is `undefined`
-      res = """
-            <div class="#{@name}">
-              <table style="margin:0 auto; width: 100%;">
-                <tr>
-                  <td><b class="utility-text">#{annotation.getLabel()} Info </b></td>
-                  <td><img class="utility-icon" src="img/info.png" style="float: right; width: 25px; height: 25px; " ></td>
-                </tr>
-              </table>
-            </div>
-            """
-      return res
 
   displayModal: (annotation) -> # Modal window script usin jquery
 
@@ -148,7 +135,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       #Set the popup window to center
       $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
-
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
     @showAbstractInModalWindow annotation, modalcontainer

@@ -1,57 +1,21 @@
-class window.GoogleWeatherPlugin extends window.LimePlugin
+class window.AdminPlugin extends window.LimePlugin
   init: ->
-    @name = 'GoogleWeatherPlugin'
+    @name = 'AdminPlugin'
     annotation = undefined
-    console.info "Initialize GoogleWeatherPlugin"
+    console.info "Initialize AdminPlugin"
 
-    for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-          widget = @lime.allocateWidgetSpace @,
-            thumbnail: "img/weather.png" # should go into CSS
-            title: "#{annotation.getLabel()} Weather"
-        if widget
-          if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
-            widget.show()
-          else
-            jQuery(annotation).bind "ldloaded", (e) =>
-              annotation = e.target
-              # widget.html @renderAnnotation(annotation)
-              widget.show()
-          # insert widget click function
-          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-            @lime.player.pause()
-            @displayModal annotation
+    # insert widget click function
+    $("div .admin").click => #click behaviour - highlight the related widgets by adding a class to them
+      @lime.player.pause()
+      @displayAdminSettingsInModal()
 
-        annotation.widgets[@name] = widget
+  renderAdminSettingsInModalWindow: ->
+    result = "<iframe allowtransparency=\"true\" src=\"http://form.jotformeu.com/form/23474683902358\" frameborder=\"0\" style=\"width:100%; height:863px; border:none;\" scrolling=\"no\"></iframe>";
+    modalContent = $("#modalContent");
+    modalContent.css('overflow','auto');
+    modalContent.append(result);
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.deactivate()
-          return
-
-
-
-  showWeatherInModalWindow: (outputElement) ->
-    output = document.getElementById(outputElement)
-    latlng = new google.maps.LatLng(latitude, longitude)
-
-    #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
-    myOptions =
-      zoom: 11
-      center: latlng
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-
-    map = new google.maps.Map(output, myOptions)
-    weatherLayer = new google.maps.weather.WeatherLayer(temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS)
-    weatherLayer.setMap map
-
-  displayModal: (annotation) -> # Modal window script usin jquery
+  displayAdminSettingsInModal: -> # Modal window script usin jquery
     # Get Modal Window
     #var modalcontainer;
     if @lime.player.isFullScreen
@@ -111,9 +75,10 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
 
 
     #if mask is clicked
-    $(mask).click (e)=>
-      $(this).hide()
+    $(mask).click (e) =>
+      $(mask).hide()
       $(modalcontainer).hide()
+      $(modalcontainer).empty()
 
     $(window).resize (e)=>
 
@@ -138,4 +103,4 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
-    showWeatherInModalWindow "modalContent"
+    @renderAdminSettingsInModalWindow()

@@ -10,7 +10,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         if annotation.resource.value.indexOf("sws.geonames.org") > 0
           widget = @lime.allocateWidgetSpace @,
             thumbnail: "img/map.png" # should go into CSS
-            title: "#{annotation.getName()} Map"
+            title: "#{annotation.getLabel()} Map"
         if widget
           if annotation.ldLoaded
             # widget.html @renderAnnotation(annotation)
@@ -34,69 +34,6 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         if widget
           widget.deactivate()
           return
-
-  renderAnnotation: (annotation) ->
-
-    hasCoord = false
-
-    #var locationName = "";
-    queryString = ""
-
-    #	console.log("rendering geonamesAnn: ", annotation);
-    #props = annotation.entity[annotation.resource.value];
-    #console.log("Propo: "+props);
-    try
-      if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest()
-      else # code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.open "POST", annotation.resource.value + "/about.rdf", false
-      xmlhttp.send()
-      xmlDoc = xmlhttp.responseXML
-
-      #document.write("<table border='1'>");
-      x = xmlDoc.getElementsByTagName("Feature")
-      i = 0
-      while i < x.length
-
-        #document.write("<tr><td>");
-        locationName = x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue
-
-        #document.write("</td><td>");
-        latitude = x[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue
-
-        #document.write("</td><td>");
-        longitude = x[i].getElementsByTagName("long")[0].childNodes[0].nodeValue
-        i++
-
-      #document.write("</td></tr>");
-      if latitude isnt "" and longitude isnt "" and locationName isnt ""
-
-        #	console.log("has latitude, longitude and locationName");
-        hasCoord = true
-        queryString = "http://maps.google.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=9&size=400x300&format=png&maptype=roadmap&markers=color:green|label:x|" + latitude + "," + longitude + "&sensor=false"
-
-    #console.log("hasCoord: " + hasCoord);
-    returnResult = "<p> Should be a Map here </p>"
-    if hasCoord
-      returnResult = """
-        <div class="GeoNamesMapWidget">
-        <table style="margin:0 auto; width: 100%;">
-        <tr>
-          <td>
-             <b class="utility-text">#{ locationName } Map </b>
-           </td>
-            <td>
-              <img class="utility-icon" src="img/mapIcon.png" style="float: right; width: 25px; height: 25px; " >
-            </td>
-            </tr>
-          </table>
-        </div>
-        """
-
-    else
-      returnResult = " "
-    return returnResult;
 
   showInModalWindow: (outputElement) ->
     output = document.getElementById(outputElement)
@@ -130,8 +67,6 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     $(modalcontainer).empty()
     $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
     $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; \"> &nbsp"
-
-    #	$(modalcontainer).append("<div id=\"mapLabel\" style=\"width: inherit; height: 25%; font-family:verdana; font-size:14px; /media/EXPRESSGATE/MyWorks/For_Seekda/TV Emulator/Dev/ConnectMe_1.2/img/sport.pngkground-image: -ms-linear-gradient(bottom, rgb(33,26,20) 32%, rgb(69,61,55) 66%, rgb(28,22,21) 15%); background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.32, rgb(33,26,20)), color-stop(0.66, rgb(69,61,55)), color-stop(0.15, rgb(28,22,21))); color: white\"> " + "<table> <tr> <td> <img src=\"img/mapIcon.png\" style=\"width: 40px; height: 40px;\" ></td><td><em style=\"font-size:18px; color: white;\">" + locationName + "</em></td></tr></table>" + "&nbsp;&nbsp;  lat: " + latitude + "; long: " + longitude + "</div>");
     $(modalcontainer).append "</div>"
 
     #	console.log("$(modalcontainer) = " + $(modalcontainer).html() + " modalcontainer " + modalcontainer.html());
@@ -177,7 +112,6 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       return;
 
     $(window).resize(e) =>
-
       #var box = modalcontainer;
 
       #Get the screen height and width
@@ -199,8 +133,5 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
       return;
 
-
     #box.blur(function() { setTimeout(<bluraction>, 100); });
     @showInModalWindow "modalContent"
-
-  #$(modalcontainer).css('height', "70%");

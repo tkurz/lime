@@ -72,6 +72,14 @@ task 'widgetwatch', 'Watch and compile widgets', ->
   p.stderr.on 'data', (data) ->
     util.log "" + data
 
+task 'settingswatch', 'Watch and compile widgets', ->
+  spawn = require('child_process').spawn
+  util.log "coffee -wc -o lib/settings src/settings/"
+  p = spawn "coffee", ['-wc', '-o', 'lib/settings', 'src/settings/']
+  p.stdout.on 'data', (data) ->
+    console.log "#{data}"
+  p.stderr.on 'data', (data) ->
+    util.log "" + data
 
 task 'doc', 'Build documentation', ->
   exec "docco-husky #{appFiles.join ' '} src/plugins/*.coffee", (err, stdout, stderr) ->
