@@ -43,8 +43,8 @@ class window.CMF
     ?instance mao:hasFragment ?fragment.
     ?instance yoovis:hasThumbnail ?thumbnail.
     ?annotation a oac:Annotation.
-    ?annotation oac:target ?fragment.
-    ?annotation oac:body ?body}
+    ?annotation oac:hasTarget ?fragment.
+    ?annotation oac:hasBody ?body}
     ORDER BY ?instance"""
 
   # Wrapper for both `getAnnotationsForLocator` and `getAnnotationsForVideo`
