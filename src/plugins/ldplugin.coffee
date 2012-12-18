@@ -19,17 +19,33 @@ class window.LDPlugin extends window.LimePlugin
 
   defaults:
     stanbolUrl: "http://dev.iks-project.eu/stanbolfull"
-    followRedirects: ['dbpedia:wikiPageRedirects', 'rdfs:seeAlso', 'owl:sameAs']
+    followRedirects: [
+      'dbpedia:wikiPageRedirects'
+      'rdfs:seeAlso'
+      'owl:sameAs'
+      (ent) ->
+        engName = VIE.Util.getPreferredLangForPreferredProperty(ent, ['rdfs:label', 'geonames:alternateName'], ["en"])
+        # name = ent.get('geonames:name')
+        if engName
+          return "http://dbpedia.org/resource/#{engName.replace(/\s/g, '_')}"
+    ]
 
   loadAnnotation: (annotation) ->
     annotation.entityPromise = jQuery.Deferred()
-    entityUri = annotation.resource.value
-    error = (err) ->
-      console.error "Couldn't load entity #{entityUri}", err
-      # $.get('http://dev.iks-project.eu/cors/www.tvtrip.es/flachau-hotels/funsport-bike-skihotelanlage-tauernhof', function(res){console.info(window.test=res)})
+    # Removing the trailing slash is necessary for geonames because the stanbol geonames index
+    entityUri = annotation.resource.value.replace(/\/$/,'')
 
     recursiveFetch = (entityUri, props, depth, cb) =>
       results = []
+      waitfor = 0
+      handleMerge = =>
+        asdf
+      error = (err) ->
+        waitfor--
+        console.error "Couldn't load entity #{entityUri}", err
+        unless waitfor > 0
+          cb []
+        # $.get('http://dev.iks-project.eu/cors/www.tvtrip.es/flachau-hotels/funsport-bike-skihotelanlage-tauernhof', function(res){console.info(window.test=res)})
       success = (res) =>
         entity = _.detect res, (ent) -> ent.fromReference(ent.getSubject()) is ent.fromReference(entityUri)
         results.push entity
@@ -38,7 +54,12 @@ class window.LDPlugin extends window.LimePlugin
         else
           redirects = []
           for prop in props
-            redirects.push entity.get prop
+            if _.isString(prop)
+              redir = entity.get prop
+              unless redir?.isEntity
+                redirects.push redir
+            if _.isFunction(prop)
+              redirects.push(prop(entity))
           redirects = _.flatten(redirects)
           redirects = _.uniq(redirects)
           redirects = _.compact(redirects)
@@ -49,31 +70,37 @@ class window.LDPlugin extends window.LimePlugin
               recursiveFetch redirUrl, props, depth-1, (r) ->
                 results.push r
                 waitfor--
-                if waitfor is 0
+                if waitfor <= 0
                   cb _(results).flatten()
           else
             cb _(results).flatten()
-
+      console.info 'load entity', entityUri
       @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success(success)
-
 
     recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
       annotation.entities = res
       # @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
 
+      annotation._detectPropertyLanguageOnEntity = (properties, languages, defaultLabel) ->
+        for entity in @entities
+          value = VIE.Util.getPreferredLangForPreferredProperty(entity, properties, languages)
+          if value isnt "n/a"
+            return value
+        return defaultLabel
+
+      annotation._detectProperty = (property) ->
+        for entity in @entities
+          value = entity.get(property)
+          if value
+            return value
+          @entities[0].fromReference(entity.getSubject())
+
+
       # Add methods on the annotation to get label, description, etc in the player's preferred language
       annotation.getLabel = ->
-        for entity in @entities
-          value = VIE.Util.getPreferredLangForPreferredProperty(entity, ['rdfs:label'], [@lime.options.preferredLanguage, 'en'])
-          if value isnt "n/a"
-            return value
-        return 'No label found.'
+        @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
       annotation.getDescription = ->
-        for entity in @entities
-          value = VIE.Util.getPreferredLangForPreferredProperty(entity, ['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'])
-          if value isnt "n/a"
-            return value
-        return 'No label found.'
+        @_detectPropertyLanguageOnEntity(['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'], "No description found.")
       annotation.getDepiction = ->
         for entity in @entities
           result = ""
@@ -90,10 +117,15 @@ class window.LDPlugin extends window.LimePlugin
             return result
         return null
       annotation.getPage = ->
+        @_detectProperty @entities, 'foaf:homepage'
         for entity in @entities
-          value = entity.get('foaf:homepage')
-          if value
-            return value
+          if entity.getSubject().indexOf('dbpedia') isnt -1
+            label = VIE.Util.getPreferredLangForPreferredProperty entity, ['rdfs:label'], [@lime.options.preferredLanguage]
+            return "http://#{@lime.options.preferredLanguage}.wikipedia.org/wiki/#{label}"
+          else
+            value = entity.get('foaf:homepage')
+            if value
+              return value
         @entities[0].fromReference(entity.getSubject())
 
       annotation.entityPromise.resolve annotation.entities

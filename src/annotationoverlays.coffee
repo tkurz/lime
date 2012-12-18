@@ -21,9 +21,7 @@ class window.AnnotationOverlays extends window.LimePlugin
       # Annotation event listener
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.annotation
-        # console.info 'active', annotation
-        if annotation.end is 5
-          console.info annotation
+        console.info 'active', annotation
         if annotation.isSpacial and (annotation.w > 0) and (annotation.h > 0)
           container.prepend @renderAnnotation annotation
 
@@ -57,7 +55,7 @@ class window.AnnotationOverlays extends window.LimePlugin
           domEl
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.annotation
-        # console.info 'inactive', annotation
+        console.info 'inactive', annotation
         if annotation.end is 5
           console.info annotation
         if annotation.isSpacial and (annotation.w > 0) and (annotation.h > 0)
@@ -129,15 +127,20 @@ class window.AnnotationOverlays extends window.LimePlugin
     jQuery(@conceptOverlayEl).html content
 
   renderConceptOverlay: (annotation) ->
+    getFilename = (uri) ->
+      regexp = new RegExp(/\/([^\/#]*)(#.*)?$/)
+      uri.match(regexp)?[1]
     currentTime = annotation.start
-    activeAnnotations = _.filter @lime.annotations, (ann) ->
-      ann.start <= currentTime and ann.end > currentTime
-    activeAnnotations = _(activeAnnotations).sortBy (ann) ->
+    currentSrc = @lime.player.currentSource()
+    activeAnnotations = _.filter @lime.annotations, (ann) =>
+      ann.start <= currentTime and ann.end > currentTime and currentSrc.indexOf(getFilename(ann.fragment.value)) isnt -1
+    activeAnnotations = _(activeAnnotations).sortBy (ann) =>
       0 - ann.start
     res = ""
     for ann in activeAnnotations
+      depiction = ann.getDepiction?()
       res += "<tr><td class='icon'>"
-      res += "<img src='#{ann.getDepiction()}' style='height:20px;' />" if ann.getDepiction()
+      res += "<img src='#{depiction}' style='height:20px;' />" if depiction
       res += """
         </td>
         <td class='timeframe'>

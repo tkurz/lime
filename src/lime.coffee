@@ -68,17 +68,22 @@ class window.LIMEPlayer
           @_startScheduler()
 
   _startScheduler: ->
+    getFilename = (uri) ->
+      regexp = new RegExp(/\/([^\/#]*)(#.*)?$/)
+      uri.match(regexp)?[1]
     ### handle becomeActive and becomeInactive events ###
-    jQuery(@).bind 'timeupdate', (e) ->
+    jQuery(@).bind 'timeupdate', (e) =>
       for annotation in @annotations
         currentTime = e.currentTime
-        if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
-          # has to be activated
-          annotation.state = 'active'
-          jQuery(annotation).trigger jQuery.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
-        if annotation.state is 'active' and (annotation.start > currentTime or annotation.end + 1 < currentTime)
-          annotation.state = 'inactive'
-          jQuery(annotation).trigger jQuery.Event "becomeInactive", annotation: annotation #signal to a particular annotation to become inactive
+        currentSrc = @player.currentSource()
+        if currentSrc.indexOf(getFilename(annotation.fragment.value)) isnt -1
+          if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
+            # has to be activated
+            annotation.state = 'active'
+            jQuery(annotation).trigger jQuery.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
+          if annotation.state is 'active' and (annotation.start > currentTime or annotation.end + 1 < currentTime)
+            annotation.state = 'inactive'
+            jQuery(annotation).trigger jQuery.Event "becomeInactive", annotation: annotation #signal to a particular annotation to become inactive
 
   _initVideoPlayer: (cb) ->
     displaysrc=''
@@ -128,6 +133,7 @@ class window.LIMEPlayer
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
     @annotations = @options.annotations
+    src = @player.currentSource()
     cb()
     ###
     query = """
