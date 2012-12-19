@@ -1,3 +1,4 @@
+debug = "http://dbpedia.org/resource/Category:Mountains_of_Salzburg"
 # Fetches annotation resource entities (if exist) from a LD endpoint,
 # hangs them on each annotation
 # sets a `ldLoaded` property to true on the annotation
@@ -34,6 +35,9 @@ class window.LDPlugin extends window.LimePlugin
     annotation.entityPromise = jQuery.Deferred()
     # Removing the trailing slash is necessary for geonames because the stanbol geonames index
     entityUri = annotation.resource.value.replace(/\/$/,'')
+    if entityUri is debug
+      @lime.player.pause()
+      debugger
 
     recursiveFetch = (entityUri, props, depth, cb) =>
       results = []
@@ -74,7 +78,7 @@ class window.LDPlugin extends window.LimePlugin
                   cb _(results).flatten()
           else
             cb _(results).flatten()
-      console.info 'load entity', entityUri
+      # console.info 'load entity', entityUri
       @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success(success)
 
     recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
@@ -101,13 +105,19 @@ class window.LDPlugin extends window.LimePlugin
         @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
       annotation.getDescription = ->
         @_detectPropertyLanguageOnEntity(['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'], "No description found.")
-      annotation.getDepiction = ->
+      annotation.getDepiction = (options) ->
         for entity in @entities
           result = ""
           depiction = entity.get 'foaf:depiction'
           if depiction
             if _.isArray depiction
-              singleDepiction = _.detect depiction, (d) -> d.indexOf('thumb') isnt -1
+              singleDepiction = _.detect depiction, (d) ->
+                res = true
+                if options?.with
+                  res = res and d.indexOf(options?.with) isnt -1
+                if options?.without
+                  res = res and d.indexOf(options?.without) is -1
+                res
               unless singleDepiction
                 singleDepiction = depiction[0]
             else
@@ -117,16 +127,18 @@ class window.LDPlugin extends window.LimePlugin
             return result
         return null
       annotation.getPage = ->
-        @_detectProperty @entities, 'foaf:homepage'
-        for entity in @entities
-          if entity.getSubject().indexOf('dbpedia') isnt -1
-            label = VIE.Util.getPreferredLangForPreferredProperty entity, ['rdfs:label'], [@lime.options.preferredLanguage]
-            return "http://#{@lime.options.preferredLanguage}.wikipedia.org/wiki/#{label}"
-          else
-            value = entity.get('foaf:homepage')
-            if value
-              return value
-        @entities[0].fromReference(entity.getSubject())
+        homepage = @_detectProperty @entities, 'foaf:homepage'
+        unless homepage
+          for entity in @entities
+            if entity.getSubject().indexOf('dbpedia') isnt -1
+              label = VIE.Util.getPreferredLangForPreferredProperty entity, ['rdfs:label'], [@lime.options.preferredLanguage]
+              return "http://#{@lime.options.preferredLanguage}.wikipedia.org/wiki/#{label}"
+            else
+              value = entity.get('foaf:homepage')
+              if value
+                return value
+          return @entities[0].fromReference(entity.getSubject())
+        return homepage
 
       annotation.entityPromise.resolve annotation.entities
     return

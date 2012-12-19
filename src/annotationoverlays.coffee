@@ -138,7 +138,7 @@ class window.AnnotationOverlays extends window.LimePlugin
       0 - ann.start
     res = ""
     for ann in activeAnnotations
-      depiction = ann.getDepiction?()
+      depiction = ann.getDepiction?(without: 'thumb')
       res += "<tr><td class='icon'>"
       res += "<img src='#{depiction}' style='height:20px;' />" if depiction
       res += """
@@ -149,7 +149,7 @@ class window.AnnotationOverlays extends window.LimePlugin
         <td class='label'>
       """
       if ann.getPage
-        res += "<a href='#{ann.getPage()}'>#{ann.getLabel()}</a>"
+        res += "<a href='#{ann.getPage()} target='_blank'>#{ann.getLabel()}</a>"
       else
         res += "<span>#{ann.getLabel?() or ann}</span>"
       res += "</td></tr>"

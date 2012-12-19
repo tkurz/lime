@@ -293,7 +293,7 @@ class URI
 class LimeWidget
   constructor: (@plugin, @element, options) ->
     @options = _(@options).extend options
-    @_init()
+    _.defer => @_init()
 
     @element.html """
     <div class="#{@name}">
