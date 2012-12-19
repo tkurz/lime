@@ -46,7 +46,7 @@ class window.CMF
       ?instance mao:hasFragment ?fragment.
       OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}
       ?annotation a oac:Annotation.
-      ?annotation oac:target ?fragment.
+      ?annotation oac:hasTarget ?fragment.
       ?annotation oac:hasBody ?body
     }
     ORDER BY ?instance"""
