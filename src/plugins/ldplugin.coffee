@@ -1,4 +1,3 @@
-debug = "http://dbpedia.org/resource/Category:Mountains_of_Salzburg"
 # Fetches annotation resource entities (if exist) from a LD endpoint,
 # hangs them on each annotation
 # sets a `ldLoaded` property to true on the annotation
@@ -35,6 +34,8 @@ class window.LDPlugin extends window.LimePlugin
     annotation.entityPromise = jQuery.Deferred()
     # Removing the trailing slash is necessary for geonames because the stanbol geonames index
     entityUri = annotation.resource.value.replace(/\/$/,'')
+    debug = ''
+    # debug = "http://dbpedia.org/resource/Category:Mountains_of_Salzburg"
     if entityUri is debug
       @lime.player.pause()
       debugger
