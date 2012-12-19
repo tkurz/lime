@@ -24,9 +24,11 @@ class window.CMF
       PREFIX oac: <http://www.openannotation.org/ns/>
       PREFIX yoovis: <http://yoovis.at/ontology/08/2012/>
       SELECT DISTINCT ?instance ?title ?thumbnail
-      WHERE { ?instance a mao:MediaResource.
-      ?instance mao:title ?title.
-      ?instance yoovis:hasThumbnail ?thumbnail.}
+      WHERE {
+        ?instance a mao:MediaResource.
+        ?instance mao:title ?title.
+        ?instance yoovis:hasThumbnail ?thumbnail.
+      }
       ORDER BY ?instance"""
 
   # Get the list of all annotated videos stored on the CMF server
@@ -38,13 +40,15 @@ class window.CMF
     PREFIX oac: <http://www.openannotation.org/ns/>
     PREFIX yoovis: <http://yoovis.at/ontology/08/2012/>
     SELECT DISTINCT ?instance ?title ?thumbnail
-    WHERE { ?instance a mao:MediaResource.
-    ?instance mao:title ?title.
-    ?instance mao:hasFragment ?fragment.
-    OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}
-    ?annotation a oac:Annotation.
-    ?annotation oac:target ?fragment.
-    ?annotation oac:body ?body}
+    WHERE {
+      ?instance a mao:MediaResource.
+      ?instance mao:title ?title.
+      ?instance mao:hasFragment ?fragment.
+      OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}
+      ?annotation a oac:Annotation.
+      ?annotation oac:target ?fragment.
+      ?annotation oac:hasBody ?body
+    }
     ORDER BY ?instance"""
 
   # Wrapper for both `getAnnotationsForLocator` and `getAnnotationsForVideo`
@@ -91,13 +95,15 @@ class window.CMF
     query = @_annotationsForVideo(resource)
     @_runSPARQL(query, resCB)
   _annotationsForVideo: (resource) -> """PREFIX oac: <http://www.openannotation.org/ns/>
-      PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+      PREFIX mao: <http://www.w3.org/ns/ma-ont#>
       SELECT DISTINCT ?annotation ?fragment ?resource ?relation
-      WHERE { <#{resource}>  ma:hasFragment ?f.
-         ?f ma:locator ?fragment.
-         ?annotation oac:target ?f.
-         ?annotation oac:body ?resource.
-         ?f ?relation ?resource.}"""
+      WHERE {
+        <#{resource}>  mao:hasFragment ?f.
+        ?f mao:locator ?fragment.
+        ?annotation oac:hasTarget ?f.
+        ?annotation oac:hasBody ?resource.
+        ?f ?relation ?resource.
+      }"""
 
   # Get annotations for a video's locator uri
   getAnnotationsForLocator: (locator, resCB) ->
@@ -106,14 +112,16 @@ class window.CMF
     @_runSPARQL(query, resCB)
   _annotationsForLocator: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
-    PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
     SELECT DISTINCT ?annotation ?fragment ?resource ?relation
-    WHERE { ?videoresource ma:locator <#{locator}>.
-       ?videoresource ma:hasFragment ?f.
-       ?f ma:locator ?fragment.
-       ?annotation oac:target ?f.
-       ?annotation oac:body ?resource.
-       ?f ?relation ?resource.}"""
+    WHERE {
+      ?videoresource mao:locator <#{locator}>.
+      ?videoresource mao:hasFragment ?f.
+      ?f mao:locator ?fragment.
+      ?annotation oac:hasTarget ?f.
+      ?annotation oac:hasBody ?resource.
+      ?f ?relation ?resource.
+    }"""
 
   # Get video locators for a video's CMF resource uri
   getVideoLocators: (resource, resCB) ->
@@ -121,15 +129,20 @@ class window.CMF
     query = @_getVideoLocators(resource)
     @_runSPARQL query, (err, res) ->
       unless err
+        typeRegexp = new RegExp /\.(.{3,4})$/
         locators = _(res).map (l) ->
-          source: l.source.value, type:l.type.value
+          type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
+          return source: l.source.value, type: type
+
       resCB err, locators
   _getVideoLocators: (resource) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
-    PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
     SELECT DISTINCT ?source ?type
-    WHERE { <#{resource}>  ma:locator ?source.
-    ?source ma:hasFormat ?type}
+    WHERE {
+      <#{resource}>  mao:locator ?source.
+      OPTIONAL {?source mao:hasFormat ?type}
+    }
     ORDER BY ?source"""
 
   # Get all video locators for any of a video's locators
@@ -138,17 +151,20 @@ class window.CMF
     query = @_getAllVideoLocators locator
     @_runSPARQL query, (err, res) ->
       unless err
+        typeRegexp = new RegExp /\.(.{3,4})$/
         locators = _(res).map (l) ->
-          source: l.source.value, type:l.type.value
+          type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
+          return source: l.source.value, type: type
       resCB err, locators
   _getAllVideoLocators: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
-    PREFIX ma: <http://www.w3.org/ns/ma-ont#>
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
     SELECT DISTINCT ?source ?type
     WHERE {
-    ?resource ma:locator <#{locator}>.
-    ?resource  ma:locator ?source.
-    ?source ma:hasFormat ?type}
+      ?resource mao:locator <#{locator}>.
+      ?resource  mao:locator ?source.
+      OPTIONAL {?source mao:hasFormat ?type}
+    }
     ORDER BY ?source"""
 
   # running SPARQL query
