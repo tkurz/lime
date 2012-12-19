@@ -149,7 +149,7 @@ class window.AnnotationOverlays extends window.LimePlugin
         <td class='label'>
       """
       if ann.getPage
-        res += "<a href='#{ann.getPage()} target='_blank'>#{ann.getLabel()}</a>"
+        res += "<a href='#{ann.getPage()}' target='_blank'>#{ann.getLabel()}</a>"
       else
         res += "<span>#{ann.getLabel?() or ann}</span>"
       res += "</td></tr>"
