@@ -13,17 +13,16 @@ class window.LSIImagePlugin extends window.LimePlugin
             title: "#{annotation.getLabel()} Pics"
         if widget
           if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
+            widget.html @renderAnnotation(annotation)
             widget.show()
           else
             jQuery(annotation).bind "ldloaded", (e) =>
               annotation = e.target
-             # widget.html @renderAnnotation(annotation)
+              widget.html @renderAnnotation(annotation)
               widget.show()
           # insert widget click function
-          jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-            annotation = e.target
-			@lime.player.pause()
+          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
+            @lime.player.pause()
             @displayModal annotation
 
         annotation.widgets[@name] = widget
@@ -38,7 +37,7 @@ class window.LSIImagePlugin extends window.LimePlugin
 
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
     try
-      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=video&limit=9&ner=yes"
       ###
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
@@ -114,16 +113,16 @@ class window.LSIImagePlugin extends window.LimePlugin
       #console.info(label, depiction);
       returnResult = """
                      <div class="LSIImageWidget">
-                      <table style="margin:0 auto; width: 100%;">
-                        <tr>
-                          <td>
-                            <b class="utility-text">#{annotation.getLabel()} Pics </b>
-                          </td>
-                          <td>
-                            <img class="utility-icon" src="img/pic.png" style="float: right; width: 25px; height: 25px; " >
-                         </td>
-                        </tr>
-                      </table>
+                     <table style="margin:0 auto; width: 100%;">
+                     <tr>
+                     <td>
+                     <b class="utility-text">#{annotation.getLabel()} Pics </b>
+                     </td>
+                     <td>
+                     <img class="utility-icon" src="img/pic.png" style="float: right; width: 25px; height: 25px; " >
+                     </td>
+                     </tr>
+                     </table>
                      </div>
                      """
     return returnResult;

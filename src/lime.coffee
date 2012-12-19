@@ -24,7 +24,7 @@ class window.LIMEPlayer
     cmf = new CMF "http://connectme.salzburgresearch.at/CMF"
     # Define the default options
     options =
-      # The container DOM element to use
+    # The container DOM element to use
       containerDiv: "mainwrapper"
       # Dimensions for the player
       videoPlayerSize: {"width": 640, "height": 360}
@@ -227,7 +227,7 @@ class window.LIMEPlayer
     # console.log(maxHeight,currentHeight);
     if maxHeight - currentHeight < 200
       return false
-    # console.log(container.element.children().height());
+      # console.log(container.element.children().height());
     else
       return true
 

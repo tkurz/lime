@@ -133,6 +133,5 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
-
     #box.blur(function() { setTimeout(<bluraction>, 100); });
     @showAbstractInModalWindow annotation, modalcontainer

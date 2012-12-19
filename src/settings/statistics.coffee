@@ -1,60 +1,21 @@
-  class window.GoogleWeatherPlugin extends window.LimePlugin
-    init: ->
-      @name = 'GoogleWeatherPlugin'
-      annotation = undefined
-      console.info "Initialize GoogleWeatherPlugin"
+class window.StatisticsPlugin extends window.LimePlugin
+  init: ->
+    @name = 'StatisticsPlugin'
+    annotation = undefined
+    console.info "Initialize StatisticsPlugin"
 
-    for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-            annotation.entityPromise.done (entity) =>
-		      widget = @lime.allocateWidgetSpace @,
-		        thumbnail: "img/weather.png" # should go into CSS
-		        title: "#{annotation.getLabel()} Weather"
-		    if widget
-		      if annotation.ldLoaded
-		        widget.show()
-		      else
-		        jQuery(annotation).bind "ldloaded", (e) =>
-		          annotation = e.target
-		          widget.show()
-		      # insert widget click function
-		      widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-		        @lime.player.pause()
-		        @displayModal annotation
+    # insert widget click function
+    $("div .stats").click => #click behaviour - highlight the related widgets by adding a class to them
+      @lime.player.pause()
+      @displayStatisticsInModal()
 
-        annotation.widgets[@name] = widget
+  renderStatisticsInModalWindow: ->
+    result = "<div class=\"statistic\" ><img src=\"img/stats.png\" style=\"width: 90%;  display:block; /*images must be set to block in order use auto margins*/ margin:0 auto; /*centers images in most browsers*/   text-align:center; /*centers images in older browsers*/\" /></div>";
+    modalContent = $("#modalContent");
+    modalContent.css('overflow','auto');
+    modalContent.append(result);
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.deactivate()
-          return
-
-
-        #console.log("weather map for "+locationName+" : "+latitude +" "+longitude);
-        unless locationName is ""
-          locationName = locationName.replace(" ", "+")
-          hasWeather = true
-
-  showWeatherInModalWindow: (outputElement) ->
-    output = document.getElementById(outputElement)
-    latlng = new google.maps.LatLng(latitude, longitude)
-
-    #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
-    myOptions =
-      zoom: 11
-      center: latlng
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-
-    map = new google.maps.Map(output, myOptions)
-    weatherLayer = new google.maps.weather.WeatherLayer(temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS)
-    weatherLayer.setMap map
-
-  displayModal: (annotation) -> # Modal window script usin jquery
+  displayStatisticsInModal: -> # Modal window script usin jquery
     # Get Modal Window
     #var modalcontainer;
     if @lime.player.isFullScreen
@@ -114,11 +75,12 @@
 
 
     #if mask is clicked
-    $(mask).click (e)=>
-      $(this).hide()
+    $(mask).click (e) =>
+      $(mask).hide()
       $(modalcontainer).hide()
+      $(modalcontainer).empty()
 
-    $(window).resize (e)=>
+    $(window).resize (e) =>
 
       #var box = modalcontainer;
 
@@ -141,4 +103,4 @@
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
-    showWeatherInModalWindow "modalContent"
+    @renderStatisticsInModalWindow()

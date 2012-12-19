@@ -15,7 +15,6 @@
 }
 
 .lime-overlay {
-    border: 2px red dashed;
     height: 100%;
     width: 100%;
 }
@@ -286,13 +285,14 @@ a:hover {
     text-align: center;
 }
 #widget-container-1 {
-    /* border: 1px solid black; */
-    position: relative;
-    float: left;
-    min-width: 15%;
-    width: 21%;
-    margin-left: 15px;
-    /*overflow: auto; */
+	/* border: 1px solid black; */
+	position: relative;
+	float: left;
+	min-width: 15%;
+	width: 21%;
+	margin-left: 15px;
+	text-align: right;
+	/*overflow: auto; */
 }
 #widget-container-2 {
     /* border: 1px solid black; */
@@ -459,13 +459,12 @@ a:hover {
     transform: skew(15deg) rotate(6deg);
 }
 
-.west {
-    z-index: 1; /* prevent shadows falling behind containers with backgrounds */
-    overflow: auto;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 700px;
+.west {	
+	z-index: 1; /* prevent shadows falling behind containers with backgrounds */
+	overflow: hidden;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .west .lime-widget {
@@ -508,13 +507,12 @@ a:hover {
     transform: skew(15deg) rotate(6deg);
 }
 
-.east {
-    z-index: 1; /* prevent shadows falling behind containers with backgrounds */
-    overflow: auto;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-height: 700px;
+.east {	
+	z-index: 1; /* prevent shadows falling behind containers with backgrounds */
+	overflow: hidden;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .east .lime-widget {

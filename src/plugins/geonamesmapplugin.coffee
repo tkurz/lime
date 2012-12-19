@@ -7,34 +7,32 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.target
-        if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-          annotation.entityPromise.done (entity) =>
-            domEl = @lime.allocateWidgetSpace @,
-              thumbnail: "img/mapIcon.png" # should go into CSS
-              title: "#{annotation.getLabel()} Map"
-            if domEl
+        if annotation.resource.value.indexOf("sws.geonames.org") > 0
+          widget = @lime.allocateWidgetSpace @,
+            thumbnail: "img/map.png" # should go into CSS
+            title: "#{annotation.getLabel()} Map"
+        if widget
+          if annotation.ldLoaded
+            # widget.html @renderAnnotation(annotation)
+            widget.show()
+          else
+            jQuery(annotation).bind "ldloaded", (e) =>
+              annotation = e.target
+              # widget.html @renderAnnotation(annotation)
+              widget.show()
+          # insert widget click function
+          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
+            @lime.player.pause()
+            @displayModal annotation
 
-              if annotation.ldLoaded
-                domEl.html @renderAnnotation(annotation)
-                $(domEl).slideDown 500
-              else
-                jQuery(annotation).bind "ldloaded", (e) =>
-                  annotation = e.target
-                  domEl.html @renderAnnotation(annotation)
-                  $(domEl).slideDown 500
-              # insert widget click function
-              domEl.click => #click behaviour - highlight the related widgets by adding a class to them
-                @lime.player.pause()
-                @displayModal annotation
-
-              annotation.widgets.DBPediaAbstractPlugin = domEl
+        annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
         #console.info(annotation, 'became inactive');
-        if annotation.widgets.DBPediaAbstractPlugin
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-icon").attr "src", "img/mapIcon_gr.png"
-          annotation.widgets.DBPediaAbstractPlugin.find(".utility-text").css "color", "#c6c4c4"
+        widget = annotation.widgets[@name]
+        if widget
+          widget.deactivate()
           return
 
   renderAnnotation: (annotation) ->
@@ -132,8 +130,6 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     $(modalcontainer).empty()
     $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
     $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; \"> &nbsp"
-
-    #	$(modalcontainer).append("<div id=\"mapLabel\" style=\"width: inherit; height: 25%; font-family:verdana; font-size:14px; /media/EXPRESSGATE/MyWorks/For_Seekda/TV Emulator/Dev/ConnectMe_1.2/img/sport.pngkground-image: -ms-linear-gradient(bottom, rgb(33,26,20) 32%, rgb(69,61,55) 66%, rgb(28,22,21) 15%); background-image: -webkit-gradient(	linear,	left bottom, left top, color-stop(0.32, rgb(33,26,20)), color-stop(0.66, rgb(69,61,55)), color-stop(0.15, rgb(28,22,21))); color: white\"> " + "<table> <tr> <td> <img src=\"img/mapIcon.png\" style=\"width: 40px; height: 40px;\" ></td><td><em style=\"font-size:18px; color: white;\">" + locationName + "</em></td></tr></table>" + "&nbsp;&nbsp;  lat: " + latitude + "; long: " + longitude + "</div>");
     $(modalcontainer).append "</div>"
 
     #	console.log("$(modalcontainer) = " + $(modalcontainer).html() + " modalcontainer " + modalcontainer.html());
@@ -179,7 +175,6 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       return;
 
     $(window).resize(e) =>
-
       #var box = modalcontainer;
 
       #Get the screen height and width
@@ -201,8 +196,5 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
       return;
 
-
     #box.blur(function() { setTimeout(<bluraction>, 100); });
     @showInModalWindow "modalContent"
-
-  #$(modalcontainer).css('height', "70%");

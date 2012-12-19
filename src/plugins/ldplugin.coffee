@@ -100,12 +100,13 @@ class window.LDPlugin extends window.LimePlugin
             return value
           @entities[0].fromReference(entity.getSubject())
 
-
       # Add methods on the annotation to get label, description, etc in the player's preferred language
-      annotation.getLabel = ->
+
+      annotation.getLabel = annotation.getName = ->
         @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
       annotation.getDescription = ->
         @_detectPropertyLanguageOnEntity(['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'], "No description found.")
+
       annotation.getDepiction = (options) ->
         for entity in @entities
           result = ""
