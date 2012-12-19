@@ -1,30 +1,26 @@
-  class window.GoogleWeatherPlugin extends window.LimePlugin
-    init: ->
-      @name = 'GoogleWeatherPlugin'
-      annotation = undefined
-      console.info "Initialize GoogleWeatherPlugin"
+class window.GoogleWeatherPlugin extends window.LimePlugin
+  init: ->
+    @name = 'GoogleWeatherPlugin'
+    annotation = undefined
+    console.info "Initialize GoogleWeatherPlugin"
 
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.target
         if annotation.resource.value.indexOf("geonames") > 0 && annotation.resource.value.indexOf("about.rdf") < 0
-            annotation.entityPromise.done (entity) =>
-		      widget = @lime.allocateWidgetSpace @,
-		        thumbnail: "img/weather.png" # should go into CSS
-		        title: "#{annotation.getLabel()} Weather"
-		    if widget
-		      if annotation.ldLoaded
-		        widget.show()
-		      else
-		        jQuery(annotation).bind "ldloaded", (e) =>
-		          annotation = e.target
-		          widget.show()
-		      # insert widget click function
-		      widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-		        @lime.player.pause()
-		        @displayModal annotation
+          annotation.entityPromise.done (entity) =>
+            widget = @lime.allocateWidgetSpace @,
+              thumbnail: "img/weather.png" # should go into CSS
+              title: "#{annotation.getLabel()} Weather"
+            if widget
+              widget.annotation = annotation
+              widget.show()
+              # insert widget click function
+              jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
+                annotation = e.target.annotation
+                @displayModal annotation
 
-        annotation.widgets[@name] = widget
+            annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
@@ -34,11 +30,6 @@
           widget.deactivate()
           return
 
-
-        #console.log("weather map for "+locationName+" : "+latitude +" "+longitude);
-        unless locationName is ""
-          locationName = locationName.replace(" ", "+")
-          hasWeather = true
 
   showWeatherInModalWindow: (outputElement) ->
     output = document.getElementById(outputElement)
@@ -141,4 +132,4 @@
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
-    showWeatherInModalWindow "modalContent"
+    @showWeatherInModalWindow "modalContent"

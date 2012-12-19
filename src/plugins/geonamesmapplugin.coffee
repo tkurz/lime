@@ -8,24 +8,25 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.target
         if annotation.resource.value.indexOf("sws.geonames.org") > 0
-          widget = @lime.allocateWidgetSpace @,
-            thumbnail: "img/map.png" # should go into CSS
-            title: "#{annotation.getLabel()} Map"
-        if widget
-          if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
-            widget.show()
-          else
-            jQuery(annotation).bind "ldloaded", (e) =>
-              annotation = e.target
-              # widget.html @renderAnnotation(annotation)
-              widget.show()
-          # insert widget click function
-          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-            @lime.player.pause()
-            @displayModal annotation
+          annotation.entityPromise.done (entity) =>
+            widget = @lime.allocateWidgetSpace @,
+              thumbnail: "img/map.png" # should go into CSS
+              title: "#{annotation.getLabel()} Map"
+            if widget
+              if annotation.ldLoaded
+                # widget.html @renderAnnotation(annotation)
+                widget.show()
+              else
+                jQuery(annotation).bind "ldloaded", (e) =>
+                  annotation = e.target
+                  # widget.html @renderAnnotation(annotation)
+                  widget.show()
+              # insert widget click function
+              widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
+                @lime.player.pause()
+                @displayModal annotation
 
-        annotation.widgets[@name] = widget
+            annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target

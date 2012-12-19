@@ -13,7 +13,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
             if widget
               widget.annotation = annotation
                 # widget.html @renderAnnotation(annotation)
-              widget.show()
               # widget.html @renderAnnotation(annotation)
               widget.show()
               # insert widget click function

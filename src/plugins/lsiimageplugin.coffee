@@ -7,26 +7,20 @@ class window.LSIImagePlugin extends window.LimePlugin
     for annotation in @lime.annotations
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.target
-        if annotation.resource.value.indexOf("geonames") < 0
-          widget = @lime.allocateWidgetSpace @,
-            thumbnail: "img/pic.png" # should go into CSS
-            title: "#{annotation.getLabel()} Pics"
-        if widget
-          if annotation.ldLoaded
-            # widget.html @renderAnnotation(annotation)
-            widget.show()
-          else
-            jQuery(annotation).bind "ldloaded", (e) =>
-              annotation = e.target
-             # widget.html @renderAnnotation(annotation)
+        annotation.entityPromise.done (entity) =>
+          if annotation.resource.value.indexOf("geonames") < 0
+            widget = @lime.allocateWidgetSpace @,
+              thumbnail: "img/pic.png" # should go into CSS
+              title: "#{annotation.getLabel()} Pics"
+            if widget
               widget.show()
-          # insert widget click function
-          jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-            annotation = e.target
-			@lime.player.pause()
-            @displayModal annotation
+              # insert widget click function
+              jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
+                annotation = e.target
+                @lime.player.pause()
+                @displayModal annotation
 
-        annotation.widgets[@name] = widget
+              annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
