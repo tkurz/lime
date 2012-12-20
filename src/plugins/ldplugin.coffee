@@ -13,9 +13,23 @@ class window.LDPlugin extends window.LimePlugin
       @vie.use new @vie.StanbolService
         url: @options.stanbolUrl
 
+    # Pause for the time of getting the annotation entities
+    pausedBefore = @lime.player.paused()
+    _.defer =>
+      @lime.player.pause()
+      console.info "Loading entities first... Player paused..."
+
+    waitForAnnotationFetch = @lime.annotations.length
+
     for annotation in @lime.annotations
       annotation.lime = @lime
-      @loadAnnotation annotation
+      @loadAnnotation annotation, =>
+        waitForAnnotationFetch--
+        if waitForAnnotationFetch is 0
+          console.info "Loading entities finished."
+          unless pausedBefore
+            console.info "Playing again."
+            @lime.player.play()
 
   defaults:
     stanbolUrl: "http://dev.iks-project.eu/stanbolfull"
@@ -30,7 +44,7 @@ class window.LDPlugin extends window.LimePlugin
           return "http://dbpedia.org/resource/#{engName.replace(/\s/g, '_')}"
     ]
 
-  loadAnnotation: (annotation) ->
+  loadAnnotation: (annotation, readyCb) ->
     annotation.entityPromise = jQuery.Deferred()
     # Removing the trailing slash is necessary for geonames because the stanbol geonames index
     entityUri = annotation.resource.value.replace(/\/$/,'')
@@ -143,51 +157,7 @@ class window.LDPlugin extends window.LimePlugin
         return homepage
 
       annotation.entityPromise.resolve annotation.entities
-    return
-    requestUrl = "#{@lime.options.annotFrameworkURL}meta/application/json?uri=#{encodeURIComponent annotation.resource.value}"
-    jQuery.ajax
-      url: requestUrl
-      timeout: 2000
-      # contentType: "application/json"
-      success: (res) =>
-        if typeof res is 'string'
-          res = JSON.parse res
-        if _.keys(res).length
-          console.info annotation.resource.value, res
-
-          lime = @lime
-          annotation.getLabel = ->
-            label = _(@entity['rdfs:label']).detect (labelObj) -> labelObj["@language"] is lime.options.preferredLanguage
-            unless label
-              label = _(@entity['rdfs:label']).detect (labelObj) -> labelObj["@language"] is "en"
-              if label then return label["@value"] + " (Not found in " + lime.options.preferredLanguage.toUpperCase() + ")"
-            return label?["@value"] || "No label found"
-
-          annotation.getDescription = ->
-            label = _(@entity['http://dbpedia.org/ontology/abstract']).detect (labelObj) -> labelObj["@language"] is lime.options.preferredLanguage
-            unless label
-              label = _(@entity['http://dbpedia.org/ontology/abstract']).detect (labelObj) -> labelObj["@language"] is "en"
-              if label then label["@value"] += " (Not found in " + lime.options.preferredLanguage.toUpperCase() + ")"
-            label = label?["@value"] || "No label found"
-
-
-          annotation.getDepiction = ->
-            depiction = @entity['foaf:depiction']?["@id"]
-            # props['http://dbpedia.org/ontology/thumbnail']?[0].value
-            depiction
-
-          annotation.getPage = ->
-            page = @entity['http://xmlns.com/foaf/0.1/homepage']?["@id"]
-            page
-
-          # TODO remove when all plugins are changed to using the promise
-          annotation.entity = res
-          annotation.ldLoaded = true
-          jQuery(annotation).trigger jQuery.Event "ldloaded", entity: res
-
-      error: (jqXhr, message) ->
-        alert "Linked data plugin couldn't load the entity because of '#{message}'"
-        console.error "LDPlugin error", message
+      readyCb()
 
 class RDF
   constructor: (hash) ->

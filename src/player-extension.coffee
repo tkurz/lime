@@ -49,6 +49,9 @@ window.LIMEPlayer.VideoJSInit = (el, options, cb) ->
       currentSource: ->
         @instance.tag.src or jQuery('source',this.instance.tag).attr('src')
 
+      paused: ->
+        @instance.paused()
+
       # @player.addComponent 'Annotations', player: @player
 
     # Setting up the player instance
