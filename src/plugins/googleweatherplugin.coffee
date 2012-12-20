@@ -129,7 +129,7 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e)=>
-      $(this).hide()
+      $(mask).hide()
       $(modalcontainer).hide()
 
     $(window).resize (e)=>
