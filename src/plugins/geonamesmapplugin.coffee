@@ -188,7 +188,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e) =>
-      $(this).hide()
+      $(mask).hide()
       $(modalcontainer).hide()
       return;
 
