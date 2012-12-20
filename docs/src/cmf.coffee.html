@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>cmf.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/player-extension.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">player-extension.coffee</span></a><a href="../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>cmf.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>The CMF module communicates to the ConnectMe Media Framework (CMF) back-end</p>
+<!DOCTYPE html><html><head><title>cmf.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>cmf.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>The CMF module communicates to the ConnectMe Media Framework (CMF) back-end</p>
 
 <p>Usage of all methods:
 var cmf = new CMF("http://connectme.salzburgresearch.at/CMF");
@@ -11,36 +11,40 @@ cmf.getVideos(function(err, videos){ // The callback gets always two parameters:
 });</p>
 </td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">CMF</span>
   <span class="nv">constructor: </span><span class="nf">(@url) -&gt;</span>
-    <span class="vi">@url = </span><span class="nx">@url</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Get the list of all videos stored on the CMF server</p>
+    <span class="vi">@url = </span><span class="nx">@url</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Get the list of all videos stored on the CMF server</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getVideos: </span><span class="nf">(resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_videosQuery</span>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
-  <span class="nv">_videosQuery: </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">      PREFIX mao: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">      PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">      PREFIX yoovis: &lt;http://yoovis.at/ontology/08/2012/&gt;</span>
-<span class="s2">      SELECT DISTINCT ?instance ?title ?thumbnail</span>
-<span class="s2">      WHERE { ?instance a mao:MediaResource.</span>
-<span class="s2">      ?instance mao:title ?title.</span>
-<span class="s2">      ?instance yoovis:hasThumbnail ?thumbnail.}</span>
-<span class="s2">      ORDER BY ?instance&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Get the list of all annotated videos stored on the CMF server</p>
+  <span class="nv">_videosQuery: </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">      PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">      PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">      PREFIX yoovis: &lt;http://yoovis.at/ontology/08/2012/&gt;</span>
+<span class="s">      SELECT DISTINCT ?instance ?title ?thumbnail</span>
+<span class="s">      WHERE {</span>
+<span class="s">        ?instance a mao:MediaResource.</span>
+<span class="s">        ?instance mao:title ?title.</span>
+<span class="s">        ?instance yoovis:hasThumbnail ?thumbnail.</span>
+<span class="s">      }</span>
+<span class="s">      ORDER BY ?instance&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Get the list of all annotated videos stored on the CMF server</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getAnnotatedVideos: </span><span class="nf">(resCB) -&gt;</span>
     <span class="nv">query = </span><span class="nx">@_annotatedVideosQuery</span>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
-  <span class="nv">_annotatedVideosQuery: </span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">    PREFIX yoovis: &lt;http://yoovis.at/ontology/08/2012/&gt;</span>
-<span class="s2">    SELECT DISTINCT ?instance ?title ?thumbnail</span>
-<span class="s2">    WHERE { ?instance a mao:MediaResource.</span>
-<span class="s2">    ?instance mao:title ?title.</span>
-<span class="s2">    ?instance mao:hasFragment ?fragment.</span>
-<span class="s2">    ?instance yoovis:hasThumbnail ?thumbnail.</span>
-<span class="s2">    ?annotation a oac:Annotation.</span>
-<span class="s2">    ?annotation oac:target ?fragment.</span>
-<span class="s2">    ?annotation oac:body ?body}</span>
-<span class="s2">    ORDER BY ?instance&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Wrapper for both <code>getAnnotationsForLocator</code> and <code>getAnnotationsForVideo</code></p>
+  <span class="nv">_annotatedVideosQuery: </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">    PREFIX yoovis: &lt;http://yoovis.at/ontology/08/2012/&gt;</span>
+<span class="s">    SELECT DISTINCT ?instance ?title ?thumbnail</span>
+<span class="s">    WHERE {</span>
+<span class="s">      ?instance a mao:MediaResource.</span>
+<span class="s">      ?instance mao:title ?title.</span>
+<span class="s">      ?instance mao:hasFragment ?fragment.</span>
+<span class="s">      OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}</span>
+<span class="s">      ?annotation a oac:Annotation.</span>
+<span class="s">      ?annotation oac:hasTarget ?fragment.</span>
+<span class="s">      ?annotation oac:hasBody ?body</span>
+<span class="s">    }</span>
+<span class="s">    ORDER BY ?instance&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Wrapper for both <code>getAnnotationsForLocator</code> and <code>getAnnotationsForVideo</code></p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getAnnotationsForVideoOrLocator: </span><span class="nf">(url, resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">waitfor = </span><span class="mi">2</span>
@@ -79,60 +83,74 @@ covered and generalized by the more convenient methods above</p>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_annotationsForVideo</span><span class="p">(</span><span class="nx">resource</span><span class="p">)</span>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
-  <span class="nv">_annotationsForVideo: </span><span class="nf">(resource) -&gt;</span> <span class="s2">&quot;&quot;&quot;PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">      PREFIX ma: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">      SELECT ?annotation ?fragment ?resource ?relation</span>
-<span class="s2">      WHERE { &lt;#{resource}&gt;  ma:hasFragment ?f.</span>
-<span class="s2">         ?f ma:locator ?fragment.</span>
-<span class="s2">         ?annotation oac:target ?f.</span>
-<span class="s2">         ?annotation oac:body ?resource.</span>
-<span class="s2">         ?f ?relation ?resource.}&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Get annotations for a video's locator uri</p>
+  <span class="nv">_annotationsForVideo: </span><span class="nf">(resource) -&gt;</span> <span class="s">&quot;&quot;&quot;PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">      PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">      SELECT DISTINCT ?annotation ?fragment ?resource ?relation</span>
+<span class="s">      WHERE {</span>
+<span class="s">        &lt;</span><span class="si">#{</span><span class="nx">resource</span><span class="si">}</span><span class="s">&gt;  mao:hasFragment ?f.</span>
+<span class="s">        ?f mao:locator ?fragment.</span>
+<span class="s">        ?annotation oac:hasTarget ?f.</span>
+<span class="s">        ?annotation oac:hasBody ?resource.</span>
+<span class="s">        ?f ?relation ?resource.</span>
+<span class="s">      }&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Get annotations for a video's locator uri</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getAnnotationsForLocator: </span><span class="nf">(locator, resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_annotationsForLocator</span><span class="p">(</span><span class="nx">locator</span><span class="p">)</span>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
-  <span class="nv">_annotationsForLocator: </span><span class="nf">(locator) -&gt;</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">    PREFIX ma: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">    SELECT ?annotation ?fragment ?resource ?relation</span>
-<span class="s2">    WHERE { ?videoresource ma:locator &lt;#{locator}&gt;.</span>
-<span class="s2">       ?videoresource ma:hasFragment ?f.</span>
-<span class="s2">       ?f ma:locator ?fragment.</span>
-<span class="s2">       ?annotation oac:target ?f.</span>
-<span class="s2">       ?annotation oac:body ?resource.</span>
-<span class="s2">       ?f ?relation ?resource.}&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>Get video locators for a video's CMF resource uri</p>
+  <span class="nv">_annotationsForLocator: </span><span class="nf">(locator) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?annotation ?fragment ?resource ?relation</span>
+<span class="s">    WHERE {</span>
+<span class="s">      ?videoresource mao:locator &lt;</span><span class="si">#{</span><span class="nx">locator</span><span class="si">}</span><span class="s">&gt;.</span>
+<span class="s">      ?videoresource mao:hasFragment ?f.</span>
+<span class="s">      ?f mao:locator ?fragment.</span>
+<span class="s">      ?annotation oac:hasTarget ?f.</span>
+<span class="s">      ?annotation oac:hasBody ?resource.</span>
+<span class="s">      ?f ?relation ?resource.</span>
+<span class="s">    }&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>Get video locators for a video's CMF resource uri</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getVideoLocators: </span><span class="nf">(resource, resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_getVideoLocators</span><span class="p">(</span><span class="nx">resource</span><span class="p">)</span>
     <span class="nx">@_runSPARQL</span> <span class="nx">query</span><span class="p">,</span> <span class="nf">(err, res) -&gt;</span>
-      <span class="nv">locators = </span><span class="nx">_</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">map</span> <span class="nf">(l) -&gt;</span>
-        <span class="nv">source: </span><span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">value</span>
+      <span class="nx">unless</span> <span class="nx">err</span>
+        <span class="nv">typeRegexp = </span><span class="k">new</span> <span class="nb">RegExp</span> <span class="o">/</span><span class="err">\</span><span class="p">.(.{</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">})</span><span class="nx">$</span><span class="o">/</span>
+        <span class="nv">locators = </span><span class="nx">_</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">map</span> <span class="nf">(l) -&gt;</span>
+          <span class="nv">type = </span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="o">?</span><span class="p">.</span><span class="nx">value</span> <span class="o">or</span> <span class="s">&quot;video/</span><span class="si">#{</span> <span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">typeRegexp</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="si">}</span><span class="s">&quot;</span>
+          <span class="k">return</span> <span class="nv">source: </span><span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nv">type: </span><span class="nx">type</span>
+
       <span class="nx">resCB</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">locators</span>
-  <span class="nv">_getVideoLocators: </span><span class="nf">(resource) -&gt;</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">    PREFIX ma: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">    SELECT ?source ?type</span>
-<span class="s2">    WHERE { &lt;#{resource}&gt;  ma:locator ?source.</span>
-<span class="s2">    ?source ma:hasFormat ?type}</span>
-<span class="s2">    ORDER BY ?source&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>Get all video locators for any of a video's locators</p>
+  <span class="nv">_getVideoLocators: </span><span class="nf">(resource) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?source ?type</span>
+<span class="s">    WHERE {</span>
+<span class="s">      &lt;</span><span class="si">#{</span><span class="nx">resource</span><span class="si">}</span><span class="s">&gt;  mao:locator ?source.</span>
+<span class="s">      OPTIONAL {?source mao:hasFormat ?type}</span>
+<span class="s">    }</span>
+<span class="s">    ORDER BY ?source&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>Get all video locators for any of a video's locators</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getAllVideoLocators: </span><span class="nf">(locator, resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_getAllVideoLocators</span> <span class="nx">locator</span>
     <span class="nx">@_runSPARQL</span> <span class="nx">query</span><span class="p">,</span> <span class="nf">(err, res) -&gt;</span>
-      <span class="nv">locators = </span><span class="nx">_</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">map</span> <span class="nf">(l) -&gt;</span>
-        <span class="nv">source: </span><span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">value</span>
+      <span class="nx">unless</span> <span class="nx">err</span>
+        <span class="nv">typeRegexp = </span><span class="k">new</span> <span class="nb">RegExp</span> <span class="o">/</span><span class="err">\</span><span class="p">.(.{</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">})</span><span class="nx">$</span><span class="o">/</span>
+        <span class="nv">locators = </span><span class="nx">_</span><span class="p">(</span><span class="nx">res</span><span class="p">).</span><span class="nx">map</span> <span class="nf">(l) -&gt;</span>
+          <span class="nv">type = </span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="o">?</span><span class="p">.</span><span class="nx">value</span> <span class="o">or</span> <span class="s">&quot;video/</span><span class="si">#{</span> <span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">typeRegexp</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="si">}</span><span class="s">&quot;</span>
+          <span class="k">return</span> <span class="nv">source: </span><span class="nx">l</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nv">type: </span><span class="nx">type</span>
       <span class="nx">resCB</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">locators</span>
-  <span class="nv">_getAllVideoLocators: </span><span class="nf">(locator) -&gt;</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s2">    PREFIX ma: &lt;http://www.w3.org/ns/ma-ont#&gt;</span>
-<span class="s2">    SELECT ?source ?type</span>
-<span class="s2">    WHERE {</span>
-<span class="s2">    ?resource ma:locator &lt;#{locator}&gt;.</span>
-<span class="s2">    ?resource  ma:locator ?source.</span>
-<span class="s2">    ?source ma:hasFormat ?type}</span>
-<span class="s2">    ORDER BY ?source&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>running SPARQL query</p>
+  <span class="nv">_getAllVideoLocators: </span><span class="nf">(locator) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?source ?type</span>
+<span class="s">    WHERE {</span>
+<span class="s">      ?resource mao:locator &lt;</span><span class="si">#{</span><span class="nx">locator</span><span class="si">}</span><span class="s">&gt;.</span>
+<span class="s">      ?resource  mao:locator ?source.</span>
+<span class="s">      OPTIONAL {?source mao:hasFormat ?type}</span>
+<span class="s">    }</span>
+<span class="s">    ORDER BY ?source&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>running SPARQL query</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">_runSPARQL: </span><span class="nf">(query, resCB) -&gt;</span>
-    <span class="nv">uri = </span><span class="s2">&quot;#{@url}sparql/select?query=#{encodeURIComponent(query)}&amp;output=json&quot;</span>
+    <span class="nv">uri = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">@url</span><span class="si">}</span><span class="s">sparql/select?query=</span><span class="si">#{</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span><span class="si">}</span><span class="s">&amp;output=json&quot;</span>
     <span class="nv">xhr = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">getJSON</span> <span class="nx">uri</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span>
       <span class="nv">res = </span><span class="p">[]</span>
       <span class="nv">list = </span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">bindings</span>
@@ -141,64 +159,64 @@ covered and generalized by the more convenient methods above</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">test: </span><span class="o">-&gt;</span>
     <span class="nx">@getVideos</span> <span class="nf">(err, res) -&gt;</span>
       <span class="k">if</span> <span class="nx">err</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getVideos error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getVideos error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
         <span class="k">return</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getVideos result&quot;</span><span class="p">,</span> <span class="nx">res</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getVideos result&quot;</span><span class="p">,</span> <span class="nx">res</span>
 
     <span class="nx">@getAnnotatedVideos</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
       <span class="k">if</span> <span class="nx">err</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAnnotatedVideos error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAnnotatedVideos error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
         <span class="k">return</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAnnotatedVideos result&quot;</span><span class="p">,</span> <span class="nx">res</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAnnotatedVideos result&quot;</span><span class="p">,</span> <span class="nx">res</span>
 
       <span class="nv">firstVideo = </span><span class="nx">res</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">instance</span><span class="p">.</span><span class="nx">value</span>
 
-      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;Getting locators for&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Getting locators for&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span>
       <span class="nx">@getVideoLocators</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="k">if</span> <span class="nx">err</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getVideoLocators error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getVideoLocators error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
           <span class="k">return</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getVideoLocators result&quot;</span><span class="p">,</span> <span class="nx">res</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getVideoLocators result&quot;</span><span class="p">,</span> <span class="nx">res</span>
         <span class="nv">videolocator = </span><span class="nx">res</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">source</span>
         <span class="nx">@getAllVideoLocators</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAllVideoLocators error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAllVideoLocators error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAllVideoLocators result&quot;</span><span class="p">,</span> <span class="nx">res</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAllVideoLocators result&quot;</span><span class="p">,</span> <span class="nx">res</span>
         <span class="nx">@getAnnotationsForLocator</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAnnotationsForLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAnnotationsForLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAnnotationsForLocator result&quot;</span><span class="p">,</span> <span class="nx">annotations</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAnnotationsForLocator result&quot;</span><span class="p">,</span> <span class="nx">annotations</span>
 
         <span class="nx">@getLocatorsForVideoOrLocator</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getLocatorsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getLocatorsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getLocatorsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="nx">res</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getLocatorsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="nx">res</span>
 
         <span class="nx">@getLocatorsForVideoOrLocator</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getLocatorsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getLocatorsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getLocatorsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="nx">res</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getLocatorsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="nx">res</span>
 
         <span class="nx">@getAnnotationsForVideoOrLocator</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAnnotationsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAnnotationsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAnnotationsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="nx">annotations</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAnnotationsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="nx">annotations</span>
 
         <span class="nx">@getAnnotationsForVideoOrLocator</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span><span class="p">)</span> <span class="o">=&gt;</span>
           <span class="k">if</span> <span class="nx">err</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAnnotationsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAnnotationsForVideoOrLocator error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
             <span class="k">return</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAnnotationsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="nx">annotations</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAnnotationsForVideoOrLocator result&quot;</span><span class="p">,</span> <span class="nx">videolocator</span><span class="p">,</span> <span class="nx">annotations</span>
 
       <span class="nx">@getAnnotationsForVideo</span> <span class="nx">firstVideo</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="k">if</span> <span class="nx">err</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s2">&quot;getAnnotationsForVideo error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;getAnnotationsForVideo error&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">annotations</span>
           <span class="k">return</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s2">&quot;getAnnotationsForVideo result&quot;</span><span class="p">,</span> <span class="nx">annotations</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;getAnnotationsForVideo result&quot;</span><span class="p">,</span> <span class="nx">annotations</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Thu Nov 29 2012 12:19:16 GMT+0100 (CET)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="projectname"><a href="../index.html">LIME - Linked Media Player</a></div></div></body></html>

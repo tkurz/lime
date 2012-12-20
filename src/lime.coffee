@@ -105,7 +105,7 @@ class window.LIMEPlayer
     """
 
     # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
-    window.LIMEPlayer.VideoJSInit 'video_player', {}, (err, playerInstance) =>
+    window.LIMEPlayer.VideoPlayerInit 'video_player', {}, (err, playerInstance) =>
       if err
         alert err
         return
