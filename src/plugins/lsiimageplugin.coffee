@@ -13,10 +13,11 @@ class window.LSIImagePlugin extends window.LimePlugin
               thumbnail: "img/pic.png" # should go into CSS
               title: "#{annotation.getLabel()} Pics"
             if widget
+              widget.annotation = annotation
               widget.show()
               # insert widget click function
               jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-                annotation = e.target
+                annotation = e.target.annotation
                 @lime.player.pause()
                 @displayModal annotation
 
@@ -32,7 +33,7 @@ class window.LSIImagePlugin extends window.LimePlugin
 
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
     try
-      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes"
+      lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes&context"
       ###
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
@@ -91,7 +92,8 @@ class window.LSIImagePlugin extends window.LimePlugin
 
         error: (jqXHR, textStatus, errorThrown) ->
           $(modalContent).append "AJAX Error: #{textStatus}"
-
+    catch err
+      console.log err
   renderAnnotation: (annotation) ->
     returnResult = ""
     #console.info("rendering", annotation);
@@ -200,4 +202,4 @@ class window.LSIImagePlugin extends window.LimePlugin
       $(modalcontainer).css "top", winH / 2 - $(modalcontainer).height() / 2
       $(modalcontainer).css "left", winW / 2 - $(modalcontainer).width() / 2
 
-      @showDepictionInModalWindow annotation
+    @showDepictionInModalWindow annotation
