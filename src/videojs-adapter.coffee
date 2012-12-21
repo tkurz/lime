@@ -10,7 +10,7 @@
 #        }
 #      })
 #
-window.LIMEPlayer.VideoJSInit = (el, options, cb) ->
+window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
   unless _V_
     console.error "VideoJS not loaded!"
     cb "VideoJS not loaded"
@@ -138,36 +138,3 @@ window.LIMEPlayer.VideoJSInit = (el, options, cb) ->
         LimePlayer.player.AnnotationOverlaysComponent.hide()  if LimePlayer.player.AnnotationOverlaysComponent
         LimePlayer.options.annotationsVisible = false
       console.log "fullscreen " + @player.isFullScreen, "visible " + LimePlayer.options.annotationsVisible
-
-###
-  # ConnectME Annotation Sidebars for fullscreen mode - displays 4 fixed regions (NWSE) as containers for widgets
-  _V_.AnnotationsSidebars = _V_.Component.extend #for  annotations on the sidebars
-    options:
-      loadEvent: "play"
-
-    init: (player, options) ->
-      @_super player, options
-      player.addEvent "fullscreenchange", @proxy(-> #for hiding overlay annotations when not in fullscreen
-        @hide()  if @player.isFullScreen is false
-      )
-      player.addEvent "play", @proxy(->
-        @fadeIn()
-        @player.addEvent "mouseover", @proxy(@fadeIn)
-      )
-
-      # this.player.addEvent("mouseout", this.proxy(this.fadeOut));	//maybe we want to
-      @player.AnnotationsSidebars = this #attach Component for sidebar annotations to player
-
-    createElement: -> #we just attach and show the "annotation-wrapper" div created in the _initVideoPlayer method
-      $(".annotation-wrapper", @el).show()[0]
-
-    fadeIn: ->
-      @_super()
-
-    fadeOut: ->
-      @_super()
-
-    lockShowing: ->
-      @el.style.opacity = "1"
-
-###
