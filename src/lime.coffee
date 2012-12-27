@@ -240,6 +240,8 @@ class window.LIMEPlayer
 
 class window.Annotation
   constructor: (hash) ->
+    hash.fragment.value = hash.fragment.value.replace("?","#")
+    hash.fragment.type = 'uri'
     @annotation = hash.annotation.value
     # default start and end
     @start = 0
