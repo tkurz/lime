@@ -10,6 +10,17 @@ class window.UserSettingsPlugin extends window.LimePlugin
       @displayUserSettingsInModal()
 
   renderUserSettingsInModalWindow: ->
+    hasGeoNamesMapPlugin = if @lime.options.plugins.hasOwnProperty("GeoNamesMapPlugin") then "checked" else " "
+    hasGoogleWeatherPlugin = if @lime.options.plugins.hasOwnProperty("GoogleWeatherPlugin") then "checked" else " "
+    hasDBPediaInfoPlugin = if @lime.options.plugins.hasOwnProperty("DBPediaInfoPlugin") then "checked" else " "
+    hasLSIImagePlugin = if @lime.options.plugins.hasOwnProperty("LSIImagePlugin") then "checked" else " "
+    hasLSIVideoPlugin = if @lime.options.plugins.hasOwnProperty("LSIVideoPlugin") then "checked" else " "
+
+    console.log("hasGeoNamesMapPlugin " + hasGeoNamesMapPlugin)
+    console.log("hasGoogleWeatherPlugin " + hasGoogleWeatherPlugin)
+    console.log("hasDBPediaInfoPlugin " + hasDBPediaInfoPlugin)
+    console.log("hasLSIImagePlugin " + hasLSIImagePlugin)
+
     result = """
           <div class="settingscontent" style="color: white;">
           <p class="settingstitle" style="font-size: 20px; "> Video Settings </p>
@@ -24,11 +35,11 @@ class window.UserSettingsPlugin extends window.LimePlugin
           <p class="settingssection" style="font-size: 16px; "> Widgets </p>
           <div style="margin: 0 auto; width: 50%;">
           <form style="margin: 0 auto; text-align: left; font-size: 14px; margin-left: 45%;" >
-          <div><input type="checkbox" class="informationwidgets setting" checked="checked"> Show information widgets  </div>
-          <div><input type="checkbox" class="picturewidgets setting" checked="checked"> Show picture widgets  </div>
-          <div><input type="checkbox" class="mapwidgets setting" checked="checked" > Show map widgets  </div>
-          <div><input type="checkbox" class="weatherwidgets setting" checked="checked"> Show weather widgets  </div>
-          <div><input type="checkbox" class="videowidgets setting" checked="checked"> Show video widgets</div>
+          <div><input type="checkbox" class="informationwidgets setting" #{hasDBPediaInfoPlugin}> Show information widgets  </div>
+          <div><input type="checkbox" class="picturewidgets setting" #{hasLSIImagePlugin}> Show picture widgets  </div>
+          <div><input type="checkbox" class="mapwidgets setting" #{hasGeoNamesMapPlugin} > Show map widgets  </div>
+          <div><input type="checkbox" class="weatherwidgets setting" #{hasGoogleWeatherPlugin}> Show weather widgets  </div>
+          <div><input type="checkbox" class="videowidgets setting" #{hasLSIVideoPlugin}> Show video widgets</div>
           </form>
           </div>
           </div>

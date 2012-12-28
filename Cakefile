@@ -19,6 +19,7 @@ task 'watch', 'Watch core and plugin source files and build on each change', ->
   invoke 'build'
 
   invoke 'widgetwatch'
+  invoke 'settingswatch'
   util.log "Watching for changes in #{appFiles.join ', '}"
 
   for file in appFiles
