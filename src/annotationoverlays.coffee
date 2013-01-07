@@ -124,7 +124,9 @@ class window.AnnotationOverlays extends window.LimePlugin
     , 2000
     # @conceptOverlayEl.hide()
   fillConceptOverlay: (content) ->
-    jQuery(@conceptOverlayEl).html content
+    jQuery(@conceptOverlayEl)
+    .html("")
+    .append(content)
 
   renderConceptOverlay: (annotation) ->
     getFilename = (uri) ->
@@ -157,7 +159,10 @@ class window.AnnotationOverlays extends window.LimePlugin
       <table class="navlist">#{res}</table>
     """
     jQuery('li:first',res).addClass('active')
-    res.html()
+    # When the user clicks on a link that opens on a new tab, the video has to pause.
+    jQuery('a[target=_blank]', res).click (e) =>
+      @lime.player.pause()
+    res
   timeformat: (s) ->
     x = s
     s = x % 60
