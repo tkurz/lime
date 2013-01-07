@@ -26,7 +26,7 @@ class window.CMF
       SELECT DISTINCT ?instance ?title ?thumbnail
       WHERE {
         ?instance a mao:MediaResource.
-        ?instance mao:title ?title.
+        OPTIONAL {?instance mao:title ?title.}
         ?instance yoovis:hasThumbnail ?thumbnail.
       }
       ORDER BY ?instance"""
@@ -42,7 +42,7 @@ class window.CMF
     SELECT DISTINCT ?instance ?title ?thumbnail
     WHERE {
       ?instance a mao:MediaResource.
-      ?instance mao:title ?title.
+      OPTIONAL {?instance mao:title ?title.}
       ?instance mao:hasFragment ?fragment.
       OPTIONAL {?instance yoovis:hasThumbnail ?thumbnail.}
       ?annotation a oac:Annotation.
