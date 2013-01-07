@@ -32,9 +32,11 @@ class window.LSIImagePlugin extends window.LimePlugin
           return
 
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
+
+    ###
     try
       lodResource = "http://new.devserver.sti2.org:8080/lsi/api/invoke?lod=" + annotation.resource.value + "&mediaType=image&limit=9&ner=yes&context"
-      ###
+
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Flachau.rdf"  if lodResource.indexOf("Flachau") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Zorbing.rdf"  if lodResource.indexOf("Zorbing") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Canyoning.rdf"  if lodResource.indexOf("Canyoning") > 0
@@ -47,7 +49,7 @@ class window.LSIImagePlugin extends window.LimePlugin
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowboarding.rdf"  if lodResource.indexOf("Snowboarding") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Snowshoe.rdf"  if lodResource.indexOf("Snowshoe") > 0
       lodResource = "http://devserver.sti2.org/connectme/uitests/lime6/LSI/Trampoline.rdf"  if lodResource.indexOf("Trampoline") > 0
-      ###
+
 
       # request = $.get lodResource
       # request.success (data) ->
@@ -94,6 +96,8 @@ class window.LSIImagePlugin extends window.LimePlugin
           $(modalContent).append "AJAX Error: #{textStatus}"
     catch e
       console.error e
+
+    ###
 
   renderAnnotation: (annotation) ->
     returnResult = ""

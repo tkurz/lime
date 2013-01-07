@@ -7,25 +7,28 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         annotation = e.target
         if annotation.resource.value.indexOf("geonames") < 0
           annotation.entityPromise.done (entities) =>
-            nonConcept = _(entities).detect (ent) ->
-              not ent.hasType 'skos:Concept'
-            unless nonConcept
-              console.warn 'Active entity is a skos:Concept, ignoring.', annotation, entities
-              return
-            widget = @lime.allocateWidgetSpace @,
-              thumbnail: "img/info.png" # should go into CSS
-              title: "#{annotation.getLabel()} Info"
-            if widget
-              widget.annotation = annotation
+            #nonConcept = _(entities).detect (ent) ->
+              #not ent.hasType 'skos:Concept'
+            #unless nonConcept
+              #console.warn 'Active entity is a skos:Concept, ignoring.', annotation, entities
+              #return
+            nonConcept = annotation.getDescription()
+            nonConcept = nonConcept.replace("No description found.","")
+            if(nonConcept.length >= 3)
+              widget = @lime.allocateWidgetSpace @,
+                thumbnail: "img/info.png" # should go into CSS
+                title: "#{annotation.getLabel()} Info"
+              if widget
+                widget.annotation = annotation
+                  # widget.html @renderAnnotation(annotation)
                 # widget.html @renderAnnotation(annotation)
-              # widget.html @renderAnnotation(annotation)
-              widget.show()
-              # insert widget click function
-              jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-                annotation = e.target.annotation
-                @displayModal annotation
+                widget.show()
+                # insert widget click function
+                jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
+                  annotation = e.target.annotation
+                  @displayModal annotation
 
-            annotation.widgets[@name] = widget
+              annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.target
@@ -113,7 +116,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
     #if mask is clicked
     $(mask).click (e) =>
-      $(this).hide()
+      $(mask).hide()
       $(modalcontainer).hide()
       $(modalcontainer).empty()
 

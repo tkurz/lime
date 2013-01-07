@@ -108,9 +108,9 @@
                             DBPediaInfoPlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                             },
-                            LSIImagePlugin: {
+                            /* LSIImagePlugin: {
                                 preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                            },
+                            },*/
                             AdminPlugin: {},
                             StatisticsPlugin: {},
                             UserSettingsPlugin: {}
@@ -137,12 +137,16 @@
 		</div>
 
 		<div text-align="center" id="container">
-			<div id="widget-container-1" class="widget-container vertical">
-                <div class="stats"> <img src="img/statistics.png" style="width: 30px; height: 30px;" /> </div>
-                <div class="usersettings"> <img src="img/settings.png" style="width: 30px; height: 30px;" /> </div>
-                <div class="admin"> <img src="img/admin.png" style="width: 30px; height: 30px;" /> </div>
+			<div id="widget-container-0" class="widget-container horrizontal">
+                <div class="settings" style="margin-left: 22%">
+				<div class="stats"> <img src="img/statistics.png" style="width: 30px; height: 30px; float: left;" /> </div>
+                <div class="usersettings"> <img src="img/settings.png" style="width: 30px; height: 30px; float: left;" /> </div>
+                <div class="admin"> <img src="img/admin.png" style="width: 30px; height: 30px; float: left;" /> </div>
+				</div>
             </div>
-			<div class="mainwrapper" id="mainwrapper" align="center"></div>
+			<div id="widget-container-1" class="widget-container vertical">&nbsp;</div>
+			<div class="mainwrapper" id="mainwrapper" align="center">				
+			</div>
 			<div id="widget-container-2" class="widget-container vertical"> &nbsp;</div>
 		</div>
 
@@ -158,15 +162,7 @@
 			<!--	<div id="textDialogCanvas" style="width: inherit; height: inherit; -moz-border-radius: 5px; border-radius: 5px;  background-color: black; color: white; font: 22px 'Trebuchet MS', sans-serif;"> -->
 			<a href="#" class="close" role="button"><img src="img/close-icon.png" style="width: 22px; height: 22px;"/></a>
 			<div id="textDialogContent" style=" width: 98%; height: 95%; margin:0px auto;  background-color: black; overflow:hidden;">
-				<p>
-					Every day, hundreds of thousands of visitors from around the world collectively make tens of thousands of edits and create thousands of new articles to augment the knowledge held by the Wikipedia encyclopedia (see also Wikipedia:Statistics.)
-				</p>
-				<p>
-					People of all ages, cultures and backgrounds can add or edit article prose, references, images and other media here. What is contributed is more important than the expertise or qualifications of the contributor. What will remain depends upon whether it fits within Wikipedia's policies, including being verifiable against a published reliable source, so excluding editors' opinions and beliefs and unreviewed research, and is free of copyright restrictions and contentious material about living people. Contributions cannot damage Wikipedia because the software allows easy reversal of mistakes and many experienced editors are watching to help and ensure that edits are cumulative improvements. Begin by simply clicking the edit link at the top of any editable page!
-				</p>
-				<p>
-					Wikipedia is a live collaboration differing from paper-based reference sources in important ways. Unlike printed encyclopedias, Wikipedia is continually created and updated, with articles on historic events appearing within minutes, rather than months or years. Older articles tend to grow more comprehensive and balanced; newer articles may contain misinformation, unencyclopedic content, or vandalism. Awareness of this aids obtaining valid information and avoiding recently added misinformation (see Researching with Wikipedia).
-				</p>
+				
 			</div>
 			<!-- </div> -->
 		</div>

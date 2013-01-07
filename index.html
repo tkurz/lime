@@ -50,11 +50,12 @@
         });
     </script>
     <script class="videolist-template" type="html">
-        <table>
+        <table style>
             <% _.each(list, function(video) { %>
-                <tr>
-                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank"><%= video.title.value %></a></td>
-                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank"><img src="<%= video.thumbnail.value %>" /></a></td>
+                <tr style="background: white;">
+				
+                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">Full player for <%= video.instance.value %> </a></td>
+				
                     <td><a href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">simple player</a></td>
                 </tr>
             <% }); %>
