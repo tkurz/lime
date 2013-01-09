@@ -30,7 +30,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
           <p class="settingssection" style="font-size: 16px; "> Widgets </p>
           <div style="margin: 0 auto; width: 50%;">
           <form style="margin: 0 auto; text-align: left; font-size: 14px; margin-left: 45%;" >
-          <div><input type="checkbox" class="informationwidgets setting" #{hasDBPediaInfoPlugin}> Show information widgets  </div>
+          <div><input type="checkbox" class="informationwidgets setting" #{hasDBPediaInfoPlugin} > Show information widgets  </div>
           <div><input type="checkbox" class="picturewidgets setting" #{hasLSIImagePlugin}> Show picture widgets  </div>
           <div><input type="checkbox" class="mapwidgets setting" #{hasGeoNamesMapPlugin}> Show map widgets  </div>
           <div><input type="checkbox" class="weatherwidgets setting" #{hasGoogleWeatherPlugin}> Show weather widgets  </div>
@@ -42,6 +42,13 @@ class window.UserSettingsPlugin extends window.LimePlugin
     modalContent = $("#modalContent");
     modalContent.css('overflow','auto');
     modalContent.append(result);
+    @attachFormEventHandlers();
+
+  attachFormEventHandlers: ->
+    $(".informationwidgets.setting").click (e) =>
+      @DBPediaInfoPluginID =@lime.options.plugins["DBPediaInfoPlugin"]
+      console.log @DBPediaInfoPluginID.toString()
+
 
   displayUserSettingsInModal: -> # Modal window script usin jquery
     # Get Modal Window
@@ -62,7 +69,6 @@ class window.UserSettingsPlugin extends window.LimePlugin
     $(modalcontainer).empty()
     $(modalcontainer).append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
     $(modalcontainer).append "<div id=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto; color: black; \"> &nbsp"
-
     $(modalcontainer).append "</div>"
 
     #Get the screen height and width
@@ -92,7 +98,6 @@ class window.UserSettingsPlugin extends window.LimePlugin
 
     #if close button is clicked
     $(".close").click (e) =>
-
       #Cancel the link behavior
       e.preventDefault()
       $(mask).hide()
