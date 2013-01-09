@@ -26,7 +26,7 @@ class window.CMF
       SELECT DISTINCT ?instance ?title ?thumbnail
       WHERE {
         ?instance a mao:MediaResource.
-        ?instance mao:title ?title.
+        OPTIONAL {?instance mao:title ?title.}
         ?instance yoovis:hasThumbnail ?thumbnail.
       }
       ORDER BY ?instance"""
