@@ -20,26 +20,56 @@
 #     });
 #
 class window.LIMEPlayer
+  ### maybe later...
+  SCROLLING_LIST: 'scrolling-list'
+  ACTIVE_ONLY: 'active-only'
+  DELAYER_HIDE: 'delayed-hide'
+  ###
   constructor: (opts) ->
     cmf = new CMF "http://connectme.salzburgresearch.at/CMF"
-    # Define the default options
+    # Define the default options.
+    # Override any of these options when instantiating the player.
     options =
-    # The container DOM element to use
+      # The container DOM element id to use
       containerDiv: "mainwrapper"
+
       # Dimensions for the player
       videoPlayerSize: {"width": 640, "height": 360}
+
+      # The preferred user language
+      preferredLanguage: "en"
+
       # Array of Annotation instances
       annotations: []
+
       # LMF URL
       annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
+
       # list of allowed widgets TODO Add possibility for defining configuration
       plugins: {
         TestPlugin: {}
-      },
+      }
+
+      # Define the array of widget types to be shown. Default: `null` means, everything is shown.
+      # `[]` (empty array) means nothing is shown
+      activeWidgetTypes: null
+
       # autodetecting
       platform: "web"
+
       # toggle true/false
       fullscreen: false
+
+      # Set the way the player shows widgets
+      # The `widgetVisibility` options are: 'scrolling-list', 'active-only', 'delayed-hide'
+      # - 'scrolling-list': The player shows the full list of widgets for the entire video.
+      #   It highlights the active ones and scrolls to them during playback.
+      # - 'active-only': The player renders/shows the active widgets and hides them when the annotation becomes inactive
+      # - 'delayed-hide': The player renders/shows the active widgets, Marks them as inactive when the annotation becomes
+      #   inactive and hides them `hidingDelay` milliseconds later.
+      widgetVisibility: 'scrolling-list'
+      hidingDelay: 2000
+
       # how big should be the annotation areas surrounding the video
       fullscreenLayout: "AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300
       widgetContainers: [{element: jQuery('#widget-container-1'), orientation: 'vertical'}]
@@ -48,7 +78,6 @@ class window.LIMEPlayer
       annotationsVisible : true
       debug: false
       local: false
-      preferredLanguage: "en"
       builtinPlugins:
         AnnotationOverlays: {}
         LDPlugin: {}
@@ -85,10 +114,13 @@ class window.LIMEPlayer
             annotation.state = 'inactive'
             jQuery(annotation).trigger jQuery.Event "becomeInactive", annotation: annotation #signal to a particular annotation to become inactive
 
+  # Initialize the video player
   _initVideoPlayer: (cb) ->
+    # Source locators
     displaysrc=''
     for locator, i in @options.video
       displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
+
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     $("##{@options.containerDiv}").append """
       <div class='videowrapper' id='videowrapper'>
@@ -129,6 +161,28 @@ class window.LIMEPlayer
       jQuery(@player).trigger fsce
       @_moveWidgets @player.isFullScreen
 
+  # Call lime.filterVisibleWidgets([array active widget types]) to filter the widgets by type
+  filterVisibleWidgets: (typeArray) ->
+    # Remember the types
+    @options.activeWidgetTypes = typeArrays
+    for plugin in @plugins
+      for widget in plugin.widgets
+        if widget.isActive
+          @options.widgetVisibility()
+
+  # according to options.widgetVisibility and the widget's isActive state.
+  _isWidgetToBeShown: (widget) ->
+    switch @options.widgetVisibility
+      when 'scrolling-list'
+        return yes
+      when 'active-only', 'delayed-hide'
+        if widget.isActive
+          return yes
+        else
+          return no
+
+    if @options.activeWidgetTypes is null then return yes
+    return _.contains @options.activeWidgetTypes, widget.type
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
@@ -237,171 +291,3 @@ class window.LIMEPlayer
     @player.pause()
   seek: (pos) ->
     @player.seek(pos)
-
-class window.Annotation
-  constructor: (hash) ->
-    hash.fragment.value = hash.fragment.value.replace("?","#")
-    hash.fragment.type = 'uri'
-    @annotation = hash.annotation.value
-    # default start and end
-    @start = 0
-    @end = -1 # -1 means end of movie
-    @state = 'inactive'
-    @widgets = {} #stores what plugins use this annotation; hash of plugin: [widgets]
-    jQuery(@).bind "mouseenter", (e) =>
-      for widgetname, widget of @widgets
-        jQuery(widget).addClass "hover"
-    jQuery(@).bind "mouseleave", (e) =>
-      for widgetname, widget of @widgets
-        jQuery(widget).removeClass "hover"
-    if hash.fragment.type = 'uri'
-      @fragment = new URI hash.fragment.value
-      fragmentHash = @fragment.hash
-      t = fragmentHash.match /t=([0-9,]*)/
-      if t
-        # t= "2,5" or "2"
-        t = t[1]
-        # startEnd = ["2,5", "2", "5"] or ["2", "2"]
-        startEnd = t.match /([0-9]{1,})/g
-        if startEnd
-          @start = Number startEnd[0]
-          @end = Number(startEnd[1]) || -1
-
-      xywh = fragmentHash.match /xywh=([a-z0-9,:]*)/
-      if xywh
-        @isPercent = xywh[1].indexOf('percent') isnt -1
-        # convert the matches to numbers
-        [@x,@y,@w,@h] = _(xywh[1].match(/([0-9]{1,})/g)).map (n) -> Number n
-    @isSpacial = @x isnt undefined or (@x is @y is @w is @h is 0)
-
-    @resource = new URI hash.resource.value
-    @relation = new URI hash.relation.value
-  toString: ->
-    @resource.value
-
-class URI
-  constructor: (uri) ->
-    @value = decodeURIComponent uri
-    hash = uri.match(/^.*?#([a-zA-Z0-9,&=:]*)$/)
-    if hash
-      @hash = hash[1]
-    else
-      @hash = ''
-    @type = 'uri'
-  toString: ->
-    @value
-
-# A Lime widget makes the look and behaviour of the widgets from all plugins somewhat uniform.
-class LimeWidget
-  constructor: (@plugin, @element, options) ->
-    @options = _(@options).extend options
-    _.defer => @_init()
-
-    @element.html """
-    <div class="#{@name}">
-      <table style="margin:0 auto; width: 100%;">
-        <tr>
-          <td><b class="utility-text">#{@options.title}</b></td>
-          <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: right; width: 25px; height: 25px; " ></td>
-        </tr>
-      </table>
-    </div>
-    """
-    jQuery(@element).data 'widget', @
-    jQuery(@element).data 'plugin', @plugin
-    jQuery(@element).click (e) =>
-      widget = jQuery(e.target).data().widget
-      plugin = jQuery(e.target).data().plugin
-      @plugin.lime.pause()
-      jQuery(@).trigger 'activate',
-        plugin: plugin
-        widget: widget
-
-    # Wrap element methods for convenience on the widget
-    defMethod = (o, m) =>
-      @[m] = ->
-        console.info "calling #{m} on ", o
-        o[m].call o, arguments
-    for m in ['addClass', 'html', 'removeClass']
-      defMethod @element, m
-
-  html: (content) ->
-    @element.html content
-  options:
-    showSpeed: 500
-    label: 'Default label'
-  _init: ->
-    @state = 'hidden'
-  show: ->
-    @element.slideDown @options.showSpeed
-    @state = 'visible'
-  hide: ->
-    @element.slideUp @options.showSpeed
-  deactivate: ->
-    grayThumbnail = @options.thumbnail.replace('.png', '')
-    @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
-    @element.find(".utility-text").css "color", "#c6c4c4"
-    console.info "It's to be implemented, how a widget should look like when it's deactivated..."
-
-# ## Abstract Lime Plugin
-class window.LimePlugin
-  constructor: (@lime, options) ->
-    @options = jQuery.extend options, @defaults
-    @init()
-  defaults: {}
-  # The init method has to be overwritten by each plugin.
-  init: ->
-    console.error "All Lime plugins have to implement the init method!"
-
-# # Simple reference Lime plugin called TestPlugin
-# This plugin listens for annotations becoming active and inactive and
-class window.TestPlugin extends window.LimePlugin
-  # The init method is called right after initialisation of the player
-  init: ->
-    console.info "Initialize TestPlugin"
-    jQuery(@lime).bind 'timeupdate', (e) =>  # timeupdate event is triggered by the VideoJS -> $(LimePlayer)
-      # console.info 'plugin timeupdate event', e.currentTime
-    for annotation in @lime.annotations
-      jQuery(annotation).bind 'becomeActive', (e) =>
-        annotation = e.target
-        console.info annotation, 'became active'
-        domEl = @lime.allocateWidgetSpace()
-        if domEl
-          domEl.html "<a href='#{annotation.resource}' target='_blank'>#{annotation.resource}</a>"
-          if annotation.ldLoaded
-            domEl.html @renderAnnotation annotation
-            jQuery(domEl).slideDown 500
-          else
-            jQuery(annotation).bind 'ldloaded', (e2) =>
-              annotation = e2.target
-              domEl.html @renderAnnotation annotation
-              jQuery(domEl).slideDown 500
-          annotation.widgets.TestPlugin = domEl
-        else
-          # debugger
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        console.info annotation, 'became inactive'
-        annotation.widgets.TestPlugin.remove()
-        if annotation.widgets
-          delete annotation.widgets.TestPlugin
-        else
-          debugger
-        # TODO implement release-space / kill a widget
-
-  renderAnnotation: (annotation) ->
-    # console.info "rendering", annotation
-    props = annotation.entity # [annotation.resource.value]
-    label = annotation.getLabel()
-
-    depiction = annotation.getDepiction()
-    page = annotation.getPage()
-    # console.info label, depiction
-    """
-        <p>
-          <a href="#{page}" target="_blank">#{label}</a>
-        </p>
-        <p>
-          <img src="#{depiction}" width="200"/>
-        </p>
-    """

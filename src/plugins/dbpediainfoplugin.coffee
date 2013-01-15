@@ -18,6 +18,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
               widget = @lime.allocateWidgetSpace @,
                 thumbnail: "img/info.png" # should go into CSS
                 title: "#{annotation.getLabel()} Info"
+                type: "dbpediainfo"
               if widget
                 widget.annotation = annotation
                   # widget.html @renderAnnotation(annotation)

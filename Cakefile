@@ -1,6 +1,9 @@
 # Define source coffee files that will be merged into the target file
 appFiles  = [
   'src/lime.coffee'
+  'src/annotation.coffee'
+  'src/plugin.coffee'
+  'src/widget.coffee'
   'src/videojs-adapter.coffee'
   'src/cmf.coffee'
   'src/annotationoverlays.coffee'
