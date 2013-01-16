@@ -27,11 +27,15 @@ class window.LimeWidget
     jQuery(@element).click (e) =>
       widget = jQuery(e.currentTarget).data().widget
       plugin = jQuery(e.currentTarget).data().plugin
-      @plugin.lime.pause()
-      console.info "activating widget", @
-      jQuery(@).trigger 'activate',
-        plugin: plugin
-        widget: widget
+      if widget.isActive()
+        @plugin.lime.pause()
+        console.info "activating widget", @
+        jQuery(@).trigger 'activate',
+          plugin: plugin
+          widget: widget
+      else
+        plugin.lime.player.seek widget.annotation.start
+        plugin.lime.player.play()
 
     # Wrap element methods for convenience on the widget
     defMethod = (o, m) =>
@@ -63,7 +67,8 @@ class window.LimeWidget
     @element.find(".utility-icon").attr "src", @options.thumbnail
     @element.find(".utility-text").css "color", ''
     console.info "Widget active, triggering update", @element
-    @lime.updateWidgetsList()
+    console.info "Jump up this widget", @
+    @element.parent().prepend(@element)
     @lime.updateWidgetsList()
   setInactive: ->
     @state = 'inactive'
