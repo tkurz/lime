@@ -27,7 +27,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         #console.info(annotation, 'became inactive');
         widget = annotation.widgets[@name]
         if widget
-          widget.deactivate()
+          widget.setInactive()
           return
 
   renderAnnotation: (annotation) ->

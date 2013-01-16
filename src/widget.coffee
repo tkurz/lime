@@ -1,28 +1,34 @@
 # A Lime widget makes the look and behaviour of the widgets from all plugins somewhat uniform.
-class LimeWidget
+# The state of a widget goes through the following states:
+# initialized -> rendered ->
+class window.LimeWidget
   constructor: (@plugin, @element, options) ->
+    @lime = @plugin.lime
     defaults =
       type: 'defaultwidget'
 
     @options = _(defaults).extend @options, options
     _.defer => @_init()
-
+  render: ->
+    # console.info "rendering widget", @
     @element.html """
-                  <div class="#{@name}">
-                  <table style="margin:0 auto; width: 100%;">
-                  <tr>
-                  <td><b class="utility-text">#{@options.title}</b></td>
-                  <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: right; width: 25px; height: 25px; " ></td>
-                  </tr>
-                  </table>
-                  </div>
-                  """
+      <div class="#{@name}">
+        <table style="margin:0 auto; width: 100%;">
+          <tr>
+            <td><b class="utility-text">#{@options.title}</b></td>
+            <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: right; width: 25px; height: 25px; " ></td>
+          </tr>
+        </table>
+      </div>
+    """
+    jQuery(@element).parent().data('sorted', false)
     jQuery(@element).data 'widget', @
     jQuery(@element).data 'plugin', @plugin
     jQuery(@element).click (e) =>
-      widget = jQuery(e.target).data().widget
-      plugin = jQuery(e.target).data().plugin
+      widget = jQuery(e.currentTarget).data().widget
+      plugin = jQuery(e.currentTarget).data().plugin
       @plugin.lime.pause()
+      console.info "activating widget", @
       jQuery(@).trigger 'activate',
         plugin: plugin
         widget: widget
@@ -34,6 +40,7 @@ class LimeWidget
         o[m].call o, arguments
     for m in ['addClass', 'html', 'removeClass']
       defMethod @element, m
+    @isRendered = true
 
   html: (content) ->
     @element.html content
@@ -47,9 +54,24 @@ class LimeWidget
     @state = 'visible'
   hide: ->
     @element.slideUp @options.showSpeed
-  deactivate: ->
+
+  setActive: ->
+    unless @isRendered
+      @render()
+    @show()
+    @state = 'active'
+    @element.find(".utility-icon").attr "src", @options.thumbnail
+    @element.find(".utility-text").css "color", ''
+    console.info "Widget active, triggering update", @element
+    @lime.updateWidgetsList()
+    @lime.updateWidgetsList()
+  setInactive: ->
+    @state = 'inactive'
     grayThumbnail = @options.thumbnail.replace('.png', '')
     @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
     @element.find(".utility-text").css "color", "#c6c4c4"
-    console.info "It's to be implemented, how a widget should look like when it's deactivated..."
+    console.info "Widget inactive, triggering update", @element
+    @lime.updateWidgetsList()
 
+  isActive: ->
+    @state is 'active'

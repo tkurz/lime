@@ -8,6 +8,7 @@ appFiles  = [
   'src/cmf.coffee'
   'src/annotationoverlays.coffee'
   'src/plugins/ldplugin.coffee'
+  'src/jquery.scrollTo.coffee'
 ]
 target = "lib/lime.js"
 

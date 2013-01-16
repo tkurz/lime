@@ -4,6 +4,7 @@ class window.LimePlugin
     @options = jQuery.extend options, @defaults
     @init()
   defaults: {}
+  widgets: []
   # The init method has to be overwritten by each plugin.
   init: ->
     console.error "All Lime plugins have to implement the init method!"

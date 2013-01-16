@@ -84,6 +84,8 @@ class window.LIMEPlayer
       widget: {}
     @options = $.extend options, opts
 
+    @widgets = []
+
     @widgetContainers = @options.widgetContainers
 
     # Run initialisation functions, depending on each other:
@@ -97,15 +99,12 @@ class window.LIMEPlayer
           @_startScheduler()
 
   _startScheduler: ->
-    getFilename = (uri) ->
-      regexp = new RegExp(/\/([^\/#]*)(#.*)?$/)
-      uri.match(regexp)?[1]
     ### handle becomeActive and becomeInactive events ###
     jQuery(@).bind 'timeupdate', (e) =>
       for annotation in @annotations
         currentTime = e.currentTime
         currentSrc = @player.currentSource()
-        if currentSrc.indexOf(getFilename(annotation.fragment.value)) isnt -1
+        if currentSrc.indexOf(@_getFilename(annotation.fragment.value)) isnt -1
           if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
             # has to be activated
             annotation.state = 'active'
@@ -164,11 +163,45 @@ class window.LIMEPlayer
   # Call lime.filterVisibleWidgets([array active widget types]) to filter the widgets by type
   filterVisibleWidgets: (typeArray) ->
     # Remember the types
-    @options.activeWidgetTypes = typeArrays
+    @options.activeWidgetTypes = typeArray
     for plugin in @plugins
       for widget in plugin.widgets
         if widget.isActive
           @options.widgetVisibility()
+
+  # Widget states are changed, update the display of them
+  updateWidgetsList: _.throttle ->
+    console.info "updateWidgetsList: scroll, hide, etc."
+    # Sort widgets by starting and ending times
+    widgetsSorted = _.sortBy @widgets, (widget) =>
+      widget.options.sortBy()
+    # Sort the widget's DOM elements
+    # scroll to the first active widget
+    for container in @widgetContainers
+      unless jQuery(container).data().sorted
+        widgetsEls = jQuery(container).find('.lime-widget')
+        widgetsSorted = _.sortBy @widgets, (widgetEl) =>
+          jQuery(widgetEl).data().widget?.options.sortBy()
+        console.info "sorting", container
+        for el in widgetsSorted
+          jQuery(container).prepend el
+        jQuery(container).data 'sorted', true
+
+      if @options.widgetVisibility is 'scrolling-list'
+        first = _.detect jQuery(container.element).children(), (widgetElement) =>
+          widget = jQuery(widgetElement).data().widget
+          widget?.isActive()
+        if first
+          console.info "First active widget found, scrollto", first, jQuery(first).position(), jQuery(first).position().top
+          $(first).parent().scrollTo first
+      else
+        for widgetElement in jQuery(container.element).children()
+          widget = jQuery(widgetElement).data().widget
+          unless widget.isActive()
+            widget.hide()
+          # if @options.widgetVisibility is 'delayed-hide'
+
+  , 100
 
   # according to options.widgetVisibility and the widget's isActive state.
   _isWidgetToBeShown: (widget) ->
@@ -186,32 +219,11 @@ class window.LIMEPlayer
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
-    @annotations = @options.annotations
     src = @player.currentSource()
+    @annotations = _.filter @options.annotations, (ann) =>
+      src.indexOf(@_getFilename(ann.fragment.value)) isnt -1
+    console.info "Relevant annotations:", @annotations
     cb()
-    ###
-    query = """
-      PREFIX oac: <http://www.openannotation.org/ns/>
-      PREFIX ma: <http://www.w3.org/ns/ma-ont#>
-      SELECT ?annotation ?fragment ?resource ?relation
-      WHERE { <#{@options.video[0]}>  ma:hasFragment ?f.
-         ?f ma:locator ?fragment.
-         ?annotation oac:target ?f.
-         ?annotation oac:body ?resource.
-         ?f ?relation ?resource.
-      }
-    """
-    uri = "#{@options.annotFrameworkURL}sparql/select?query=#{encodeURIComponent(query)}&output=json"
-    $.getJSON uri, (data) =>
-      # $.getJSON "annotations.json", (data) =>
-      list = data.results.bindings
-      # list = _.filter list, (el) ->
-        # el.annotation.value in ["http://connectme.at/annotation/f06b99c2fd576042facae4225cb9fed2", "http://connectme.at/annotation/577e5d16435dfc2a0d24223926477f82"]
-      for i, annotation of list
-        @annotations.push new Annotation annotation
-      console.info "Annotations loaded from", uri, @annotations
-      cb()
-    ###
   _moveWidgets: (isFullscreen) ->
     # added SORIN - toggle the annotations between fullscreen and normal screen
     console.log("fullscreen", isFullscreen, ", Visible "+LimePlayer.options.annotationsVisible);
@@ -243,20 +255,36 @@ class window.LIMEPlayer
 
   # options.preferredContainer can contain a widget container
   allocateWidgetSpace: (plugin, options) -> # creates DOM elements for widgets
+    # Make sure the widget can keep track of the plugin
     unless plugin instanceof window.LimePlugin
       console.error "allocateWidgetSpace needs the first parameter to be the plugin itself requesting for the widget."
+
+    container = null
+    # Try to create the widget in the preferred container
     if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
       container = options.preferredContainer
     else
       container = _(@widgetContainers).detect (cont) =>
         #console.log("widget container" + _this._hasFreeSpace(cont, options));
         @_hasFreeSpace cont, options
+    unless container
+      sorted = _.sortBy @widgetContainers, (cont) =>
+        container.element.height()
+      container = sorted[0]
     if container
       container.element.prepend "<div class='lime-widget'></div>"
       domEl = jQuery ".lime-widget:first", container.element
-      console.info 'widgetspace allocated', domEl[0]
+      # console.info 'widgetspace allocated', domEl[0]
       opts = _(@options.widget).extend options
-      return new LimeWidget plugin, domEl, opts
+      res = new LimeWidget plugin, domEl, opts
+      _.defer =>
+        if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
+          res.render()
+          @widgets.push res
+          res.show()
+          res.setInactive()
+          @updateWidgetsList()
+      return res
     else
       console.error "There's not enough space for a widget to be shown!"
       if @options.debug
@@ -291,3 +319,13 @@ class window.LIMEPlayer
     @player.pause()
   seek: (pos) ->
     @player.seek(pos)
+
+  _getFilename: (uri) ->
+    regexp = new RegExp(/\/([^\/#]*)(#.*)?$/)
+    uri.match(regexp)?[1]
+
+(($) ->
+  $.fn.goTo = ->
+    $(this).parent().scrollTo this
+    this # for chaining...
+) jQuery

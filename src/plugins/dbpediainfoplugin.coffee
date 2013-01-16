@@ -3,42 +3,58 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     @name = 'DBPediaInfoPlugin'
     console.info "Initialize #{@name}"
     for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("geonames") < 0
-          annotation.entityPromise.done (entities) =>
-            #nonConcept = _(entities).detect (ent) ->
-              #not ent.hasType 'skos:Concept'
-            #unless nonConcept
-              #console.warn 'Active entity is a skos:Concept, ignoring.', annotation, entities
-              #return
-            nonConcept = annotation.getDescription()
-            nonConcept = nonConcept.replace("No description found.","")
-            if(nonConcept.length >= 3)
-              widget = @lime.allocateWidgetSpace @,
-                thumbnail: "img/info.png" # should go into CSS
-                title: "#{annotation.getLabel()} Info"
-                type: "dbpediainfo"
-              if widget
-                widget.annotation = annotation
-                  # widget.html @renderAnnotation(annotation)
-                # widget.html @renderAnnotation(annotation)
-                widget.show()
-                # insert widget click function
-                jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-                  annotation = e.target.annotation
-                  @displayModal annotation
+      if annotation.resource.value.indexOf("geonames") < 0
+        @handleAnnotation annotation
 
-              annotation.widgets[@name] = widget
+  # Putting this into a function keeps the annotation in the context
+  handleAnnotation: (annotation) ->
+    # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
+    annotation.entityPromise.done (entities) =>
+      # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
+      nonConcept = annotation.getDescription()
+      nonConcept = nonConcept.replace("No description found.","")
+      if(nonConcept.length >= 3)
+        widget = @lime.allocateWidgetSpace @,
+          thumbnail: "img/info.png" # should go into CSS
+          title: "#{annotation.getLabel()} Info"
+          type: "DbpediaInfoWidget"
+          sortBy: ->
+            10000 * annotation.start + annotation.end
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.deactivate()
-          return
+        # We're going to need the annotation for the widget's `activate` event
+        widget.annotation = annotation
+        # widget was activated, we show details now
+        jQuery(widget).bind 'activate', (e) =>
+          ###
+          # for debug purpose, remove when stable and remove the line after if this never happens
+          unless annotation is e.target.annotation
+            console.warn 'Here it is really important to get the annotation'
+          annotation = e.target.annotation
+          ###
 
+          @displayModal annotation
+        # Hang the widget on the annotation
+        annotation.widgets[@name] = widget
+
+        jQuery(annotation).bind "becomeActive", (e) =>
+          ###
+          # for debug purpose, remove when stable and remove the line after if this never happens
+          unless annotation is e.target
+            console.warn 'Here it is really important to get the annotation'
+          annotation = e.target
+          ###
+          annotation.widgets[@name].setActive()
+
+        jQuery(annotation).bind "becomeInactive", (e) =>
+          ###
+          # for debug purpose, remove when stable and remove the line after if this never happens
+          unless annotation is e.target
+            console.warn 'Here it is really important to get the annotation'
+          annotation = e.target
+          ###
+          annotation.widgets[@name].setInactive()
+
+  # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, modalContainer) ->
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -53,7 +69,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     $(modalContent).append result
 
   displayModal: (annotation) -> # Modal window script usin jquery
-
     # Get Modal Window
     #var modalcontainer;
     if @lime.player.isFullScreen
