@@ -25,33 +25,14 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         widget.annotation = annotation
         # widget was activated, we show details now
         jQuery(widget).bind 'activate', (e) =>
-          ###
-          # for debug purpose, remove when stable and remove the line after if this never happens
-          unless annotation is e.target.annotation
-            console.warn 'Here it is really important to get the annotation'
-          annotation = e.target.annotation
-          ###
-
           @displayModal annotation
         # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
         jQuery(annotation).bind "becomeActive", (e) =>
-          ###
-          # for debug purpose, remove when stable and remove the line after if this never happens
-          unless annotation is e.target
-            console.warn 'Here it is really important to get the annotation'
-          annotation = e.target
-          ###
           annotation.widgets[@name].setActive()
 
         jQuery(annotation).bind "becomeInactive", (e) =>
-          ###
-          # for debug purpose, remove when stable and remove the line after if this never happens
-          unless annotation is e.target
-            console.warn 'Here it is really important to get the annotation'
-          annotation = e.target
-          ###
           annotation.widgets[@name].setInactive()
 
   # Widget-specific detail-rendering

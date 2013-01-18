@@ -5,35 +5,37 @@ class window.LSIImagePlugin extends window.LimePlugin
     console.info "Initialize LSIImagePlugin"
 
     for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("geonames") < 0
-          widget = @lime.allocateWidgetSpace @,
-            thumbnail: "img/pic.png" # should go into CSS
-            title: "#{annotation.getLabel()} Pics"
-        if widget
-          if annotation.ldLoaded
-            widget.html @renderAnnotation(annotation)
-            widget.show()
-          else
-            jQuery(annotation).bind "ldloaded", (e) =>
-              annotation = e.target
-              widget.html @renderAnnotation(annotation)
-              widget.show()
-          # insert widget click function
-          widget.element.click => #click behaviour - highlight the related widgets by adding a class to them
-            @lime.player.pause()
-            @displayModal annotation
+      if annotation.resource.value.indexOf("geonames") < 0
+        @handleAnnotation annotation
 
+  # Putting this into a function keeps the annotation in the context
+  handleAnnotation: (annotation) ->
+    # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
+    annotation.entityPromise.done (entities) =>
+      # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
+      nonConcept = annotation.getDescription()
+      nonConcept = nonConcept.replace("No description found.","")
+      if(nonConcept.length >= 3)
+        widget = @lime.allocateWidgetSpace @,
+          thumbnail: "img/pic.png" # should go into CSS
+          title: "#{annotation.getLabel()} Pics"
+          type: "DbpediaInfoWidget"
+          sortBy: ->
+            10000 * annotation.start + annotation.end
+
+        # We're going to need the annotation for the widget's `activate` event
+        widget.annotation = annotation
+        # widget was activated, we show details now
+        jQuery(widget).bind 'activate', (e) =>
+          @displayModal annotation
+        # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.setInactive()
-          return
+        jQuery(annotation).bind "becomeActive", (e) =>
+          annotation.widgets[@name].setActive()
+
+        jQuery(annotation).bind "becomeInactive", (e) =>
+          annotation.widgets[@name].setInactive()
 
   showDepictionInModalWindow: (annotation) -> # TO BE RESTRUCTURED
     try

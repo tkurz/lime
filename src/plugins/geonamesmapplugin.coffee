@@ -5,30 +5,37 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     console.info "Initialize GeoNamesMapPlugin"
 
     for annotation in @lime.annotations
-      jQuery(annotation).bind "becomeActive", (e) =>
-        annotation = e.target
-        if annotation.resource.value.indexOf("sws.geonames.org") > 0
-          annotation.entityPromise.done (entity) =>
-            widget = @lime.allocateWidgetSpace @,
-              thumbnail: "img/mapIcon.png" # should go into CSS
-              title: "#{annotation.getLabel()} Map"
-            if widget
-              widget.annotation = annotation
-              widget.show()
-              # insert widget click function
-              jQuery(widget).bind 'activate', (e) => #click behaviour - highlight the related widgets by adding a class to them
-                annotation = e.target.annotation
-                @displayModal annotation
+      if annotation.resource.value.indexOf("sws.geonames.org") > 0
+        @handleAnnotation annotation
 
-            annotation.widgets[@name] = widget
+  # Putting this into a function keeps the annotation in the context
+  handleAnnotation: (annotation) ->
+    # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
+    annotation.entityPromise.done (entities) =>
+      # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
+      nonConcept = annotation.getDescription()
+      nonConcept = nonConcept.replace("No description found.","")
+      if(nonConcept.length >= 3)
+        widget = @lime.allocateWidgetSpace @,
+          thumbnail: "img/mapIcon.png" # should go into CSS
+          title: "#{annotation.getLabel()} Map"
+          type: "GeoNamesMapWidget"
+          sortBy: ->
+            10000 * annotation.start + annotation.end
 
-      jQuery(annotation).bind "becomeInactive", (e) =>
-        annotation = e.target
-        #console.info(annotation, 'became inactive');
-        widget = annotation.widgets[@name]
-        if widget
-          widget.setInactive()
-          return
+        # We're going to need the annotation for the widget's `activate` event
+        widget.annotation = annotation
+        # widget was activated, we show details now
+        jQuery(widget).bind 'activate', (e) =>
+          @displayModal annotation
+        # Hang the widget on the annotation
+        annotation.widgets[@name] = widget
+
+        jQuery(annotation).bind "becomeActive", (e) =>
+          annotation.widgets[@name].setActive()
+
+        jQuery(annotation).bind "becomeInactive", (e) =>
+          annotation.widgets[@name].setInactive()
 
   renderAnnotation: (annotation) ->
 

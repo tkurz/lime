@@ -269,7 +269,7 @@ class window.LIMEPlayer
         @_hasFreeSpace cont, options
     unless container
       sorted = _.sortBy @widgetContainers, (cont) =>
-        container.element.height()
+        cont.element.height()
       container = sorted[0]
     if container
       container.element.prepend "<div class='lime-widget'></div>"
