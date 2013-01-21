@@ -65,7 +65,8 @@ class window.LimeWidget
     @show()
     @state = 'active'
     @element.find(".utility-icon").attr "src", @options.thumbnail
-    @element.find(".utility-text").css "color", ''
+    # @element.find(".utility-text").css "color", ''
+    @element.removeClass 'inactive'
     console.info "Widget active, triggering update", @element
     console.info "Jump up this widget", @
     @element.parent().prepend(@element)
@@ -74,7 +75,8 @@ class window.LimeWidget
     @state = 'inactive'
     grayThumbnail = @options.thumbnail.replace('.png', '')
     @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
-    @element.find(".utility-text").css "color", "#c6c4c4"
+    @element.addClass 'inactive'
+    # @element.find(".utility-text").css "color", "#c6c4c4"
     console.info "Widget inactive, triggering update", @element
     @lime.updateWidgetsList()
 

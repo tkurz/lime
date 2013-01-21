@@ -127,13 +127,16 @@ class window.LIMEPlayer
           #{displaysrc}
         </video>
       </div>
+    """
+    ###
       <div class="annotation-wrapper" id="annotation-wrapper" style="display: none;">
-      <div class="north fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
-        <div class="west fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationSouth}px"></div>
-        <div class="east fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationEast}px"></div>
+        <div class="north fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
+        <div class="west  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationSouth}px"></div>
+        <div class="east  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationEast}px"></div>
         <div class="south fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
       </div>
     """
+    ###
 
     # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
     window.LIMEPlayer.VideoPlayerInit 'video_player', {}, (err, playerInstance) =>
@@ -142,13 +145,10 @@ class window.LIMEPlayer
         return
       @player = playerInstance
       @_initEventListeners()
-      @_nonfullscreen_containers = LimePlayer.widgetContainers
-      ###
-      if(!@player.isFullScreen)
-        @player.AnnotationsSidebars.hide()
-      else
-        _this.player.AnnotationsSidebars.show()
-      ###
+
+      # Create one container for widget in the fullscreen mode
+      @fullscreenWidgetContainer = jQuery("<div class='fullscreen-annotation-wrapper'></div>")
+      @player.videoOverlay.append @fullscreenWidgetContainer
       cb()
 
   _initEventListeners: ->
@@ -156,9 +156,7 @@ class window.LIMEPlayer
       e = jQuery.Event "timeupdate", currentTime: @player.currentTime()
       jQuery(@).trigger e
     jQuery(@player).bind 'fullscreenchange', (e) =>
-      fsce = jQuery.Event 'fullscreenchange', isFullScreen: @player.isFullScreen
-      jQuery(@player).trigger fsce
-      @_moveWidgets @player.isFullScreen
+      @_moveWidgets e.isFullScreen
 
   # Call lime.filterVisibleWidgets([array active widget types]) to filter the widgets by type
   filterVisibleWidgets: (typeArray) ->
@@ -228,16 +226,31 @@ class window.LIMEPlayer
     # added SORIN - toggle the annotations between fullscreen and normal screen
     console.log("fullscreen", isFullscreen, ", Visible "+LimePlayer.options.annotationsVisible);
     if isFullscreen and LimePlayer.options.annotationsVisible		# entering fullscreen, switching to 4 fixed annotation areas
-      LimePlayer.widgetContainers = [
-        {element:jQuery('.west'), orientation:'vertical'}
-        {element:jQuery('.north'), orientation:'horizontal'}
-        {element:jQuery('.east'), orientation:'vertical'}
-        {element:jQuery('.south'), orientation:'horizontal'}
-      ]
-      LimePlayer.player.AnnotationsSidebars.show() # show annotation sidebars as overlays
+      # remember for all widget containers which widgets belong to them and move the widgets into the
+      # fullscreen widget container
+      for widgetContainer in @widgetContainers
+        widgetList = []
+        for widgetEl in widgetContainer.element.find '.lime-widget'
+          widgetList.push widgetEl
+          @fullscreenWidgetContainer.append widgetEl
+        widgetContainer.widgetList = widgetList
+
     else # restoring non-fullscreen view, using originally declared containers
-      LimePlayer.widgetContainers = @_nonfullscreen_containers
-      LimePlayer.player.AnnotationsSidebars.hide() # hiding sidebars
+      for widgetContainer in @widgetContainers
+        widgetContainer.element.html ""
+        # The widget container has the list of its widgets before changing to fullscreen mode
+        for widgetEl in widgetContainer.widgetList
+          # for widgetEl in widgetContainer.element.children()
+          widgetContainer.element.append widgetEl
+        widgetContainer.element.append '&nbsp;'
+        jQuery(widgetContainer).data 'widgetList', null
+
+      # The rest that's still in the fullscreen widget container goes where?
+      ###
+      for widgetEl in @fullscreenWidgetContainer.children()
+        @fullscreenWidgetContainer.append widgetEl
+      ###
+
     for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
       if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
         jQuery(annotation).trigger(jQuery.Event("becomeInactive", annotation: annotation))
