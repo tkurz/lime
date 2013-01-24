@@ -28,7 +28,54 @@
     background: rgba(255, 0, 0, 0.2);
     box-shadow: rgba(255,0,224,0.7) 0px 0px 24px;
 }
-
+.GoogleDirectionPlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #ffa100;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.YoutubePlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #f42230;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.BusinessPlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #f43dbd;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.DBPediaInfoPlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #287eff;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.GoogleWeatherPlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #FFE422;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.GeoNamesMapPlugin-color-decorator {
+    height: 100%;
+    width: 10px;
+    background: #25DA25;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 .annotation-wrapper .widget {
     overflow: hidden;
     background: rgba(0, 0, 0, 0.5);	/*semitransparent black grey box*/
