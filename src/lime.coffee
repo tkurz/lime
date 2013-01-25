@@ -276,10 +276,11 @@ class window.LIMEPlayer
     # Try to create the widget in the preferred container
     if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
       container = options.preferredContainer
+      console.log("widget container" + container)
     else
       container = _(@widgetContainers).detect (cont) =>
-        #console.log("widget container" + _this._hasFreeSpace(cont, options));
         @_hasFreeSpace cont, options
+      console.log("widget container" + container);
     unless container
       sorted = _.sortBy @widgetContainers, (cont) =>
         cont.element.height()
@@ -314,17 +315,10 @@ class window.LIMEPlayer
     ###
   _hasFreeSpace: (container, options) ->
     currentHeight = container.element.height()
-    maxHeight = parseInt (container.element.css("max-height"))
-    # console.log(maxHeight,currentHeight, $(window).height());
-    if (not maxHeight) || (maxHeight is NaN)
-      maxHeight = $(window).height() - 300
-    # if(LIMEPlayer.player.isFullScreen) maxHeight =
-    # console.log(maxHeight,currentHeight);
-    if maxHeight - currentHeight < 200
-      return false
-      # console.log(container.element.children().height());
+    if(currentHeight >0)
+       return true
     else
-      return true
+       return false
 
   play: ->
     @player.play()

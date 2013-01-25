@@ -303,7 +303,8 @@ a:hover {
 	overflow: auto;	
 }
 #widget-container-2 {	 
-	width: 100%;	
+	width: 100%;
+    min-height: 50px;
 }
 #mask {
 	position: absolute;
