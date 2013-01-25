@@ -11,7 +11,44 @@
     <script src="lib/videojs/video.js"></script>
     <script src="lib/lime.js"></script>
     <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
-
+    <style>
+        table tr td a.fullscreen {
+            display:block;
+            height:100%;
+            width:100%;
+            background: white;
+        }
+        table tr td a.fullscreen:hover{
+            display:block;
+            height:100%;
+            width:100%;
+            background: #ffd199;
+        }
+        table tr td a.standard {
+            display:block;
+            height:100%;
+            width:100%;
+            background: white;
+        }
+        table tr td a.standard:hover{
+            display:block;
+            height:100%;
+            width:100%;
+            background: #fff699;
+        }
+        table tr td a.simple {
+            display:block;
+            height:100%;
+            width:100%;
+            background: white;
+        }
+        table tr td a.simple:hover{
+            display:block;
+            height:100%;
+            width:100%;
+            background: #9feaac;
+        }
+    </style>
 	<!-- Plugin dependencies -->
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
@@ -58,20 +95,20 @@
                         <p> <%= video.instance.value %> </p>
                     </td>
 
-                    <td><a href="fullscreen.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
+                    <td><a class="fullscreen" href="fullscreen.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
                         <img src="img/fullscreenplayer.png" width="40" height="40">
                         <p>Fullscreen player </p>
                     </a>
                     </td>
 				
-                    <td><a href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
+                    <td><a class="standard" href="full.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
                         <img src="img/standardplayer.png" width="40" height="40">
                         <p>Standard player </p>
                         </a>
                     </td>
 				
                     <td>
-                        <a href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
+                        <a class="simple" href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
                             <img src="img/simpleplayer.png" width="40" height="40">
                             <p>Simple player</p>
                         </a>
