@@ -270,46 +270,40 @@ class window.LIMEPlayer
     unless plugin instanceof window.LimePlugin
       console.error "allocateWidgetSpace needs the first parameter to be the plugin itself requesting for the widget."
 
-    container = null
+    containers = []
     # Try to create the widget in the preferred container
     if options and plugin.options.preferredContainer and @_hasFreeSpace plugin.options.preferredContainer, options
-      container = plugin.options.preferredContainer
+      containers = [plugin.options.preferredContainer]
     else
-      container = _(@widgetContainers).detect (cont) =>
+      # no preferred container, then we'll see which ones have space
+      containers = _(@widgetContainers).filter (cont) =>
         @_hasFreeSpace cont, options
     console.log("widget container", container);
-    unless container
-      sorted = _.sortBy @widgetContainers, (cont) =>
-        cont.element.height()
-      container = sorted[0]
-    if container
-      container.element.prepend "<div class='lime-widget'></div>"
-      domEl = jQuery ".lime-widget:first", container.element
-      # console.info 'widgetspace allocated', domEl[0]
-      opts = _(@options.widget).extend options
-      res = new LimeWidget plugin, domEl, opts
-      _.defer =>
-        if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
-          res.render()
-          @widgets.push res
-          res.show()
-          res.setInactive()
-          @updateWidgetsList()
-      return res
-    else
-      console.error "There's not enough space for a widget to be shown!"
-      if @options.debug
-        debugger
-      return false
-    ###
-    container = _(@widgetContainers).detect (cont) =>
-      @_hasFreeSpace cont, options
-    if container
-      container.element.prepend "<div class='lime-widget'>123</div>"
-      jQuery('.lime-widget:first', container.element)
-    else
-      no
-    ###
+    # If no container had space, we force to take space from one of the containers.
+    unless containers.length
+      containers = @widgetContainers
+
+    # If at this point there are several containers, we chose the one that has the least widgets inside.
+    containers = _.sortBy containers, (cont) =>
+      cont.element.children().length
+    container = containers[0]
+
+    # We have our cwidget container, create the widget element
+    if container.element
+      container = container.element
+    container.prepend "<div class='lime-widget'></div>"
+    domEl = jQuery ".lime-widget:first", container
+    opts = _(@options.widget).extend options
+    res = new LimeWidget plugin, domEl, opts
+    _.defer =>
+      if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
+        res.render()
+        @widgets.push res
+        res.show()
+        res.setInactive()
+        @updateWidgetsList()
+    return res
+
   _hasFreeSpace: (container, options) ->
     currentHeight = container.element.height()
     if(currentHeight >0)

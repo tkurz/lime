@@ -1,7 +1,7 @@
 # ## Abstract Lime Plugin
 class window.LimePlugin
   constructor: (@lime, options) ->
-    @options = jQuery.extend options, @defaults
+    @options = jQuery.extend {}, @defaults, options
     @init()
   defaults:
     # The preferredContainer is going to be used for allocating the widget space.
