@@ -12,9 +12,12 @@ class window.LimeWidget
   render: ->
     # console.info "rendering widget", @
     @element.html """
-      <div class="#{@name}">
+      <div class="#{@plugin.name}">
         <table style="margin:0 auto; width: 100%;">
           <tr>
+            <td>
+              <div  class="#{this.plugin.name}-color-decorator" >&nbsp;</div>
+            </td>
             <td><b class="utility-text">#{@options.title}</b></td>
             <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: right; width: 25px; height: 25px; " ></td>
           </tr>

@@ -131,7 +131,7 @@ class window.LIMEPlayer
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     @el.append """
       <div class='videowrapper' id='videowrapper'>
-        <video class='video-js vjs-default-skin' controls preload='metadata' width='640' height='360' poster='img/connectme-video-poster.jpg'>
+        <video class='video-js vjs-default-skin' controls preload='metadata' width='#{@options.videoPlayerSize["width"]}' height='#{@options.videoPlayerSize["height"]}' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
       </div>
@@ -264,7 +264,7 @@ class window.LIMEPlayer
       @plugins.push new window[pluginClass] @, options
     cb()
 
-  # plugin.options.preferredContainer can contain a widget container
+  # options.preferredContainer can contain a widget container
   allocateWidgetSpace: (plugin, options) -> # creates DOM elements for widgets
     # Make sure the widget can keep track of the plugin
     unless plugin instanceof window.LimePlugin
@@ -276,8 +276,8 @@ class window.LIMEPlayer
       container = plugin.options.preferredContainer
     else
       container = _(@widgetContainers).detect (cont) =>
-        #console.log("widget container" + _this._hasFreeSpace(cont, options));
         @_hasFreeSpace cont, options
+    console.log("widget container", container);
     unless container
       sorted = _.sortBy @widgetContainers, (cont) =>
         cont.element.height()
@@ -312,17 +312,10 @@ class window.LIMEPlayer
     ###
   _hasFreeSpace: (container, options) ->
     currentHeight = container.element.height()
-    maxHeight = parseInt (container.element.css("max-height"))
-    # console.log(maxHeight,currentHeight, $(window).height());
-    if (not maxHeight) || (maxHeight is NaN)
-      maxHeight = $(window).height() - 300
-    # if(LIMEPlayer.player.isFullScreen) maxHeight =
-    # console.log(maxHeight,currentHeight);
-    if maxHeight - currentHeight < 200
-      return false
-      # console.log(container.element.children().height());
+    if(currentHeight >0)
+       return true
     else
-      return true
+       return false
 
   play: ->
     @player.play()
