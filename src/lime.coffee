@@ -84,8 +84,16 @@ class window.LIMEPlayer
       widget: {}
     @options = $.extend options, opts
 
-    @widgets = []
+    if typeof @options.containerDiv is "string"
+      @el = jQuery "#" + @options.containerDiv
+    else
+      @el = jQuery(@options.containerDiv)
 
+    unless @el.length is 1
+      console.error "LIMEPlayer options.containerDiv has to be a DOM element or the ID of a DOM element.", @options.containerDiv
+      return
+
+    @widgets = []
     @widgetContainers = @options.widgetContainers
 
     # Run initialisation functions, depending on each other:
@@ -121,25 +129,15 @@ class window.LIMEPlayer
       displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
 
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
-    $("##{@options.containerDiv}").append """
+    @el.append """
       <div class='videowrapper' id='videowrapper'>
-        <video id='video_player' class='video-js vjs-default-skin' controls preload='metadata' width='640' height='360' poster='img/connectme-video-poster.jpg'>
+        <video class='video-js vjs-default-skin' controls preload='metadata' width='640' height='360' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
       </div>
     """
-    ###
-      <div class="annotation-wrapper" id="annotation-wrapper" style="display: none;">
-        <div class="north fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
-        <div class="west  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationSouth}px"></div>
-        <div class="east  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationEast}px"></div>
-        <div class="south fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
-      </div>
-    """
-    ###
-
-    # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
-    window.LIMEPlayer.VideoPlayerInit 'video_player', {}, (err, playerInstance) =>
+    @videoEl = jQuery 'video', @el
+    window.LIMEPlayer.VideoPlayerInit @videoEl[0], {}, (err, playerInstance) =>
       if err
         alert err
         return
@@ -266,7 +264,7 @@ class window.LIMEPlayer
       @plugins.push new window[pluginClass] @, options
     cb()
 
-  # options.preferredContainer can contain a widget container
+  # plugin.options.preferredContainer can contain a widget container
   allocateWidgetSpace: (plugin, options) -> # creates DOM elements for widgets
     # Make sure the widget can keep track of the plugin
     unless plugin instanceof window.LimePlugin
@@ -274,8 +272,8 @@ class window.LIMEPlayer
 
     container = null
     # Try to create the widget in the preferred container
-    if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
-      container = options.preferredContainer
+    if options and plugin.options.preferredContainer and @_hasFreeSpace plugin.options.preferredContainer, options
+      container = plugin.options.preferredContainer
     else
       container = _(@widgetContainers).detect (cont) =>
         #console.log("widget container" + _this._hasFreeSpace(cont, options));
