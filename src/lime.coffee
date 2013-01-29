@@ -201,6 +201,8 @@ class window.LIMEPlayer
 
   # according to options.widgetVisibility and the widget's isActive state.
   _isWidgetToBeShown: (widget) ->
+    if @options.activeWidgetTypes and not _(@options.activeWidgetTypes).contains(widget.options.type)
+      return no
     switch @options.widgetVisibility
       when 'scrolling-list'
         return yes
@@ -209,9 +211,6 @@ class window.LIMEPlayer
           return yes
         else
           return no
-
-    if @options.activeWidgetTypes is null then return yes
-    return _.contains @options.activeWidgetTypes, widget.type
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
