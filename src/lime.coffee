@@ -84,8 +84,16 @@ class window.LIMEPlayer
       widget: {}
     @options = $.extend options, opts
 
-    @widgets = []
+    if typeof @options.containerDiv is "string"
+      @el = jQuery "#" + @options.containerDiv
+    else
+      @el = jQuery(@options.containerDiv)
 
+    unless @el.length is 1
+      console.error "LIMEPlayer options.containerDiv has to be a DOM element or the ID of a DOM element.", @options.containerDiv
+      return
+
+    @widgets = []
     @widgetContainers = @options.widgetContainers
 
     # Run initialisation functions, depending on each other:
@@ -121,25 +129,15 @@ class window.LIMEPlayer
       displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
 
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
-    $("##{@options.containerDiv}").append """
+    @el.append """
       <div class='videowrapper' id='videowrapper'>
-        <video id='video_player' class='video-js vjs-default-skin' controls preload='metadata' width='#{@options.videoPlayerSize["width"]}' height='#{@options.videoPlayerSize["height"]}' poster='img/connectme-video-poster.jpg'>
+        <video class='video-js vjs-default-skin' controls preload='metadata' width='#{@options.videoPlayerSize["width"]}' height='#{@options.videoPlayerSize["height"]}' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
       </div>
     """
-    ###
-      <div class="annotation-wrapper" id="annotation-wrapper" style="display: none;">
-        <div class="north fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
-        <div class="west  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationSouth}px"></div>
-        <div class="east  fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationEast}px"></div>
-        <div class="south fullscreen-annotation" style="height: #{@options.fullscreenLayout.AnnotationNorth}px"></div>
-      </div>
-    """
-    ###
-
-    # width="' + options.VideoPlayerSize.width+'" height="' + options.VideoPlayerSize.height + '"
-    window.LIMEPlayer.VideoPlayerInit 'video_player', {}, (err, playerInstance) =>
+    @videoEl = jQuery 'video', @el
+    window.LIMEPlayer.VideoPlayerInit @videoEl[0], {}, (err, playerInstance) =>
       if err
         alert err
         return
@@ -203,6 +201,8 @@ class window.LIMEPlayer
 
   # according to options.widgetVisibility and the widget's isActive state.
   _isWidgetToBeShown: (widget) ->
+    if @options.activeWidgetTypes and not _(@options.activeWidgetTypes).contains(widget.options.type)
+      return no
     switch @options.widgetVisibility
       when 'scrolling-list'
         return yes
@@ -211,9 +211,6 @@ class window.LIMEPlayer
           return yes
         else
           return no
-
-    if @options.activeWidgetTypes is null then return yes
-    return _.contains @options.activeWidgetTypes, widget.type
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
@@ -272,47 +269,40 @@ class window.LIMEPlayer
     unless plugin instanceof window.LimePlugin
       console.error "allocateWidgetSpace needs the first parameter to be the plugin itself requesting for the widget."
 
-    container = null
+    containers = []
     # Try to create the widget in the preferred container
-    if options and options.preferredContainer and @_hasFreeSpace options.preferredContainer, options
-      container = options.preferredContainer
-      console.log("widget container" + container)
+    if options and plugin.options.preferredContainer and @_hasFreeSpace plugin.options.preferredContainer, options
+      containers = [plugin.options.preferredContainer]
     else
-      container = _(@widgetContainers).detect (cont) =>
+      # no preferred container, then we'll see which ones have space
+      containers = _(@widgetContainers).filter (cont) =>
         @_hasFreeSpace cont, options
-      console.log("widget container" + container);
-    unless container
-      sorted = _.sortBy @widgetContainers, (cont) =>
-        cont.element.height()
-      container = sorted[0]
-    if container
-      container.element.prepend "<div class='lime-widget'></div>"
-      domEl = jQuery ".lime-widget:first", container.element
-      # console.info 'widgetspace allocated', domEl[0]
-      opts = _(@options.widget).extend options
-      res = new LimeWidget plugin, domEl, opts
-      _.defer =>
-        if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
-          res.render()
-          @widgets.push res
-          res.show()
-          res.setInactive()
-          @updateWidgetsList()
-      return res
-    else
-      console.error "There's not enough space for a widget to be shown!"
-      if @options.debug
-        debugger
-      return false
-    ###
-    container = _(@widgetContainers).detect (cont) =>
-      @_hasFreeSpace cont, options
-    if container
-      container.element.prepend "<div class='lime-widget'>123</div>"
-      jQuery('.lime-widget:first', container.element)
-    else
-      no
-    ###
+    console.log("widget container", container);
+    # If no container had space, we force to take space from one of the containers.
+    unless containers.length
+      containers = @widgetContainers
+
+    # If at this point there are several containers, we chose the one that has the least widgets inside.
+    containers = _.sortBy containers, (cont) =>
+      cont.element.children().length
+    container = containers[0]
+
+    # We have our cwidget container, create the widget element
+    if container.element
+      container = container.element
+    container.prepend "<div class='lime-widget'></div>"
+    domEl = jQuery ".lime-widget:first", container
+    opts = _(@options.widget).extend options
+    res = new LimeWidget plugin, domEl, opts
+    _.defer =>
+      if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
+        res.render()
+        @widgets.push res
+        res.show()
+        res.setInactive()
+        @updateWidgetsList()
+    return res
+
   _hasFreeSpace: (container, options) ->
     currentHeight = container.element.height()
     if(currentHeight >0)

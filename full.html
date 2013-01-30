@@ -93,11 +93,11 @@
                     });
                     console.info("Annotations", annotations);
                     window.lime = LimePlayer = new LIMEPlayer({
+                        containerDiv: jQuery("#mainwrapper"),
                         video : locators,
-                        // activeWidgetTypes: ['DbpediaInfoWidget'],
+                        // activeWidgetTypes: ['DbpediaInfoWidget', 'GeoNamesMapWidget'],
                         local: local,
                         annotations: annotations,
-                        containerDiv:"mainwrapper",
                         videoPlayerSize:{"width":640, "height":360},
                         vPlayer:"VideoJS",
                         // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",

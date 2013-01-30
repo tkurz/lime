@@ -92,7 +92,7 @@
                 <tr style="background: white;">
                     <td>
                         <img src="img/video.png" width="40" height="40">
-                        <p> <%= video.instance.value %> </p>
+                        <p> <%= video.title ? video.title.value : video.instance.value %> </p>
                     </td>
 
                     <td><a class="fullscreen" href="fullscreen.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
