@@ -68,6 +68,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     #Resize the modal container
     $(modalcontainer).css "height", "70%"
     $(modalcontainer).css "max-height", "500px"
+    $(modalcontainer).css "max-width", "100%"
 
     # Empty the modal container
     $(modalcontainer).empty()
