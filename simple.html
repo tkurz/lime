@@ -8,6 +8,7 @@
     <script src="lib/underscoreJS/underscore.min.js"></script>
     <script src="lib/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
+    <script type="text/javascript" src="lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
     <script type="text/javascript" src="lib/vie/vie-2.0.0.debug.js"></script>
 
 
@@ -37,7 +38,32 @@
     <script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>
     <script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
     <script type="text/javascript" language="javascript">
-		/* 
+        var locators = [
+            {"source":"https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_ogg.ogv","type":"video/ogv"},
+            {"source":"https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4","type":"video/mp4"},
+            {"source":"https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_webm.webm","type":"video/webm"}
+        ];
+        var annotations = [
+            {
+                "annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/577e5d16435dfc2a0d24223926477f82" },
+                "resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Flachau" },
+                "relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" },
+                "fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#xywh=percent:38,52,23,23&t=2,5" }
+            },
+            {
+                "annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/08298406cb500fd6790f0a69a2ac5a70" },
+                "resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Inline_hockey" },
+                "relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" },
+                "fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=37,39" }
+            },
+            {
+                "annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/3f30b2f0f8511fe86e19ba4a6e7c3a60" },
+                "resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Snowshoe" },
+                "relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" },
+                "fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=114,118" }
+            }
+         ];
+		/*
 		VIDEO1: https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4
 		VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4 
 		*/
@@ -45,39 +71,28 @@
             var videoUrl = UTILS.getParameterByName('videoUrl');
             var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
             var lang = UTILS.getParameterByName('lang') || 'en';
-            var cmf = new CMF(cmfurl);
-            cmf.getLocatorsForVideoOrLocator(videoUrl, function(err, locators){
-                console.info("locators", locators);
-                if(err || locators.length == 0) {
-                    console.error("Error getting video locators", err, locators);
-                    alert("Error getting video locators for " + videoUrl);
-                    return
-                }
-                cmf.getAnnotationsForVideoOrLocator(videoUrl, function(err, annotations){
-                    annotations = _(annotations).map(function(ann){
-                        return new Annotation(ann);
-                    });
-                    console.info("Annotations", annotations);
-                    window.LimePlayer = new LIMEPlayer({
-                        video : locators,
-                        annotations: annotations,
-                        containerDiv:"mainwrapper",
-                        videoPlayerSize:{"width":640, "height":360},
-                        vPlayer:"VideoJS",
-                        // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
-                        annotFrameworkURL: cmfurl,
-                        // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
-                        fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
-                        widgetContainers:[
-                            {element:jQuery('#widget-container-1'), orientation:'horizontal'},
-                            {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                        ],
-                        annotationsVisible:true,
-                        preferredLanguage: lang
-                    });
-                    console.log(LimePlayer);
-                });
-            })
+            annotations = _(annotations).map(function(ann){
+                return new Annotation(ann);
+            });
+
+            window.LimePlayer = new LIMEPlayer({
+                video : locators,
+                annotations: annotations,
+                containerDiv:"mainwrapper",
+                videoPlayerSize:{"width":640, "height":360},
+                vPlayer:"VideoJS",
+                // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
+                annotFrameworkURL: cmfurl,
+                // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+                fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
+                widgetContainers:[
+                    {element:jQuery('#widget-container-1'), orientation:'horizontal'},
+                    {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                ],
+                annotationsVisible:true,
+                preferredLanguage: lang
+            });
+            console.log(LimePlayer);
         });
     </script>
 	</head>
@@ -100,25 +115,5 @@
 			</div>
 		</div>
 		</div>
-
-		<div id="modalWindow">
-			<!--	<div id="textDialogCanvas" style="width: inherit; height: inherit; -moz-border-radius: 5px; border-radius: 5px;  background-color: black; color: white; font: 22px 'Trebuchet MS', sans-serif;"> -->
-			<a href="#" class="close" role="button"><img src="img/close-icon.png" style="width: 22px; height: 22px;"/></a>
-			<div id="textDialogContent" style=" width: 98%; height: 95%; margin:0px auto;  background-color: black; overflow:hidden;">
-				<p>
-					Every day, hundreds of thousands of visitors from around the world collectively make tens of thousands of edits and create thousands of new articles to augment the knowledge held by the Wikipedia encyclopedia (see also Wikipedia:Statistics.)
-				</p>
-				<p>
-					People of all ages, cultures and backgrounds can add or edit article prose, references, images and other media here. What is contributed is more important than the expertise or qualifications of the contributor. What will remain depends upon whether it fits within Wikipedia's policies, including being verifiable against a published reliable source, so excluding editors' opinions and beliefs and unreviewed research, and is free of copyright restrictions and contentious material about living people. Contributions cannot damage Wikipedia because the software allows easy reversal of mistakes and many experienced editors are watching to help and ensure that edits are cumulative improvements. Begin by simply clicking the edit link at the top of any editable page!
-				</p>
-				<p>
-					Wikipedia is a live collaboration differing from paper-based reference sources in important ways. Unlike printed encyclopedias, Wikipedia is continually created and updated, with articles on historic events appearing within minutes, rather than months or years. Older articles tend to grow more comprehensive and balanced; newer articles may contain misinformation, unencyclopedic content, or vandalism. Awareness of this aids obtaining valid information and avoiding recently added misinformation (see Researching with Wikipedia).
-				</p>
-			</div>
-			<!-- </div> -->
-		</div>
-
-		<!-- Mask to cover the whole screen -->
-		<div id="mask"></div>
 	</body>
 </html>

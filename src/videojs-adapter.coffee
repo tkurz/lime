@@ -22,6 +22,8 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
         flash: iFrameMode: true
         swf: "lib/videojs/video-js.swf"	# SORIN - added to fix flash fallback bug
       })
+      isFullscreen: ->
+        @instance.isFullScreen
 
       # # Methods:
 
@@ -56,7 +58,6 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
 
     # Setting up the player instance
     player.instance.addEvent "loadedmetadata", =>
-    #player.instance.ready =>
       player.instance.isFullScreen = options.fullscreen
 
       # player.videoOverlay is the DOM element over the entire video element

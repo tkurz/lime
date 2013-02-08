@@ -427,7 +427,7 @@ a:hover {
     background-color: lightgray;
     display: none;
 }
-#modalWindow {
+#modalWindow, .modal-container {
     position: absolute;
     left: 0;
     top: 0;
@@ -446,7 +446,7 @@ a:hover {
     min-width: 500px;
     min-height: 100px
 }
-.modalwindow {
+#modalWindow, .modal-container {
     position: absolute;
     left: 0;
     top: 0;
