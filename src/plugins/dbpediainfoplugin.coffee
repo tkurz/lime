@@ -48,7 +48,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
         <img src="#{depiction}" style="display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black;"/>
       </div>
-      <div id="displayArea" style="position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;">
+      <div id="displayArea" style="position:relative; float: left; z-index: 10; width: 65%; height:95%; background: #DBDBDB; overflow: auto;">
         <p style="margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;">#{comment}</p>
       </div>
     """
