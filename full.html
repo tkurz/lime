@@ -87,7 +87,7 @@
                         return new Annotation(ann);
                     });
                     console.info("Annotations", annotations);
-                    window.lime = LimePlayer = new LIMEPlayer({
+                    var options = {
                         video : locators,
                         // activeWidgetTypes: ['DbpediaInfoWidget'],
                         local: local,
@@ -103,7 +103,7 @@
                             AnnotationModalWindow: {},
                             DBPediaInfoPlugin: {
                                 preferredContainer:{ element:jQuery('#widget-container-2'),
-                                 orientation:'horizontal'}
+                                    orientation:'horizontal'}
                             },
                             BusinessPlugin : {
                                 preferredContainer : {
@@ -118,21 +118,21 @@
                                 }
                             },
                             /* LSIImagePlugin: {
-                                preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
-                            },*/
+                             preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                             },*/
                             AdminPlugin: {},
                             StatisticsPlugin: {},
                             UserSettingsPlugin: {}
                         },
                         // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
-                        fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
                         widgetContainers:[
                             {element:jQuery('#widget-container-2'), orientation:'horizontal'},
                             {element:jQuery('#widget-container-1'), orientation:'horizontal'}
                         ],
                         annotationsVisible:true,
                         preferredLanguage: lang
-                    });
+                    };
+                    window.lime = LimePlayer = new LIMEPlayer(options);
                     console.log(LimePlayer);
                 });
             })

@@ -70,8 +70,6 @@ class window.LIMEPlayer
       widgetVisibility: 'scrolling-list'
       hidingDelay: 2000
 
-      # how big should be the annotation areas surrounding the video
-      fullscreenLayout: "AnnotationNorth": 50, "AnnotationWest": 300, "AnnotationSouth": 50, "AnnotationEast": 300
       widgetContainers: [{element: jQuery('#widget-container-1'), orientation: 'vertical'}]
       # space used by annotations TODO: Why is this an option? Shouldn't it be a state (simply an instance variable) [Szaby]
       usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0

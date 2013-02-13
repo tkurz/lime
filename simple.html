@@ -64,7 +64,7 @@
                 return new Annotation(ann);
             });
 
-            window.LimePlayer = new LIMEPlayer({
+            var options = {
                 video : locators,
                 annotations: annotations,
                 containerDiv:"mainwrapper",
@@ -73,14 +73,15 @@
                 // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                 annotFrameworkURL: cmfurl,
                 // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
-                fullscreenLayout:{"AnnotationNorth":50, "AnnotationWest":300, "AnnotationSouth":50, "AnnotationEast":300},
                 widgetContainers:[
                     {element:jQuery('#widget-container-1'), orientation:'horizontal'},
                     {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                 ],
                 annotationsVisible:true,
                 preferredLanguage: lang
-            });
+            };
+
+            window.LimePlayer = new LIMEPlayer(options);
             console.log(LimePlayer);
         });
     </script>
