@@ -32,7 +32,7 @@ class window.LDPlugin extends window.LimePlugin
             @lime.player.play()
 
   defaults:
-    stanbolUrl: "http://dev.iks-project.eu/stanbolfull"
+    stanbolUrl: "http://demo.iks-project.eu/stanbolfull"
     followRedirects: [
       'dbpedia:wikiPageRedirects'
       'rdfs:seeAlso'

@@ -43,7 +43,7 @@ class window.LIMEPlayer
       annotations: []
 
       # LMF URL
-      annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
+      # annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
 
       # list of allowed widgets TODO Add possibility for defining configuration
       plugins: {
@@ -53,9 +53,6 @@ class window.LIMEPlayer
       # Define the array of widget types to be shown. Default: `null` means, everything is shown.
       # `[]` (empty array) means nothing is shown
       activeWidgetTypes: null
-
-      # autodetecting
-      platform: "web"
 
       # toggle true/false
       fullscreen: false
@@ -70,9 +67,7 @@ class window.LIMEPlayer
       widgetVisibility: 'scrolling-list'
       hidingDelay: 2000
 
-      widgetContainers: [{element: jQuery('#widget-container-1'), orientation: 'vertical'}]
-      # space used by annotations TODO: Why is this an option? Shouldn't it be a state (simply an instance variable) [Szaby]
-      usedSpaceNWSE: "north": 0, "west": 0, "south": 0, "east": 0
+      widgetContainers: [{element: jQuery('#widget-container-1'), options: null}]
       annotationsVisible : true
       debug: false
       local: false

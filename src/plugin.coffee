@@ -140,7 +140,7 @@ class window.TestPlugin extends window.LimePlugin
       widget = @lime.allocateWidgetSpace @,
         thumbnail: "img/info.png" # should go into CSS
         title: "#{annotation.getLabel()} Info"
-        type: "DbpediaInfoWidget"
+        type: "TestWidget"
         sortBy: ->
           10000 * annotation.start + annotation.end
 
