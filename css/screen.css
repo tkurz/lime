@@ -272,7 +272,7 @@ body {
     font-weight: 300;
 }
 /* div{text-align: left;} */
-.mainwrapper {
+#mainwrapper {
     border: solid 1px rgb(230, 230, 230);
     padding: 1em;
     /* border: 1px solid rgba(0,0,0,0.5);*/
