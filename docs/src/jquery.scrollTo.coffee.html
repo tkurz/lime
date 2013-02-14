@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><title>jquery.scrollTo.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotation.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotation.coffee</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/jquery.scrollTo.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">jquery.scrollTo.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/plugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">plugin.coffee</span></a><a href="../src/plugins/businessplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">businessplugin.coffee</span></a><a href="../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../src/plugins/youtubeplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">youtubeplugin.coffee</span></a><a href="../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a><a href="../src/widget.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">widget.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>jquery.scrollTo.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>!
+* jQuery.ScrollTo
+* Copyright (c) 2007-2012 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+* Dual licensed under MIT and GPL.
+* Date: 12/14/2012
+*
+* @projectDescription Easy element scrolling using jQuery.
+* http://flesler.blogspot.com/2007/10/jqueryscrollto.html
+* @author Ariel Flesler
+* @version 1.4.5 BETA
+*
+* @id jQuery.scrollTo
+* @id jQuery.fn.scrollTo
+* @param {String, Number, DOMElement, jQuery, Object} target Where to scroll the matched elements.
+*      The different options for target are:
+*        - A number position (will be applied to all axes).
+*        - A string position ('44', '100px', '+=90', etc ) will be applied to all axes
+*        - A jQuery/DOM element ( logically, child of the element to scroll )
+*        - A string selector, that will be relative to the element to scroll ( 'li:eq(2)', etc )
+*        - A hash { top:x, left:y }, x and y can be any kind of number/string like above.
+*        - A percentage of the container's dimension/s, for example: 50% to go to the middle.
+*        - The string 'max' for go-to-end.
+* @param {Number, Function} duration The OVERALL length of the animation, this argument can be the settings object instead.
+* @param {Object,Function} settings Optional set of settings or the onAfter callback.
+*     @option {String} axis Which axis must be scrolled, use 'x', 'y', 'xy' or 'yx'.
+*     @option {Number, Function} duration The OVERALL length of the animation.
+*     @option {String} easing The easing method for the animation.
+*     @option {Boolean} margin If true, the margin of the target element will be deducted from the final position.
+*     @option {Object, Number} offset Add/deduct from the end position. One number for both axes or { top:x, left:y }.
+*     @option {Object, Number} over Add/deduct the height/width multiplied by 'over', can be { top:x, left:y } when using both axes.
+*     @option {Boolean} queue If true, and both axis are given, the 2nd axis will only be animated after the first one ends.
+*     @option {Function} onAfter Function to be called after the scrolling ends.
+*     @option {Function} onAfterFirst If queuing is activated, this function will be called after the first scrolling ends.
+* @return {jQuery} Returns the same jQuery object, for chaining.
+*
+* @desc Scroll to a fixed position
+* @example $('div').scrollTo( 340 );
+*
+* @desc Scroll relatively to the actual position
+* @example $('div').scrollTo( '+=340px', { axis:'y' } );
+*
+* @desc Scroll using a selector (relative to the scrolled element)
+* @example $('div').scrollTo( 'p.paragraph:eq(2)', 500, { easing:'swing', queue:true, axis:'xy' } );
+*
+* @desc Scroll to a DOM element (same for jQuery object)
+* @example var second<em>child = document.getElementById('container').firstChild.nextSibling;
+*            $('#container').scrollTo( second</em>child, { duration:500, axis:'x', onAfter:function(){
+*                alert('scrolled!!');
+*            }});
+*
+* @desc Scroll on both axes, to different values
+* @example $('div').scrollTo( { top: 300, left:'+=200' }, { axis:'xy', offset:-20 } );</p>
+</td><td class="code"><div class="highlight"><pre><span class="p">(</span><span class="nf">($) -&gt;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Returns the element that needs to be animated to scroll the window.
+Kept for backwards compatibility (specially for localScroll &amp; serialScroll)</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Hack, hack, hack :)
+Returns the real elements to scroll (supports window/iframes, documents and regular nodes)</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Speed is still recognized for backwards compatibility</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>Make sure the settings are given right</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>Let's keep the overall duration</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>Null target yields nothing, just like jQuery does</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>A number will pass the regex</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>We are done</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>Relative selector, no break!</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>DOMElement / jQuery</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>Get the real position of the target
+jQuery / DOMElement</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>If it's a dom element, reduce the margin</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><p>Scroll to a fraction of its width/height</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><p>Handle percentage values</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><p>Number or 'number'</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><p>Check the limits</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><p>Queueing axes</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-19"><td class="docs"><div class="pilwrap"><a href="#section-19" class="pilcrow">&#182;</a></div><p>Don't waste time animating, if there's no need.</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-20"><td class="docs"><div class="pilwrap"><a href="#section-20" class="pilcrow">&#182;</a></div><p>Intermediate animation</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-21"><td class="docs"><div class="pilwrap"><a href="#section-21" class="pilcrow">&#182;</a></div><p>Don't animate this axis again in the next iteration.</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-22"><td class="docs"><div class="pilwrap"><a href="#section-22" class="pilcrow">&#182;</a></div><p>Max scrolling position, works on quirks mode
+It only fails (not too badly) on IE, quirks mode.</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">both = </span><span class="nf">(val) -&gt;</span>
+    <span class="p">(</span><span class="k">if</span> <span class="k">typeof</span> <span class="nx">val</span> <span class="o">is</span> <span class="s">&quot;object&quot;</span> <span class="k">then</span> <span class="nx">val</span> <span class="k">else</span>
+      <span class="nv">top: </span><span class="nx">val</span>
+      <span class="nv">left: </span><span class="nx">val</span>
+    <span class="p">)</span>
+  <span class="nv">$scrollTo = $.scrollTo = </span><span class="nf">(target, duration, settings) -&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">scrollTo</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">settings</span>
+
+  <span class="nv">$scrollTo.defaults =</span>
+    <span class="nv">axis: </span><span class="s">&quot;xy&quot;</span>
+    <span class="nv">duration: </span><span class="p">(</span><span class="k">if</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jquery</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1.3</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nv">limit: </span><span class="kc">true</span>
+
+  <span class="nv">$scrollTo.window = </span><span class="nf">(scope) -&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">_scrollable</span><span class="p">()</span>
+
+  <span class="nv">$.fn._scrollable = </span><span class="o">-&gt;</span>
+    <span class="nx">@map</span> <span class="o">-&gt;</span>
+      <span class="nv">elem = </span><span class="k">this</span>
+      <span class="nv">isWin = </span><span class="o">not</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">or</span> <span class="nx">$</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">(),</span> <span class="p">[</span><span class="s">&quot;iframe&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="err">#</span><span class="s">document&quot;</span><span class="p">,</span> <span class="s">&quot;html&quot;</span><span class="p">,</span> <span class="s">&quot;body&quot;</span><span class="p">])</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="k">return</span> <span class="nx">elem</span>  <span class="nx">unless</span> <span class="nx">isWin</span>
+      <span class="nv">doc = </span><span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">contentWindow</span> <span class="o">or</span> <span class="nx">elem</span><span class="p">).</span><span class="nb">document</span> <span class="o">or</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">ownerDocument</span> <span class="o">or</span> <span class="nx">elem</span>
+      <span class="p">(</span><span class="k">if</span> <span class="sr">/webkit/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">)</span> <span class="o">or</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">compatMode</span> <span class="o">is</span> <span class="s">&quot;BackCompat&quot;</span> <span class="k">then</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">body</span> <span class="k">else</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">)</span>
+
+
+  <span class="nv">$.fn.scrollTo = </span><span class="nf">(target, duration, settings) -&gt;</span>
+    <span class="k">if</span> <span class="k">typeof</span> <span class="nx">duration</span> <span class="o">is</span> <span class="s">&quot;object&quot;</span>
+      <span class="nv">settings = </span><span class="nx">duration</span>
+      <span class="nv">duration = </span><span class="mi">0</span>
+    <span class="nv">settings = onAfter: </span><span class="nx">settings</span>  <span class="k">if</span> <span class="k">typeof</span> <span class="nx">settings</span> <span class="o">is</span> <span class="s">&quot;function&quot;</span>
+    <span class="nv">target = </span><span class="mi">9</span><span class="nx">e9</span>  <span class="k">if</span> <span class="nx">target</span> <span class="o">is</span> <span class="s">&quot;max&quot;</span>
+    <span class="nv">settings = </span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">$scrollTo</span><span class="p">.</span><span class="nx">defaults</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span>
+    <span class="nv">duration = </span><span class="nx">duration</span> <span class="o">or</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">duration</span>
+    <span class="nv">settings.queue = </span><span class="nx">settings</span><span class="p">.</span><span class="nx">queue</span> <span class="o">and</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">axis</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="nx">duration</span> <span class="o">/=</span> <span class="mi">2</span>  <span class="k">if</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">queue</span>
+    <span class="nv">settings.offset = </span><span class="nx">both</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">offset</span><span class="p">)</span>
+    <span class="nv">settings.over = </span><span class="nx">both</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">over</span><span class="p">)</span>
+    <span class="nx">@_scrollable</span><span class="p">().</span><span class="nx">each</span><span class="p">(</span><span class="o">-&gt;</span>
+      <span class="nv">animate = </span><span class="nf">(callback) -&gt;</span>
+        <span class="nx">$elem</span><span class="p">.</span><span class="nx">animate</span> <span class="nx">attr</span><span class="p">,</span> <span class="nx">duration</span><span class="p">,</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">easing</span><span class="p">,</span> <span class="nx">callback</span> <span class="o">and</span> <span class="o">-&gt;</span>
+          <span class="nx">callback</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">settings</span>
+
+      <span class="k">return</span>  <span class="nx">unless</span> <span class="nx">target</span><span class="o">?</span>
+      <span class="nv">elem = </span><span class="k">this</span>
+      <span class="nv">$elem = </span><span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">)</span>
+      <span class="nv">targ = </span><span class="nx">target</span>
+      <span class="nv">toff = </span><span class="kc">undefined</span>
+      <span class="nv">attr = </span><span class="p">{}</span>
+      <span class="nv">win = </span><span class="nx">$elem</span><span class="p">.</span><span class="o">is</span><span class="p">(</span><span class="s">&quot;html,body&quot;</span><span class="p">)</span>
+      <span class="k">switch</span> <span class="k">typeof</span> <span class="nx">targ</span>
+        <span class="k">when</span> <span class="s">&quot;number&quot;</span><span class="p">,</span> <span class="s">&quot;string&quot;</span>
+          <span class="k">if</span> <span class="sr">/^([+-]=?)?\d+(\.\d+)?(px|%)?$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">targ</span><span class="p">)</span>
+            <span class="nv">targ = </span><span class="nx">both</span><span class="p">(</span><span class="nx">targ</span><span class="p">)</span>
+            <span class="k">break</span>
+          <span class="nv">targ = </span><span class="nx">$</span><span class="p">(</span><span class="nx">targ</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+          <span class="k">return</span>  <span class="nx">unless</span> <span class="nx">targ</span><span class="p">.</span><span class="nx">length</span>
+        <span class="k">when</span> <span class="s">&quot;object&quot;</span>
+          <span class="nv">toff = </span><span class="p">(</span><span class="nv">targ = </span><span class="nx">$</span><span class="p">(</span><span class="nx">targ</span><span class="p">)).</span><span class="nx">offset</span><span class="p">()</span>  <span class="k">if</span> <span class="nx">targ</span><span class="p">.</span><span class="o">is</span> <span class="o">or</span> <span class="nx">targ</span><span class="p">.</span><span class="nx">style</span>
+      <span class="nx">$</span><span class="p">.</span><span class="nx">each</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">axis</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">),</span> <span class="nf">(i, axis) -&gt;</span>
+        <span class="nv">Pos = </span><span class="p">(</span><span class="k">if</span> <span class="nx">axis</span> <span class="o">is</span> <span class="s">&quot;x&quot;</span> <span class="k">then</span> <span class="s">&quot;Left&quot;</span> <span class="k">else</span> <span class="s">&quot;Top&quot;</span><span class="p">)</span>
+        <span class="nv">pos = </span><span class="nx">Pos</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span>
+        <span class="nv">key = </span><span class="s">&quot;scroll&quot;</span> <span class="o">+</span> <span class="nx">Pos</span>
+        <span class="nv">old = </span><span class="nx">elem</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+        <span class="nv">max = </span><span class="nx">$scrollTo</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">toff</span>
+          <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">toff</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span> <span class="o">+</span> <span class="p">((</span><span class="k">if</span> <span class="nx">win</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="nx">old</span> <span class="o">-</span> <span class="nx">$elem</span><span class="p">.</span><span class="nx">offset</span><span class="p">()[</span><span class="nx">pos</span><span class="p">]))</span>
+          <span class="k">if</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">margin</span>
+            <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">-=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">targ</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;margin&quot;</span> <span class="o">+</span> <span class="nx">Pos</span><span class="p">))</span> <span class="o">or</span> <span class="mi">0</span>
+            <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">-=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">targ</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;border&quot;</span> <span class="o">+</span> <span class="nx">Pos</span> <span class="o">+</span> <span class="s">&quot;Width&quot;</span><span class="p">))</span> <span class="o">or</span> <span class="mi">0</span>
+          <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">offset</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span> <span class="o">or</span> <span class="mi">0</span>
+          <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">targ</span><span class="p">[(</span><span class="k">if</span> <span class="nx">axis</span> <span class="o">is</span> <span class="s">&quot;x&quot;</span> <span class="k">then</span> <span class="s">&quot;width&quot;</span> <span class="k">else</span> <span class="s">&quot;height&quot;</span><span class="p">)]()</span> <span class="o">*</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">over</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span>  <span class="k">if</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">over</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span>
+        <span class="k">else</span>
+          <span class="nv">val = </span><span class="nx">targ</span><span class="p">[</span><span class="nx">pos</span><span class="p">]</span>
+          <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="k">if</span> <span class="nx">val</span><span class="p">.</span><span class="nx">slice</span> <span class="o">and</span> <span class="nx">val</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">is</span> <span class="s">&quot;%&quot;</span> <span class="k">then</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">*</span> <span class="nx">max</span> <span class="k">else</span> <span class="nx">val</span><span class="p">)</span>
+        <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="k">if</span> <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="nx">max</span><span class="p">))</span>  <span class="k">if</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">limit</span> <span class="o">and</span> <span class="sr">/^\d+$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
+        <span class="k">if</span> <span class="o">not</span> <span class="nx">i</span> <span class="o">and</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">queue</span>
+          <span class="nx">animate</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">onAfterFirst</span>  <span class="nx">unless</span> <span class="nx">old</span> <span class="o">is</span> <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+          <span class="k">delete</span> <span class="nx">attr</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+      <span class="nx">animate</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">onAfter</span>
+    <span class="p">).</span><span class="nx">end</span><span class="p">()</span>
+
+  <span class="nv">$scrollTo.max = </span><span class="nf">(elem, axis) -&gt;</span>
+    <span class="nv">Dim = </span><span class="p">(</span><span class="k">if</span> <span class="nx">axis</span> <span class="o">is</span> <span class="s">&quot;x&quot;</span> <span class="k">then</span> <span class="s">&quot;Width&quot;</span> <span class="k">else</span> <span class="s">&quot;Height&quot;</span><span class="p">)</span>
+    <span class="nv">scroll = </span><span class="s">&quot;scroll&quot;</span> <span class="o">+</span> <span class="nx">Dim</span>
+    <span class="k">return</span> <span class="nx">elem</span><span class="p">[</span><span class="nx">scroll</span><span class="p">]</span> <span class="o">-</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">)[</span><span class="nx">Dim</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()]()</span>  <span class="nx">unless</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="o">is</span><span class="p">(</span><span class="s">&quot;html,body&quot;</span><span class="p">)</span>
+    <span class="nv">size = </span><span class="s">&quot;client&quot;</span> <span class="o">+</span> <span class="nx">Dim</span>
+    <span class="nv">html = </span><span class="nx">elem</span><span class="p">.</span><span class="nx">ownerDocument</span><span class="p">.</span><span class="nx">documentElement</span>
+    <span class="nv">body = </span><span class="nx">elem</span><span class="p">.</span><span class="nx">ownerDocument</span><span class="p">.</span><span class="nx">body</span>
+    <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">html</span><span class="p">[</span><span class="nx">scroll</span><span class="p">],</span> <span class="nx">body</span><span class="p">[</span><span class="nx">scroll</span><span class="p">])</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">html</span><span class="p">[</span><span class="nx">size</span><span class="p">],</span> <span class="nx">body</span><span class="p">[</span><span class="nx">size</span><span class="p">])</span>
+<span class="p">)</span> <span class="nx">jQuery</span>
+
+</pre></div></td></tr></tbody></table><div id="projectname"><a href="../index.html">LIME - Linked Media Player</a></div></div></body></html>
