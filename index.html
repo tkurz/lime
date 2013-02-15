@@ -48,6 +48,11 @@
             width:100%;
             background: #9feaac;
         }
+        #loadingDiv {
+            position: absolute;
+            top: 70px;
+            right: 10px;
+        }
     </style>
 	<!-- Plugin dependencies -->
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -82,6 +87,14 @@
                     renderVideoThumbs(res);
                 });
             }
+            jQuery('#loadingDiv')
+                    .hide()  // hide it initially
+                    .ajaxStart(function() {
+                        $(this).show();
+                    })
+                    .ajaxStop(function() {
+                        $(this).hide();
+                    });
             jQuery('button#load').click(loadVideos);
             loadVideos();
         });
@@ -145,5 +158,6 @@
 			</div>
 		</div>
 		</div>
+        <div id="loadingDiv" style="display:none;"><img src="img/spinner.gif"/></div>
 	</body>
 </html>
