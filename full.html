@@ -83,6 +83,11 @@
                 }
 
                 getAnnotations(function(err, annotations){
+                    if(err){
+                      console.error("Error getting annotations", err);
+                      alert(err);
+                      return;
+                    }
                     annotations = _(annotations).map(function(ann){
                         return new Annotation(ann);
                     });

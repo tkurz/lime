@@ -96,11 +96,14 @@ class window.CMF
     @_runSPARQL(query, resCB)
   _annotationsForVideo: (resource) -> """PREFIX oac: <http://www.openannotation.org/ns/>
       PREFIX mao: <http://www.w3.org/ns/ma-ont#>
-      SELECT DISTINCT ?annotation ?fragment ?resource ?relation
+      PREFIX cma: <http://connectme.at/ontology#>
+      SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel
       WHERE {
         <#{resource}>  mao:hasFragment ?f.
         ?f mao:locator ?fragment.
         ?annotation oac:hasTarget ?f.
+        ?annotation a ?type.
+        OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}
         ?annotation oac:hasBody ?resource.
         ?f ?relation ?resource.
       }"""
@@ -113,13 +116,16 @@ class window.CMF
   _annotationsForLocator: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
     PREFIX mao: <http://www.w3.org/ns/ma-ont#>
-    SELECT DISTINCT ?annotation ?fragment ?resource ?relation
+    PREFIX cma: <http://connectme.at/ontology#>
+    SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel
     WHERE {
       ?videoresource mao:locator <#{locator}>.
       ?videoresource mao:hasFragment ?f.
       ?f mao:locator ?fragment.
       ?annotation oac:hasTarget ?f.
       ?annotation oac:hasBody ?resource.
+      ?annotation a ?type.
+      OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}
       ?f ?relation ?resource.
     }"""
 

@@ -1,5 +1,6 @@
 class window.Annotation
-  constructor: (hash) ->
+  constructor: (@hash) ->
+    hash = @hash
     hash.fragment.value = hash.fragment.value.replace("?","#")
     hash.fragment.type = 'uri'
     @annotation = hash.annotation.value
@@ -38,6 +39,8 @@ class window.Annotation
     @relation = new URI hash.relation.value
   toString: ->
     @resource.value
+  isBookmark: ->
+    @hash.type.value is "http://www.w3.org/ns/openannotation/extensions/Bookmark"
 
 class URI
   constructor: (uri) ->

@@ -1,8 +1,8 @@
-# Instantiating the VideoJS player, this method has to be called. It creates an object with
-# the DOM elements as properties, Events as jQuery events and javascript methods.
-# Th form of call is
+# When the Lime player gets instantiated, it calls the VideoPlayerInit method with the three parameters (domElement,
+# optionsHash, callback) and waits for the callback to be called with the instantiated video player.
+# The form of call is
 #
-#      window.LIMEPlayer.VideoJSInit(domElement, optionsHash, function(err, playerObj){
+#      window.LIMEPlayer.VideoPlayerInit(domElement, optionsHash, function(err, playerObj){
 #        if(err){
 #          console.error('Error initializing player', err);
 #        } else {
@@ -15,7 +15,9 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
     console.error "VideoJS not loaded!"
     cb "VideoJS not loaded"
     return
+  # Defer makes the instantiation asynchron and makes sure the previous rendering activities are finished.
   _.defer =>
+    # We create the
     player =
       # The player instance is the (could be even) hidden player instance that we wrap.
       instance: _V_(el, {

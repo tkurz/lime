@@ -5,7 +5,8 @@ class window.BusinessPlugin extends window.LimePlugin
     console.info "Initialize BusinessPlugin"
 
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("geonames") < 0 && annotation.resource.value.indexOf("dbpedia") < 0 && annotation.resource.value.indexOf("youtube") < 0
+      if annotation.isBookmark()
+        # if annotation.resource.value.indexOf("geonames") < 0 && annotation.resource.value.indexOf("dbpedia") < 0 && annotation.resource.value.indexOf("youtube") < 0
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context
