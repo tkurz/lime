@@ -17,6 +17,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
     return
   # Defer makes the instantiation asynchron and makes sure the previous rendering activities are finished.
   _.defer =>
+    console.info "1. Player initialisation"
     # We create the
     player =
       # The player instance is the (could be even) hidden player instance that we wrap.
@@ -58,8 +59,13 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
 
       # @player.addComponent 'Annotations', player: @player
 
+    # Listen to error event
+    player.instance.addEvent "error", (e) =>
+      cb e
+
     # Setting up the player instance
     player.instance.addEvent "loadedmetadata", =>
+      console.info "3. Player.loadedmetadata"
       player.instance.isFullScreen = options.fullscreen
 
       # player.videoOverlay is the DOM element over the entire video element
@@ -103,6 +109,8 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
 
       player.instance.play()
       cb null, player
+
+    console.info "2. Player instantiated."
 
   # Prepare Components for video overlay, button
   _V_.VideoOverlay = _V_.Component.extend #for  annotations on the sidebars

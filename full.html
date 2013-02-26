@@ -64,10 +64,12 @@
             };
             var getLocators = function(cb){
                 if(local){
+                    var dir = "http://s3-eu-west-1.amazonaws.com/yoo.120/connectme";
+                    // var dir = "videos";
                     var locators = [
-                        {"source":"videos/6306_519_20120508125738_ogg.ogv","type":"video/ogv"},
-                        {"source":"videos/6306_519_20120508125738_standard.mp4","type":"video/mp4"},
-                        {"source":"videos/6306_519_20120508125738_webm.webm","type":"video/webm"}
+                        {"source": dir + "/6306_519_20120508125738_ogg.ogv","type":"video/ogv"},
+                        {"source": dir + "/6306_519_20120508125738_standard.mp4","type":"video/mp4"},
+                        {"source": dir + "/6306_519_20120508125738_webm.webm","type":"video/webm"}
                     ];
                     cb(false, locators);
                 } else {

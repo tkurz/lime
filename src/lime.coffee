@@ -130,10 +130,12 @@ class window.LIMEPlayer
       </div>
     """
     @videoEl = jQuery 'video', @el
+    console.info "Initializing the player"
     window.LIMEPlayer.VideoPlayerInit @videoEl[0], {}, (err, playerInstance) =>
       if err
         alert err
         return
+      console.info "Player initialized"
       @player = playerInstance
       @_initEventListeners()
 

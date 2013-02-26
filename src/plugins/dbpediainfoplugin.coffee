@@ -9,7 +9,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
   # Putting this into a function keeps the annotation in the context
   handleAnnotation: (annotation) ->
     # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
-    annotation.entityPromise.done (entities) =>
+    annotation.entityPromise.done =>
       # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
       nonConcept = annotation.getDescription()
       nonConcept = nonConcept.replace("No description found.","")

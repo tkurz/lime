@@ -8,133 +8,155 @@
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/577e5d16435dfc2a0d24223926477f82" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Flachau" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#xywh=percent:38,52,23,23&t=2,5" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#xywh=percent:38,52,23,23&t=2,5" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/08298406cb500fd6790f0a69a2ac5a70" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Inline_hockey" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=37,39" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=37,39" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/3f30b2f0f8511fe86e19ba4a6e7c3a60" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Snowshoe" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=114,118" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=114,118" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/abb76a8adafe1a2912e058663dbdac69" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Canyoning" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#xywh=percent:39,20,29,68&t=21,25" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#xywh=percent:39,20,29,68&t=21,25" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/fa5ccc4b7ded3e9c858e360553cb9e67" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Mountainbiking" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=45,49" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=45,49" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/174bfceed6f004e7449f6c60b16a2dc5" }, 
 				"resource": { "type": "uri", "value": "http:\/\/www.tvtrip.es\/flachau-hotels\/funsport-bike-skihotelanlage-tauernhof" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=6,9" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=6,9" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/8bfd25ee9384e72878e6887ec32f0b51" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Freeskiing" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=151,155" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=151,155" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/3ccdaf0bc5c69a49a65040950d82ce6e" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Downhill_mountain_biking" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=9,12" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=9,12" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/df11174f25afb202bd9ed2dc2d80ffa0" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Beach_volleyball" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=98,101" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=98,101" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/353921cbe99e94abd6e6d8eef68e4b44" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Skateboarding" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=84,88" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=84,88" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/9849869b05632abe652fdaf4dc32a6c3" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Trampoline" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=33,36" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=33,36" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/0200ce3b3891841124f2ddba1d180bd1" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Cross-country_skiing" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=155,159" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=155,159" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/fb7278636cfa47ae5497a13e739c1285" }, 
 				"resource": { "type": "uri", "value": "http:\/\/www.tripadvisor.com\/Hotel_Review-g807293-d812077-Reviews-Funsport_Bike_Skihotelanlage_Tauernhof-Flachau_Austrian_Alps.html" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=6,9" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=6,9" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/19102518083efd079fa9e1dc851f1c05" }, 
-				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Après_ski" },
+				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Après-ski" },
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=142,148" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=142,148" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/f06b99c2fd576042facae4225cb9fed2" }, 
 				"resource": { "type": "uri", "value": "http:\/\/sws.geonames.org\/2779522" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=2,5" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=2,5" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/f8f2d91dbbbdd171a72ee3b78e343262" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Sledding" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=125,127" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=125,127" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/16cc97e8ae23f62626b23a3022d6b573" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Zorbing" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=12,15" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=12,15" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/241051cb1d09e09f64c0910d132dcac5" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Tour_skating" },
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=58,62" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=58,62" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/1b4138e422a4a81b0262b5a69156d5cd" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Tepidarium" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#implicitlyMentions" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=28,32" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=28,32" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/f53a9f82834fffb8b06c27fcb6856a69" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Sauna" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#implicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=28,32" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=28,32" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/7535fab3432e918bee0b7cd67f691f4f" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Rafting" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=72,74" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=72,74" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}, 
 			{
 				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/a1c1ace2e716561a131fe15d2133aea6" }, 
 				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Snowboarding" }, 
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=101,104" }
+				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=101,104" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
 			}
 		]
 	}

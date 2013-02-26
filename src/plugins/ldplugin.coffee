@@ -25,11 +25,15 @@ class window.LDPlugin extends window.LimePlugin
       annotation.lime = @lime
       @loadAnnotation annotation, =>
         waitForAnnotationFetch--
+        console.info "still waiting for so many annotations...", waitForAnnotationFetch
         if waitForAnnotationFetch is 0
           console.info "Loading entities finished."
           unless pausedBefore
             console.info "Playing again."
             @lime.player.play()
+        if waitForAnnotationFetch < 0
+          console.error "This should not ever happen!"
+          debugger
 
   defaults:
     stanbolUrl: "http://dev.iks-project.eu/stanbolfull"
@@ -37,6 +41,7 @@ class window.LDPlugin extends window.LimePlugin
       'dbpedia:wikiPageRedirects'
       'rdfs:seeAlso'
       'owl:sameAs'
+      # redirect to the dbpedia entity using the english label of the (e.g. geonames) entity.
       (ent) ->
         engName = VIE.Util.getPreferredLangForPreferredProperty(ent, ['rdfs:label', 'geonames:alternateName'], ["en"])
         # name = ent.get('geonames:name')
@@ -54,6 +59,7 @@ class window.LDPlugin extends window.LimePlugin
       @lime.player.pause()
       debugger
 
+    # Fetches the entity for `entityUri` and the possible redirects based on props, in a decreasing `depth`.
     recursiveFetch = (entityUri, props, depth, cb) =>
       results = []
       waitfor = 0
@@ -96,71 +102,81 @@ class window.LDPlugin extends window.LimePlugin
       # console.info 'load entity', entityUri
       @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success(success)
 
-    recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
-      annotation.entities = res
-      # @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
-
-      annotation._detectPropertyLanguageOnEntity = (properties, languages, defaultLabel) ->
-        for entity in @entities
-          value = VIE.Util.getPreferredLangForPreferredProperty(entity, properties, languages)
-          if value isnt "n/a"
-            return value
-        return defaultLabel
-
-      annotation._detectProperty = (property) ->
-        for entity in @entities
-          value = entity.get(property)
-          if value
-            return value
-          @entities[0].fromReference(entity.getSubject())
-
-      # Add methods on the annotation to get label, description, etc in the player's preferred language
-
+    if annotation.isBookmark()
       annotation.getLabel = annotation.getName = ->
         if annotation.prefLabel
           return annotation.prefLabel.value
-        else
-          return @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
-      annotation.getDescription = ->
-        @_detectPropertyLanguageOnEntity(['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'], "No description found.")
-
-      annotation.getDepiction = (options) ->
-        for entity in @entities
-          result = ""
-          depiction = entity.get 'foaf:depiction'
-          if depiction
-            if _.isArray depiction
-              singleDepiction = _.detect depiction, (d) ->
-                res = true
-                if options?.with
-                  res = res and d.indexOf(options?.with) isnt -1
-                if options?.without
-                  res = res and d.indexOf(options?.without) is -1
-                res
-              unless singleDepiction
-                singleDepiction = depiction[0]
-            else
-              singleDepiction = depiction
-            result = entity.fromReference(singleDepiction)
-          if result
-            return result
-        return null
-      annotation.getPage = ->
-        homepage = @_detectProperty @entities, 'foaf:homepage'
-        unless homepage
-          for entity in @entities
-            if entity.getSubject().indexOf('dbpedia') isnt -1
-              label = VIE.Util.getPreferredLangForPreferredProperty entity, ['rdfs:label'], [@lime.options.preferredLanguage]
-              return "http://#{@lime.options.preferredLanguage}.wikipedia.org/wiki/#{label}"
-            else
-              value = entity.get('foaf:homepage')
-              if value
-                return value
-          return @entities[0].fromReference(entity.getSubject())
-        return homepage
-
-      annotation.entityPromise.resolve annotation.entities
       readyCb()
+    else
+      recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
+        console.info "LDPlugin loaded", _(res).uniq()
+        if entityUri is debug
+          @lime.player.pause()
+          debugger
+        annotation.entities = _(res).uniq() or []
+      # @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
+
+        annotation._detectPropertyLanguageOnEntity = (properties, languages, defaultLabel) ->
+          for entity in @entities
+            value = VIE.Util.getPreferredLangForPreferredProperty(entity, properties, languages)
+            if value isnt "n/a"
+              return value
+          return defaultLabel
+
+        annotation._detectProperty = (property) ->
+          for entity in @entities
+            value = entity.get(property)
+            if value
+              return value
+            @entities[0].fromReference(entity.getSubject())
+
+        # Add methods on the annotation to get label, description, etc in the player's preferred language
+
+        annotation.getLabel = annotation.getName = ->
+          if annotation.prefLabel
+            return annotation.prefLabel.value
+          else
+            return @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
+        annotation.getDescription = ->
+          @_detectPropertyLanguageOnEntity(['dbpedia:abstract', 'rdfs:comment'], [@lime.options.preferredLanguage, 'en'], "No description found.")
+
+        annotation.getDepiction = (options) ->
+          for entity in @entities
+            result = ""
+            depiction = entity.get 'foaf:depiction'
+            if depiction
+              if _.isArray depiction
+                singleDepiction = _.detect depiction, (d) ->
+                  res = true
+                  if options?.with
+                    res = res and d.indexOf(options?.with) isnt -1
+                  if options?.without
+                    res = res and d.indexOf(options?.without) is -1
+                  res
+                unless singleDepiction
+                  singleDepiction = depiction[0]
+              else
+                singleDepiction = depiction
+              result = entity.fromReference(singleDepiction)
+            if result
+              return result
+          return null
+        annotation.getPage = ->
+          homepage = @_detectProperty @entities, 'foaf:homepage'
+          unless homepage
+            for entity in @entities
+              if entity.getSubject().indexOf('dbpedia') isnt -1
+                label = VIE.Util.getPreferredLangForPreferredProperty entity, ['rdfs:label'], [@lime.options.preferredLanguage]
+                return "http://#{@lime.options.preferredLanguage}.wikipedia.org/wiki/#{label}"
+              else
+                value = entity.get('foaf:homepage')
+                if value
+                  return value
+            return @entities[0].fromReference(entity.getSubject())
+          return homepage
+
+        annotation.entityPromise.resolve annotation.entities
+        readyCb()
 
 class RDF
   constructor: (hash) ->
