@@ -311,7 +311,7 @@
 
         var playerWidth = $("#video_player").width();
         var playerHeight = $("#video_player").height();
-        //console.log("== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
+        console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
 
     }
 </script>
@@ -332,12 +332,11 @@
         $("#wrapper").css("height", desiredHeight - $("#header").height() - headerHeight);
         $(".slideoutbutton").trigger('click');
         $(".slideoutbutton").trigger('click');
+
         var playerWidth = $("#video_player").width();
         var playerHeight = $("#video_player").height();
-        //console.log("== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
-
-
-    };
+        console.log("RESIZE== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
+    }
 </script>
 
 <script type="text/javascript" language="javascript">
