@@ -307,57 +307,59 @@ a:hover {
     min-height: 50px;
 }
 #mask {
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 9000;
-	background-color: lightgray;
-	display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    background-color: lightgray;
+    display: none;
 }
 .mask {
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 9000;
-	background-color: lightgray;
-	display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    background-color: lightgray;
+    display: none;
 }
-#modalWindow {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 70%;
-	height: 70%;
-	display: none;
-	z-index: 9999;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	overflow: hidden;
-	background-color: black;
-	color: white;
-	font: 22px 'Trebuchet MS', sans-serif;	
-	min-width: 500px;
-	min-height: 100px
+#modalWindow, .modal-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 70%;
+    height: 70%;
+    display: none;
+    z-index: 9999;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    font: 22px 'Trebuchet MS', sans-serif;
+    /*padding: 20px;*/
+    min-width: 500px;
+    min-height: 100px
 }
-.modalwindow {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 70%;
-	height: 70%;
-	display: none;
-	z-index: 9999;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	overflow: hidden;
-	background-color: black;
-	color: white;
-	font: 22px 'Trebuchet MS', sans-serif;
-	text-align: left;
-	min-width: 500px;
-	min-height: 100px	
+#modalWindow, .modal-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 70%;
+    height: 70%;
+    display: none;
+    z-index: 9999;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    font: 22px 'Trebuchet MS', sans-serif;
+    text-align: left;
+    min-width: 500px;
+    min-height: 100px
+    /*padding: 20px;*/
 }
 
 /* Concept overlay */

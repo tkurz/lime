@@ -21,14 +21,14 @@ class window.LimePlugin
     unless modalContainer
       # Depending on fullscreen mode or not, put the modal container into the video overlay or into the body element
       if @lime.player.isFullscreen()
-        @lime.player.videoOverlay.append("""<!-- Mask to cover the whole screen --><div id="lime-mask"></div>""")
-        @lime.modalMask = jQuery('#lime-mask')
+        @lime.player.videoOverlay.append("""<!-- Mask to cover the whole screen --><div id="mask"></div>""")
+        @lime.modalMask = jQuery('#mask')
 
         @lime.player.videoOverlay.append """<div class="modal-container"></div>"""
         @lime.modalContainer = jQuery '.modal-container', @lime.player.videoOverlay
       else
-        jQuery('body').append("""<!-- Mask to cover the whole screen --><div id="lime-mask"></div>""")
-        @lime.modalMask = jQuery('#lime-mask')
+        jQuery('body').append("""<!-- Mask to cover the whole screen --><div id="mask"></div>""")
+        @lime.modalMask = jQuery('#mask')
 
         jQuery('body').append """<div class="modal-container"></div>"""
         @lime.modalContainer = jQuery 'body .modal-container'
@@ -57,7 +57,7 @@ class window.LimePlugin
           jQuery('body').append mask
           jQuery('body').append modalContainer
 
-    mask = jQuery('#lime-mask')
+    mask = jQuery('#mask')
     # Empty the modal container
     modalContainer.empty()
     modalContainer.show()
