@@ -104,7 +104,8 @@ class window.LIMEPlayer
     jQuery(@).bind 'timeupdate', (e) =>
       for annotation in @annotations
         currentTime = e.currentTime
-        currentSrc = @player.currentSource()
+        # currentSrc = @player.currentSource()
+        currentSrc = @options.player[0].source
         if currentSrc.indexOf(@_getFilename(annotation.fragment.value)) isnt -1
           if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
             # has to be activated
@@ -209,7 +210,8 @@ class window.LIMEPlayer
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
-    src = @player.currentSource()
+   # src = @player.currentSource()
+    src= @options.player[0].source
     @annotations = _.filter @options.annotations, (ann) =>
       src.indexOf(@_getFilename(ann.fragment.value)) isnt -1
     console.info "Relevant annotations:", @annotations
