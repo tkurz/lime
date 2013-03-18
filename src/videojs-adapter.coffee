@@ -52,7 +52,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
         @instance.currentTime()
 
       currentSource: ->
-        @instance.tag.src or jQuery('source',this.instance.tag).attr('src')
+        this.instance.tag.currentSrc or @instance.tag.src or jQuery('source',this.instance.tag).attr('src')
 
       paused: ->
         @instance.paused()
