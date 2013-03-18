@@ -124,7 +124,7 @@ class window.LIMEPlayer
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     @el.append """
       <div class='videowrapper' id='videowrapper'>
-        <video class='video-js vjs-default-skin' controls preload='metadata' width='#{@options.videoPlayerSize.width}' height='#{@options.videoPlayerSize.height}' poster='img/connectme-video-poster.jpg'>
+        <video id='video_player' class='video-js vjs-default-skin' controls preload='metadata' width='#{@options.videoPlayerSize.width}' height='#{@options.videoPlayerSize.height}' poster='img/connectme-video-poster.jpg'>
           #{displaysrc}
         </video>
       </div>

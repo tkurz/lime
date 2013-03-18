@@ -351,13 +351,7 @@ body {
     /* margin-bottom: 10px;*/
 }
 
-#footer .container {
-    color: #FFFFFF;
-    padding: 0px;
-    position: absolute;
-    left: 50%;
-    margin-left: -75px;	/* centering for an image ~150px wide */
-}
+
 #footer {
     position: fixed;
     left: 0px;
@@ -375,9 +369,7 @@ body {
     padding: 10px;
     height: 25px;
 }
-#container {
-    text-align: center;
-}
+
 
 a {
     color: #44A4C8;
