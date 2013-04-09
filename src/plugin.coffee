@@ -38,9 +38,10 @@ class window.LimePlugin
 
       # Resize the modal container
       modalContainer.css
-        height: "70%"
-        "max-height": "500px"
-        "max-width": "100%"
+        height: "90%"
+        # "max-height": "500px"
+        "width": "auto"
+        # "top": "5%"
 
       #if mask is clicked
       mask.click (e) =>
@@ -88,8 +89,8 @@ class window.LimePlugin
 
     #Set the popup window to center
     modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-    modalContainer.css "left", winW / 2 - modalContainer.width() / 2
-
+    modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
+    #alert modalContainer.height()
     #transition effect
     modalContainer.fadeIn 100
 
@@ -120,7 +121,7 @@ class window.LimePlugin
 
       #Set the popup window to center
       modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-      modalContainer.css "left", winW / 2 - modalContainer.width() / 2
+      modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
     return jQuery '.modalContent', modalContainer
 
 # # Simple reference Lime plugin called TestPlugin
