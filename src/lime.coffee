@@ -253,7 +253,8 @@ class window.LIMEPlayer
   _initPlugins: (cb) ->
     @plugins = []
     for pluginClass, options of @options.builtinPlugins
-      @plugins.push new window[pluginClass] @, options
+      # @plugins.push new window[pluginClass] @, options
+      @plugins.push new window[pluginClass] @, (@options[pluginClass] or {})
     for pluginClass, options of @options.plugins
       @plugins.push new window[pluginClass] @, options
     cb()
