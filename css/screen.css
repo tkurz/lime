@@ -421,15 +421,12 @@ a:hover {
 }
 #modalWindow, .modal-container {
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 70%;
-    height: 70%;
+
+
+
     display: none;
     z-index: 9999;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
+
     overflow: hidden;
     background-color: black;
     color: white;
@@ -440,15 +437,12 @@ a:hover {
 }
 #modalWindow, .modal-container {
     position: absolute;
-    left: 0;
-    top: 0;
+
     width: 70%;
     height: 70%;
     display: none;
     z-index: 9999;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
+
     overflow: hidden;
     background-color: black;
     color: white;

@@ -25,7 +25,8 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         widget.annotation = annotation
         # widget was activated, we show details now
         jQuery(widget).bind 'activate', (e) =>
-          @getModalContainer().html @showAbstractInModalWindow annotation
+          # @getModalContainer().html @showAbstractInModalWindow annotation
+          @showAbstractInModalWindow annotation, @getModalContainer()
         # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
@@ -36,7 +37,9 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
           annotation.widgets[@name].setInactive()
 
   # Widget-specific detail-rendering
-  showAbstractInModalWindow: (annotation, modalContainer) ->
+  showAbstractInModalWindow: (annotation, outputElement) ->
+    modalContent = $(outputElement)
+    modalContent.css "width", "826px"
     label = annotation.getLabel()
     page = annotation.getPage()
     lime = this.lime
@@ -44,6 +47,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     depiction = annotation.getDepiction(without: 'thumb')
     if(depiction == null)
       depiction = "img/noimage.png"
+    ###
     result = """
       <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
         <img src="#{depiction}" style="display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black;"/>
@@ -52,4 +56,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         <p style="margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;">#{comment}</p>
       </div>
     """
-    return result
+    ###
+    result = result = "<div id=\"infoExtendedWidget\" style=\"width: 826px; height: 100%; background-color: #3b3a3a; position: relative; z-index: 900;\">\n  <div id=\"infoImageList\" style=\"overflow: auto; background-color: #a5a4a4; height: 100%; width: 30%; right: 0px; display: block; position: absolute; z-index: 900;\">\n   <div id=\"infoLSIImageX\" style=\"position: relative; margin-top: 5px; margin-right: auto; margin-left: auto; width: 90%; height: 120px; background-color: #ffffff; margin-bottom: 5px;\">\n  <div style=\"position: absolute; z-index: 900; bottom: 0px; width: 100%; height: 30px; background-color: #cfcbcb; top: 90px;\">\n      Oo    Image caption</div>\n  </div>\n   <div style=\"position: relative; margin-top: 5px; margin-right: auto; margin-left: auto; width: 90%; height: 120px; background-color: #ffffff; margin-bottom: 5px;\">\n     <div style=\"position: absolute; z-index: 900; bottom: 0px; width: 100%; height: 30px; background-color: #cfcbcb; top: 90px;\">\n       Oo    Image caption</div>\n   </div>\n   <div style=\"position: relative; margin-top: 5px; margin-right: auto; margin-left: auto; width: 90%; height: 120px; background-color: #ffffff; margin-bottom: 5px;\">\n     <div style=\"position: absolute; z-index: 900; bottom: 0px; width: 100%; height: 30px; background-color: #cfcbcb; top: 90px;\">\n       Oo    Image caption</div>\n   </div>\n   <div style=\"position: relative; margin-top: 5px; margin-right: auto; margin-left: auto; width: 90%; height: 120px; background-color: #ffffff; margin-bottom: 5px;\">\n     <div style=\"position: absolute; z-index: 900; bottom: 0px; width: 100%; height: 30px; background-color: #cfcbcb; top: 90px;\">\n       Oo    Image caption</div>\n   </div>\n   <div style=\"position: relative; margin-top: 5px; margin-right: auto; margin-left: auto; width: 90%; height: 120px; background-color: #ffffff; margin-bottom: 5px;\">\n     <div style=\"position: absolute; z-index: 900; bottom: 0px; width: 100%; height: 30px; background-color: #cfcbcb; top: 90px;\">\n       Oo    Image caption</div>\n   </div>\n </div>\n  <div id=\"infoTitleBar\" style=\"height: 33px; width: 70%; position: absolute; z-index: 900; left: 0px; top: 0px; background-color: #49acf8;\">\n<img src=\"img/info.png\" style=\"height: 100%; width: auto; margin-right: 1em;\"></img><b style=\"position: relative; color: #ffffff; bottom: 5px; font-size: 25px;\">" + label + "</b>\n  </div>\n  <div id=\"infoTextField\" style=\"position: absolute; z-index: 900; bottom: 0px; width: 70%; height: 94%; background-color: #484b49; left: 0.421875px; top: 34px; color: #ffffff; font-size: 25px;\">\n    <img src=\"" + depiction + "\" style=\"margin: .5em; height: auto; float: left; width: 200px;\"></img> " + comment + " </div>\n</div>"
+    modalContent.append result
