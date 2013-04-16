@@ -73,18 +73,20 @@ class window.LDPlugin extends window.LimePlugin
         # $.get('http://dev.iks-project.eu/cors/www.tvtrip.es/flachau-hotels/funsport-bike-skihotelanlage-tauernhof', function(res){console.info(window.test=res)})
       success = (res) =>
         entity = _.detect res, (ent) -> ent.fromReference(ent.getSubject()) is ent.fromReference(entityUri)
-        results.push entity
+        if entity
+          results.push entity
         if depth is 0
           cb _.flatten(results)
         else
           redirects = []
-          for prop in props
-            if _.isString(prop)
-              redir = entity.get prop
-              unless redir?.isEntity
-                redirects.push redir
-            if _.isFunction(prop)
-              redirects.push(prop(entity))
+          if entity
+            for prop in props
+              if _.isString(prop)
+                redir = entity.get prop
+                unless redir?.isEntity
+                  redirects.push redir
+              if _.isFunction(prop)
+                redirects.push(prop(entity))
           redirects = _.flatten(redirects)
           redirects = _.uniq(redirects)
           redirects = _.compact(redirects)
