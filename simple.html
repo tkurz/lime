@@ -9,7 +9,7 @@
     <script src="lib/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
     <script type="text/javascript" src="lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
-    <script type="text/javascript" src="lib/vie/vie-2.0.0.debug.js"></script>
+    <script type="text/javascript" src="lib/vie/vie-latest.debug.js"></script>
 
 
     <!-- Plugin dependencies -->
@@ -73,6 +73,9 @@
                 // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                 annotFrameworkURL: cmfurl,
                 // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+                LDPlugin: {
+                    stanbolUrl: "http://www.corsproxy.com/connectme.salzburgresearch.at/CMF/stanbol/config"
+                },
                 widgetContainers:[
                     {element:jQuery('#widget-container-1'), orientation:'horizontal'},
                     {element:jQuery('#widget-container-2'), orientation:'horizontal'}
