@@ -179,6 +179,9 @@ class window.CMF
     xhr = jQuery.getJSON uri, (data) =>
       res = []
       list = data.results.bindings
+      if list.length isnt _(list).uniq().length
+        console.warn('CMF DISTINCT is being ignored!', list, query)
+        list = _(list).uniq()
       resCB null, list
     xhr.error resCB
 
