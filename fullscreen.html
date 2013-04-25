@@ -98,12 +98,12 @@
         };
 
         getLocators(function (err, locators) {
-            var x = _.uniq(locators,false,function(i){
+           /* var x = _.uniq(locators,false,function(i){
 
                 return i['source'];
 
             })
-            locators = x;
+            locators = x;*/
             console.info("locators", x);
             if (err || locators.length == 0) {
                 console.error("Error getting video locators", err, locators);
