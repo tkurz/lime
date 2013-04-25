@@ -105,6 +105,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
              </div>
              <div id="infoSecondText" style="font-family: CaviarDreamsBold; font-size: 18px; color: #c0bebe; position: relative; float: left; background-color: #020000; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
               #{secondarytext}
+      
              </div>
              <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: left; width: 300px; height: 300px;"></div>
              </div>
