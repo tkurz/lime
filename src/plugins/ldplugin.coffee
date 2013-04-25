@@ -135,8 +135,9 @@ class window.LDPlugin extends window.LimePlugin
         # Add methods on the annotation to get label, description, etc in the player's preferred language
 
         annotation.getLabel = annotation.getName = ->
-          if annotation.prefLabel
-            return annotation.prefLabel.value
+          # console.log "the analized annotation", annotation
+          if annotation.hash.prefLabel
+            return annotation.hash.prefLabel.value
           else
             return @_detectPropertyLanguageOnEntity(['rdfs:label', 'geonames:alternateName'], [@lime.options.preferredLanguage, 'en'], "No label found.")
         annotation.getDescription = ->
