@@ -104,8 +104,8 @@ class window.LIMEPlayer
     jQuery(@).bind 'timeupdate', (e) =>
       for annotation in @annotations
         currentTime = e.currentTime
-        # currentSrc = @player.currentSource()
-        currentSrc = @options.video[0].source
+        currentSrc = @player.currentSource()
+        #currentSrc = @options.video[0].source
         if currentSrc.indexOf(@_getFilename(annotation.fragment.value)) isnt -1
           if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
             # has to be activated
@@ -121,7 +121,7 @@ class window.LIMEPlayer
     displaysrc=''
     for locator, i in @options.video
       displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
-
+    console.log "dysplaysrc = ", displaysrc
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     @el.append """
       <div class='videowrapper' id='videowrapper'>
@@ -210,10 +210,14 @@ class window.LIMEPlayer
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
-   # src = @player.currentSource()
+    #src = @player.currentSource()
     src= @options.video[0].source
     @annotations = _.filter @options.annotations, (ann) =>
       src.indexOf(@_getFilename(ann.fragment.value)) isnt -1
+    @annotations = _.uniq @annotations,false, (item) =>
+      item.resource.value
+
+
     console.info "Relevant annotations:", @annotations
     cb()
   _moveWidgets: (isFullscreen) ->

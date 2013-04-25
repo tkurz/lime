@@ -96,23 +96,36 @@
                 cmf.getLocatorsForVideoOrLocator(videoUrl, cb);
             }
         };
+
         getLocators(function (err, locators) {
-            console.info("locators", locators);
+            var x = _.uniq(locators,false,function(i){
+
+                return i['source'];
+
+            })
+            locators = x;
+            console.info("locators", x);
             if (err || locators.length == 0) {
                 console.error("Error getting video locators", err, locators);
                 alert("Error getting video locators for " + videoUrl);
                 return
             }
 
-            getAnnotations(function (err, annotations) {
+         getAnnotations(function (err, annotations) {
                 if (err) {
                     console.error("Error getting annotations", err);
                     alert("Error loading annotations");
                     return;
                 }
+                console.info("Annotations - before", annotations);
+                /*var x = _.uniq(annotations,false, function(item){
+                        return item.resource.value;
+                    })
+                annotations = x;*/
                 annotations = _(annotations).map(function (ann) {
                     return new Annotation(ann);
                 });
+
                 console.info("Annotations", annotations);
                 var options = {
                     video:locators,
