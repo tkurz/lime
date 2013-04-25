@@ -101,7 +101,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
              </div>
              <div id="infoMainText" style="position: relative; float: left; background-color: #525050; width: 300px; height: 300px; font-family: caviardreamsregular;">
                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
-             <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('resources/120px-DBpediaLogo.svg.png');"></div>
+             <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
              </div>
              <div id="infoSecondText" style="font-family: CaviarDreamsBold; font-size: 18px; color: #c0bebe; position: relative; float: left; background-color: #020000; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
               #{secondarytext}
