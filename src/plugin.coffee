@@ -62,7 +62,7 @@ class window.LimePlugin
 
     # Create contetn holders within the modal container
     modalContainer.append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
-    modalContainer.append "<div class=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto;\">"
+    modalContainer.append "<div class=\"modalContent\" style=\"height: 98%; width: 100%; position: relative; margin: 0 auto;\">"
     modalContainer.append "</div>"
 
     #Get the screen height and width
@@ -85,7 +85,7 @@ class window.LimePlugin
 
     #Set the popup window to center
     # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-    modalContainer.css "top", "10%"
+    modalContainer.css "top", $("#header").height()
     # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
     modalContainer.css "right", jQuery("#widget-container-2").width()
     #alert modalContainer.height()
@@ -119,7 +119,7 @@ class window.LimePlugin
 
       #Set the popup window to center
       # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-      modalContainer.css "top", "10%"
+      modalContainer.css "top",  $("#header").height()
       # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
       modalContainer.css "right", jQuery("#widget-container-2").width()
       modalContainer.css "width", "auto"

@@ -92,20 +92,20 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     if(secondarytext.length > 2)
       result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; height: 600px; width: 600px; ">
-             <div id="infoMainPicture" style="position: relative; float: left; width: 300px; height: 300px; background-color: #6ab1e7;">
+             <div id="infoMainPicture" style="position: relative; float: left; width: 300px; height: 300px; background-color: rgb(171, 171, 172);">
               <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 40%;"></div>
               <div id="title" style="position: relative; float: left; width: 60%; height: 100%;">
               <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 900; right: 0px; bottom: 0px; width: 50px; height: 50px;">
-                <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: #f38f0b;">i</span>
+                <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
               </div><span data-dojo-type="shapes.Text" style="position: absolute; z-index: 900; font-family: CaviarDreamsBold; line-height: 140%; height: 100%; left: 0px; top: 0px; font-size: 29px; color: #000000;">#{label}</span></div>
              </div>
              <div id="infoMainText" style="position: relative; float: left; background-color: #525050; width: 300px; height: 300px; font-family: caviardreamsregular;">
                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
              <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
              </div>
-             <div id="infoSecondText" style="font-family: CaviarDreamsBold; font-size: 18px; color: #c0bebe; position: relative; float: left; background-color: #020000; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
+             <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 23px; color: #c0bebe; position: relative; float: left; background-color: #020000; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
               #{secondarytext}
-      
+
              </div>
              <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: left; width: 300px; height: 300px;"></div>
              </div>
@@ -113,11 +113,11 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     else
       result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; height: 300px; width: 600px; ">
-             <div id="infoMainPicture" style="position: relative; float: left; width: 300px; height: 300px; background-color: #6ab1e7;">
+             <div id="infoMainPicture" style="position: relative; float: left; width: 300px; height: 300px; background-color: rgb(171, 171, 172);">
              <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 40%;"></div>
              <div id="title" style="position: relative; float: left; width: 60%; height: 100%;">
              <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 900; right: 0px; bottom: 0px; width: 50px; height: 50px;">
-             <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: #f38f0b;">i</span>
+             <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
              </div><span data-dojo-type="shapes.Text" style="position: absolute; z-index: 900; font-family: CaviarDreamsBold; line-height: 140%; height: 100%; left: 0px; top: 0px; font-size: 29px; color: #000000;">#{label}</span></div>
              </div>
              <div id="infoMainText" style="position: relative; float: left; background-color: #525050; width: 300px; height: 300px; font-family: caviardreamsregular;">
