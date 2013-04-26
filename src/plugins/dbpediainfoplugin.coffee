@@ -65,7 +65,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
     depiction = annotation.getDepiction(without: 'thumb')
     if(depiction == null)
-      depiction = "img/noimage.png"
+      depiction = "img/noimagenew.png"
     ###
     result = """
       <div id="listContainer" style="position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;" >
