@@ -91,7 +91,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     ###
     if(secondarytext.length > 2)
       result = """
-             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; height: 600px; width: 600px; ">
+             <div id="infoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; height: 600px; width: 600px; ">
              <div id="infoMainPicture" style="position: relative; float: left; width: 300px; height: 300px; background-color: rgb(171, 171, 172);">
               <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 40%;"></div>
               <div id="title" style="position: relative; float: left; width: 60%; height: 100%;">
@@ -127,3 +127,4 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
              </div>
              """
     modalContent.append result
+
