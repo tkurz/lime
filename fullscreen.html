@@ -35,6 +35,7 @@
 <script src="lib/plugins/googleweatherplugin.js"></script>
 <script src="lib/plugins/annotationmodalwindow.js"></script>
 <script src="lib/plugins/lsiimageplugin.js"></script>
+<script src="lib/plugins/videoplugin.js"></script>
 <script src="lib/plugins/youtubeplugin.js"></script>
 <script src="lib/plugins/businessplugin.js"></script>
 <!--
@@ -96,7 +97,14 @@
                 cmf.getLocatorsForVideoOrLocator(videoUrl, cb);
             }
         };
+
         getLocators(function (err, locators) {
+           /* var x = _.uniq(locators,false,function(i){
+
+                return i['source'];
+
+            })
+            locators = x;*/
             console.info("locators", locators);
             if (err || locators.length == 0) {
                 console.error("Error getting video locators", err, locators);
@@ -104,15 +112,21 @@
                 return
             }
 
-            getAnnotations(function (err, annotations) {
+         getAnnotations(function (err, annotations) {
                 if (err) {
                     console.error("Error getting annotations", err);
                     alert("Error loading annotations");
                     return;
                 }
+                console.info("Annotations - before", annotations);
+                /*var x = _.uniq(annotations,false, function(item){
+                        return item.resource.value;
+                    })
+                annotations = x;*/
                 annotations = _(annotations).map(function (ann) {
                     return new Annotation(ann);
                 });
+
                 console.info("Annotations", annotations);
                 var options = {
                     video:locators,
@@ -144,7 +158,13 @@
                                 orientation:'horizontal'
                             }
                         },
-                         YoutubePlugin:{
+                         /*YoutubePlugin:{
+                            preferredContainer:{
+                                element:jQuery('#widget-container-2'),
+                                orientation:'horizontal'
+                            }
+                        }, */
+                        VideoPlugin:{
                             preferredContainer:{
                                 element:jQuery('#widget-container-2'),
                                 orientation:'horizontal'

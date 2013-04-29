@@ -37,11 +37,7 @@ class window.LimePlugin
       mask = @lime.modalMask
 
       # Resize the modal container
-      modalContainer.css
-        height: "90%"
-        # "max-height": "500px"
-        "width": "auto"
-        # "top": "5%"
+
 
       #if mask is clicked
       mask.click (e) =>
@@ -65,8 +61,8 @@ class window.LimePlugin
     mask.show()
 
     # Create contetn holders within the modal container
-    modalContainer.append "<a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a>"
-    modalContainer.append "<div class=\"modalContent\" style=\"height: 95%; width: 100%; position: relative; margin: 0 auto;\">"
+    modalContainer.append "<div style=\"height: 22px; width: 100%; position: relative; margin: 0 auto; background: black;\"> <a href=\"#\" class=\"close\" role=\"button\"><img src=\"img/close-icon.png\" style=\"width: 22px; height: 22px;\"/></a></div>"
+    modalContainer.append "<div class=\"modalContent\" style=\"height: 98%; width: 100%; position: relative; margin: 0 auto;\">"
     modalContainer.append "</div>"
 
     #Get the screen height and width
@@ -88,8 +84,10 @@ class window.LimePlugin
     winW = jQuery(window).width()
 
     #Set the popup window to center
-    modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-    modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
+    # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
+    modalContainer.css "top", $("#header").height()
+    # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
+    modalContainer.css "right", jQuery("#widget-container-2").width()
     #alert modalContainer.height()
     #transition effect
     modalContainer.fadeIn 100
@@ -120,8 +118,12 @@ class window.LimePlugin
       winW = jQuery(window).width()
 
       #Set the popup window to center
-      modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-      modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
+      # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
+      modalContainer.css "top",  $("#header").height()
+      # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
+      modalContainer.css "right", jQuery("#widget-container-2").width()
+      modalContainer.css "width", "auto"
+      modalContainer.css "height", "auto"
     return jQuery '.modalContent', modalContainer
 
 # # Simple reference Lime plugin called TestPlugin
