@@ -43,7 +43,7 @@ class window.LIMEPlayer
       annotations: []
 
       # LMF URL
-      # annotFrameworkURL: "http://labs.newmedialab.at/SKOS/"
+      annotFrameworkURL: "http://www.corsproxy.com/connectme.salzburgresearch.at/CMF/"
 
       # list of allowed widgets TODO Add possibility for defining configuration
       plugins: {
@@ -88,6 +88,8 @@ class window.LIMEPlayer
 
     @widgets = []
     @widgetContainers = @options.widgetContainers
+
+    @cmf = new CMF @options.annotFrameworkURL
 
     # Run initialisation functions, depending on each other:
     # * Initialize the DOM for the player and set up VideoJS

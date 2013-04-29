@@ -172,6 +172,41 @@ class window.CMF
       OPTIONAL {?source mao:hasFormat ?type}
     }
     ORDER BY ?source"""
+  getLSIVideosForTerm: (keywordUri, resCB) ->
+    res = []
+    query = @_getLSIVideosForTerm keywordUri
+    @_runSPARQL query, (err, res) ->
+      resCB err, res
+
+  _getLSIVideosForTerm: (keywordUri) -> """
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT DISTINCT ?video ?duration ?description ?locator ?title ?img
+    WHERE {
+      ?video mao:hasKeyword <#{keywordUri}> .
+      ?video a <http://www.w3.org/ns/ma-ont#VideoTrack> .
+      ?video mao:description ?description .
+      ?video mao:locator ?locator .
+      ?video mao:duration ?duration .
+      ?video mao:title ?title .
+      ?video foaf:img ?img .
+    }
+    ORDER BY ?video"""
+
+  getLSIImagesForTerm: (keywordUri, resCB) ->
+    res = []
+    query = @_getLSIImagesForTerm keywordUri
+    @_runSPARQL query, (err, res) ->
+      resCB err, res
+
+  _getLSIImagesForTerm: (keywordUri) -> """
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
+    SELECT DISTINCT ?image
+    WHERE {
+      ?image a <http://www.w3.org/ns/ma-ont#Image> .
+      ?image mao:hasKeyword <#{keywordUri}> .
+    }
+    ORDER BY ?image """
 
   # running SPARQL query
   _runSPARQL: (query, resCB) ->

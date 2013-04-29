@@ -35,6 +35,26 @@ class window.VideoPlugin extends window.LimePlugin
 
         jQuery(annotation).bind "becomeInactive", (e) =>
           annotation.widgets[@name].setInactive()
+    @getLSIVideos annotation
+
+  getLSIVideos: (annotation) ->
+    @lime.cmf.getLSIVideosForTerm annotation.resource.value, (err, res) =>
+      if err
+        console.warn "Error getting LSI Video resources", err
+      else
+        console.info "LSI resources for", annotation, res
+        annotation.lsiVideoResources = _(res).map (resultset) ->
+          entity =
+            title: resultset.title.value
+            description: resultset.description.value
+            duration: Number(resultset.duration.value)
+            locator: resultset.locator.value
+            img: resultset.img.value
+            video: resultset.video.value
+          entity
+
+        annotation.getLsiVideoResources = ->
+          @lsiVideoResources
 
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
@@ -111,6 +131,7 @@ class window.VideoPlugin extends window.LimePlugin
                     kasKeyword: {"http://dbpedia.org/resource/Sledding"}
                     }
                   ]
+    videoList = annotation.getLsiVideoResources()
     url = videoList[0].locator
     url = url.split('=')[1]
     ###
