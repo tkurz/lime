@@ -3,7 +3,7 @@ class window.VideoPlugin extends window.LimePlugin
     @name = 'VideoPlugin'
     console.info "Initialize #{@name}"
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("dbpedia.org/resource/Schladming") > 0
+      if annotation.resource.value.indexOf("dbpedia.org/resource/Sledding") > 0
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context
@@ -41,7 +41,10 @@ class window.VideoPlugin extends window.LimePlugin
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
-    ### the videoList represents a result of a quary liek this to the CMF:
+    ###
+    -- added 29.apr.2013
+
+    the videoList represents a result of a quary like this to the CMF:
             PREFIX mao: <http://www.w3.org/ns/ma-ont#>
             SELECT DISTINCT ?video
             WHERE {
@@ -51,6 +54,27 @@ class window.VideoPlugin extends window.LimePlugin
               ?video mao:hasKeyword <http://dbpedia.org/resource/Sledding> .
             }
             ORDER BY ?video
+    it should have the followind object structure:
+    videoList = [
+                    {
+                      description: "text description", [string]
+                      duration: 95.0, [flaot]
+                      locator: "https://www.youtube.com/watch?v=tzBRpNI1Mck", [string]
+                      title: "Nachtrodeln Schladming - Rohrmoos Hochwurzen Schlittenfahren", [string]
+                      img: "http://i.ytimg.com/vi/tzBRpNI1Mck/0.jpg", [string]
+                      kasKeyword: {"http://dbpedia.org/resource/Sledding", "http://dbpedia.org/resource/Schladming", "http://dbpedia.org/resource/Planai"} [array of string]
+                    },
+                    {
+                      description: "Hochwurzen 1850 m.",
+                      duration: "596.0",
+                      locator: "https://www.youtube.com/watch?v=AXgZ98Z9EFw",
+                      title: "Schladming- rodeln-Puzanje 2012.AVI",
+                      img: "http://i.ytimg.com/vi/AXgZ98Z9EFw/0.jpg",
+                      kasKeyword: {"http://dbpedia.org/resource/Sledding", "http://dbpedia.org/resource/Schladming", "http://dbpedia.org/resource/Hochwurzen"}
+                    },
+                    ...
+                  ]
+
     ###
 
     videoList = [{
@@ -58,45 +82,41 @@ class window.VideoPlugin extends window.LimePlugin
                     duration: "95.0",
                     locator: "https://www.youtube.com/watch?v=tzBRpNI1Mck",
                     title: "Nachtrodeln Schladming - Rohrmoos Hochwurzen Schlittenfahren",
-                    img: "http://i.ytimg.com/vi/tzBRpNI1Mck/0.jpg"
+                    img: "http://i.ytimg.com/vi/tzBRpNI1Mck/0.jpg",
+                    kasKeyword: {"http://dbpedia.org/resource/Sledding", "http://dbpedia.org/resource/Schladming", "http://dbpedia.org/resource/Planai"}
                     },
                     {
                     description: "Hochwurzen 1850 m.",
                     duration: "596.0",
                     locator: "https://www.youtube.com/watch?v=AXgZ98Z9EFw",
                     title: "Schladming- rodeln-Puzanje 2012.AVI",
-                    img: "http://i.ytimg.com/vi/AXgZ98Z9EFw/0.jpg"
+                    img: "http://i.ytimg.com/vi/AXgZ98Z9EFw/0.jpg",
+                    kasKeyword: {"http://dbpedia.org/resource/Sledding", "http://dbpedia.org/resource/Schladming", "http://dbpedia.org/resource/Hochwurzen"}
+
                     },
                     {
                     description: "Rodeln vom Feinsten auf der Hochwurzen ( Planai / Schladming). Musste Video leider auf 10min k??rzen. Fahrt dauerte 12min!",
                     duration: "600.0",
                     locator: "https://www.youtube.com/watch?v=zOzeGapneoY",
                     title: "Rodeln Hochwurzen",
-                    img: "http://i.ytimg.com/vi/zOzeGapneoY/0.jpg"
+                    img: "http://i.ytimg.com/vi/zOzeGapneoY/0.jpg",
+                    kasKeyword: {"http://dbpedia.org/resource/Sledding", "http://dbpedia.org/resource/Hochwurzen"}
                     },
                     {
                     description: "Ein Ausschnitt aus der Helmkamera vom Rodeln im J??nner 2013. Kamerafahrt wurde nicht von mir gemacht...Ich bin der gefilmte =) Musik: Ski or die - Snowboard ...",
                     duration: "55.0",
                     locator: "https://www.youtube.com/watch?v=AWK9lkChVpA",
                     title: "Rodelbahn Hochwurzen, Sturz (Helmkamera)",
-                    img: "http://i.ytimg.com/vi/AWK9lkChVpA/0.jpg"
+                    img: "http://i.ytimg.com/vi/AWK9lkChVpA/0.jpg",
+                    kasKeyword: {"http://dbpedia.org/resource/Sledding"}
                     }
                   ]
-    url = videoList[0].locator;
-    url = url.split('=')[1];
-    console.log "videoList -", videoList
+    url = videoList[0].locator
+    url = url.split('=')[1]
     ###
-    <iframe width="560" height="315" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}" frameborder="0" allowfullscreen>
-                  <p>Your browser does not support iframes.</p>
-              </iframe>
-
-
-  <embed id="embededVideo1" class="embededVideo" src="http://www.youtube.com/embed/#{url}" style="width: 600px; height: 450px; position: relative; display: none;"></embed>
-                    <embed id="embededVideo2" class="embededVideo" src="http://www.youtube.com/embed/#{url}" style="width: 600px; height: 450px; position: relative; display: none;"></embed>
-                    <embed id="embededVideo3" class="embededVideo" src="http://www.youtube.com/embed/#{url}" style="width: 600px; height: 450px; position: relative; display: none;"></embed>
-                    <embed id="embededVideo4" class="embededVideo" src="http://www.youtube.com/embed/#{url}" style="width: 600px; height: 450px; position: relative; display: none;"></embed>
+     -- added 29.apr.2013
+      UI handles the first 4 videoList items for now.
     ###
-
 
     result = """
              <div id="videoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; width: 600px; height: 600px;">
