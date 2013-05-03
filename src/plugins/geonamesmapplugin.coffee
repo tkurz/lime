@@ -91,11 +91,11 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       result = """
                <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: absolute; top: 0; z-index: 100; width: 600px; right: 0; height: 600px;">
                <div id="map_area" style="left: 0px; top: 0px; width: 600px; height: 600px; position: relative;"></div>
-               <div id="mapMenu" style="position: absolute; z-index: 900; width: 87px; right: 0px; bottom: 0px; height: auto;">
-               <div id="geoMap" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: none; height: 38px; width: 86px;"></div>
-               <div id="geoWeather" style="position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: none; width: 86px; height: 38px;"></div>
-               <div id="geoRout" style="background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: none; width: 86px; height: 40px;"></div>
-               <div id="geoPanoramio" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: none; width: 86px; height: 40px;"></div>
+               <div id="mapMenu" style="position: absolute; z-index: 900; width: auto; right: 0px; bottom: 0px; height: 39px;">
+               <div id="geoMap" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 38px; width: 86px;"></div>
+               <div id="geoWeather" style="position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 38px;"></div>
+               <div id="geoRout" style="background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
+               <div id="geoPanoramio" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                </div>
               <!-- <div id="closingButton" style="position: absolute; z-index: 900; width: 87px; height: 38px; background-color: #414040; left: 513px; top: 408px;"><span data-dojo-type="shapes.Text" style="font-size: 14px; position: absolute; z-index: 900; color: #ffffff; left: 41px; top: 8.5px;">X</span></div> -->
                </div>
