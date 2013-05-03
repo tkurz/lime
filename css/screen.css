@@ -647,3 +647,6 @@ a:hover {
     -o-transform: skew(15deg) rotate(6deg);
     transform: skew(15deg) rotate(6deg);
 }
+.nav-selected {
+    border: turquoise 1px solid;
+}

@@ -33,9 +33,13 @@ class window.LimeWidget
         jQuery(@).trigger 'activate',
           plugin: plugin
           widget: widget
+        @lime.claimKeyEvents widget
       else
         plugin.lime.player.seek widget.annotation.start
         plugin.lime.player.play()
+
+      # If a widget is clicked, it should also be marked as active for clear navigation.
+      plugin.lime.navActivateWidget widget.element
 
     # Wrap element methods for convenience on the widget
     defMethod = (o, m) =>

@@ -77,6 +77,12 @@
                 }
             };
             getLocators(function(err, locators){
+                var x = _.uniq(locators,false,function(i){
+
+                    return i['source'];
+
+                })
+                locators = x;
                 console.info("locators", locators);
                 if(err || locators.length == 0) {
                     console.error("Error getting video locators", err, locators);

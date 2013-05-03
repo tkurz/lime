@@ -36,6 +36,13 @@ class window.LimePlugin
       modalContainer = @lime.modalContainer
       mask = @lime.modalMask
 
+      $(modalContainer).bind 'close', (e) =>
+        mask.hide()
+        modalContainer.hide()
+        modalContainer.empty()
+        @lime.claimKeyEvents(@lime)
+
+
       # Resize the modal container
 
 
@@ -44,6 +51,7 @@ class window.LimePlugin
         mask.hide()
         modalContainer.hide()
         modalContainer.empty()
+        @lime.claimKeyEvents(@lime)
 
       # when fullscreen state changes, the mask and the modal container has to be moved into the corresponding DOM element.
       jQuery(@lime.player).bind 'fullscreenchange', (e) =>
@@ -100,6 +108,7 @@ class window.LimePlugin
       mask.hide()
       modalContainer.hide()
       modalContainer.empty()
+      @lime.claimKeyEvents(@lime)
 
     jQuery(window).resize (e) =>
 

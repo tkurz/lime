@@ -509,3 +509,6 @@ a:hover {
     margin: 0;
     padding: 0;
 }
+.widget-container .lime-widget.nav-selected {
+    border: turquoise 1px solid;
+}

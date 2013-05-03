@@ -27,6 +27,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         jQuery(widget).bind 'activate', (e) =>
           # @getModalContainer().html @showAbstractInModalWindow annotation
           @showAbstractInModalWindow annotation, @getModalContainer()
+
         # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
@@ -35,6 +36,9 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
         jQuery(annotation).bind "becomeInactive", (e) =>
           annotation.widgets[@name].setInactive()
+
+        jQuery(widget).bind "leftarrow", (e) =>
+          console.info 'left arrow pressed', e
 
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
