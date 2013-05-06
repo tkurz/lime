@@ -170,7 +170,12 @@ class window.AnnotationOverlays extends window.LimePlugin
     m = x % 60
     h = (x - m) / 60
     res = ""
-    # TODO 13:05 instead of 13:5
+    if 0 < h < 10
+      h = "0" + h
+    if m < 10
+      m = "0" + m
+    if s < 10
+      s = "0" + s
     res += "#{h}:" if h
     res += "#{m}:#{s}"
 
