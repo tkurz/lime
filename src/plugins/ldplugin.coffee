@@ -106,8 +106,8 @@ class window.LDPlugin extends window.LimePlugin
 
     if annotation.isBookmark()
       annotation.getLabel = annotation.getName = ->
-        if annotation.prefLabel
-          return annotation.prefLabel.value
+        if annotation.hash.prefLabel
+          return annotation.hash.prefLabel.value
       readyCb()
     else
       recursiveFetch entityUri, @options.followRedirects, 2, (res) ->

@@ -217,6 +217,10 @@ class window.LIMEPlayer
             event = $.Event 'downarrow'
           when 13
             event = $.Event 'select'
+          when 178
+            event = $.Event 'stop'
+          when 179, 32
+            event = $.Event 'playpause'
         if event
           $(@activeWidget).trigger event
         if e.keyCode is 27
@@ -256,6 +260,11 @@ class window.LIMEPlayer
       activeWidget = activeWidgets.filter('.nav-selected')
       activeWidget.trigger 'click'
 
+    $(@).bind 'playpause', (e) =>
+      if @player.paused()
+        @player.play()
+      else
+        @player.pause()
 
   # Arrow key events are processed by one component. If a widget is extended, then the widget. If not, the player.
   claimKeyEvents: (widget) ->
