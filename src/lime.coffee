@@ -265,6 +265,25 @@ class window.LIMEPlayer
       else
         @player.pause()
 
+    $(@).bind 'rightarrow', (e) =>
+      currentTime = @player.currentTime()
+      futureAnnotations = _(@annotations).filter (ann) =>
+        ann.start > currentTime
+      firstFutureAnnotation = _(futureAnnotations).min (ann) =>
+        ann.start
+      @player.seek firstFutureAnnotation.start
+
+    $(@).bind 'leftarrow', (e) =>
+      currentTime = @player.currentTime()
+      pastAnnotations = _(@annotations).filter (ann) =>
+        ann.start < currentTime
+      if pastAnnotations.length
+        latestPastAnnotation = _(pastAnnotations).max (ann) =>
+          ann.start
+        @player.seek latestPastAnnotation.start
+      else
+        @player.seek 0
+
   # Arrow key events are processed by one component. If a widget is extended, then the widget. If not, the player.
   claimKeyEvents: (widget) ->
     @activeWidget = widget
