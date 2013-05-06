@@ -111,11 +111,13 @@ class window.LDPlugin extends window.LimePlugin
       readyCb()
     else
       recursiveFetch entityUri, @options.followRedirects, 2, (res) ->
-        console.info "LDPlugin loaded", _(res).uniq()
+        res = _(res).uniq (entity) ->
+          entity.getSubject()
+        console.info "LDPlugin loaded", res
         if entityUri is debug
           @lime.player.pause()
           debugger
-        annotation.entities = _(res).uniq() or []
+        annotation.entities = res or []
       # @vie.load(entity: entityUri).using('stanbol').execute().fail(error).success (res) =>
 
         annotation._detectPropertyLanguageOnEntity = (properties, languages, defaultLabel) ->

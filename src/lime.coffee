@@ -104,11 +104,11 @@ class window.LIMEPlayer
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
     $(@).bind 'timeupdate', (e) =>
+      currentTime = e.currentTime or @player.currentTime()
+      currentSrc = @player.currentSource()
       for annotation in @annotations
-        currentTime = e.currentTime
-        currentSrc = @player.currentSource()
         if currentSrc.indexOf(@_getFilename(annotation.fragment.value)) isnt -1
-          if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
+          if annotation.state is 'inactive' and annotation.start <= currentTime and annotation.end + 1 > currentTime
             # has to be activated
             annotation.state = 'active'
             $(annotation).trigger $.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
@@ -272,6 +272,7 @@ class window.LIMEPlayer
       firstFutureAnnotation = _(futureAnnotations).min (ann) =>
         ann.start
       @player.seek firstFutureAnnotation.start
+      $(@player).trigger 'timeupdate'
 
     $(@).bind 'leftarrow', (e) =>
       currentTime = @player.currentTime()
@@ -283,6 +284,7 @@ class window.LIMEPlayer
         @player.seek latestPastAnnotation.start
       else
         @player.seek 0
+      $(@player).trigger 'timeupdate'
 
   # Arrow key events are processed by one component. If a widget is extended, then the widget. If not, the player.
   claimKeyEvents: (widget) ->
@@ -347,7 +349,7 @@ class window.LIMEPlayer
 
     for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
       if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
-        $(annotation).trigger($.Event("becomeInactive", annotation: annotation))
+        # $(annotation).trigger($.Event("becomeInactive", annotation: annotation))
         $(annotation).trigger($.Event("becomeActive", annotation: annotation))
     # end added SORIN
     console.info "_moveWidgets", isFullscreen
