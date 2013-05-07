@@ -82,11 +82,17 @@
                     return i['source'];
 
                 })
+
                 locators = x;
                 console.info("locators", locators);
-                if(err || locators.length == 0) {
+                if(err) {
                     console.error("Error getting video locators", err, locators);
                     alert("Error getting video locators for " + videoUrl);
+                    return
+                }
+                else if(locators.length == 0) {
+                    console.error("There are no locators stored for this video", err, locators);
+                    alert("There are no locators stored for " + videoUrl);
                     return
                 }
 
