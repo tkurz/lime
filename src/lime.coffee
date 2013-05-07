@@ -104,12 +104,11 @@ class window.LIMEPlayer
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
     $(@).bind 'timeupdate', (e) =>
+      currentTime = e.currentTime or @player.currentTime()
+      currentSrc = @player.currentSource()
       for annotation in @annotations
-        currentTime = e.currentTime
-        currentSrc = @player.currentSource()
-        #currentSrc = @options.video[0].source
         if currentSrc.indexOf(@_getFilename(annotation.fragment.value)) isnt -1
-          if annotation.state is 'inactive' and annotation.start < currentTime and annotation.end + 1 > currentTime
+          if annotation.state is 'inactive' and annotation.start <= currentTime and annotation.end + 1 > currentTime
             # has to be activated
             annotation.state = 'active'
             $(annotation).trigger $.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
@@ -217,6 +216,10 @@ class window.LIMEPlayer
             event = $.Event 'downarrow'
           when 13
             event = $.Event 'select'
+          when 178
+            event = $.Event 'stop'
+          when 179, 32
+            event = $.Event 'playpause'
         if event
           $(@activeWidget).trigger event
         if e.keyCode is 27
@@ -256,6 +259,32 @@ class window.LIMEPlayer
       activeWidget = activeWidgets.filter('.nav-selected')
       activeWidget.trigger 'click'
 
+    $(@).bind 'playpause', (e) =>
+      if @player.paused()
+        @player.play()
+      else
+        @player.pause()
+
+    $(@).bind 'rightarrow', (e) =>
+      currentTime = @player.currentTime()
+      futureAnnotations = _(@annotations).filter (ann) =>
+        ann.start > currentTime
+      firstFutureAnnotation = _(futureAnnotations).min (ann) =>
+        ann.start
+      @player.seek firstFutureAnnotation.start
+      $(@player).trigger 'timeupdate'
+
+    $(@).bind 'leftarrow', (e) =>
+      currentTime = @player.currentTime()
+      pastAnnotations = _(@annotations).filter (ann) =>
+        ann.start < currentTime
+      if pastAnnotations.length
+        latestPastAnnotation = _(pastAnnotations).max (ann) =>
+          ann.start
+        @player.seek latestPastAnnotation.start
+      else
+        @player.seek 0
+      $(@player).trigger 'timeupdate'
 
   # Arrow key events are processed by one component. If a widget is extended, then the widget. If not, the player.
   claimKeyEvents: (widget) ->
@@ -280,13 +309,12 @@ class window.LIMEPlayer
 
   _loadAnnotations: (cb) ->
     console.info "Loading annotations from LMF"
-    #src = @player.currentSource()
-    src= @options.video[0].source
+    src = @player.currentSource()
+    @annotations = @options.annotations
     @annotations = _.filter @options.annotations, (ann) =>
       src.indexOf(@_getFilename(ann.fragment.value)) isnt -1
     @annotations = _.uniq @annotations,false, (item) =>
-      item.resource.value
-
+      [item.hash.resource.value, item.hash.fragment.value]
 
     console.info "Relevant annotations:", @annotations
     cb()
@@ -321,7 +349,7 @@ class window.LIMEPlayer
 
     for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
       if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
-        $(annotation).trigger($.Event("becomeInactive", annotation: annotation))
+        # $(annotation).trigger($.Event("becomeInactive", annotation: annotation))
         $(annotation).trigger($.Event("becomeActive", annotation: annotation))
     # end added SORIN
     console.info "_moveWidgets", isFullscreen

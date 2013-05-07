@@ -137,7 +137,7 @@ class window.AnnotationOverlays extends window.LimePlugin
     activeAnnotations = _.filter @lime.annotations, (ann) =>
       ann.start <= currentTime and ann.end > currentTime and currentSrc.indexOf(getFilename(ann.fragment.value)) isnt -1
     activeAnnotations = _(activeAnnotations).sortBy (ann) =>
-      0 - ann.start
+      [0 - ann.start, ann.hash.relation.value, ann.hash.fragment.value]
     res = ""
     for ann in activeAnnotations
       depiction = ann.getDepiction?(without: 'thumb')
@@ -151,7 +151,7 @@ class window.AnnotationOverlays extends window.LimePlugin
         <td class='label'>
       """
       if ann.getPage
-        res += "<a href='#{ann.getPage()}' target='_blank'>#{ann.getLabel()}</a>"
+        res += "<a href='#{ann.getPage()}' target='_blank' title='#{ann.hash.relation.value} #{ann.hash.fragment.value}'>#{ann.getLabel()}</a>"
       else
         res += "<span>#{ann.getLabel?() or ann}</span>"
       res += "</td></tr>"
@@ -170,6 +170,12 @@ class window.AnnotationOverlays extends window.LimePlugin
     m = x % 60
     h = (x - m) / 60
     res = ""
+    if 0 < h < 10
+      h = "0" + h
+    if m < 10
+      m = "0" + m
+    if s < 10
+      s = "0" + s
     res += "#{h}:" if h
     res += "#{m}:#{s}"
 
