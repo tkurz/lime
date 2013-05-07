@@ -42,10 +42,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
           console.info 'left arrow pressed', e
 
 
-        jQuery(widget).bind "leftarrow", (e) =>
-          console.info 'left arrow pressed', e
-
-
   getLSIImages: (annotation) ->
     @lime.cmf.getLSIImagesForTerm annotation.resource.value, (err, res) =>
       if err
@@ -60,11 +56,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         annotation.getLsiImagesResources = ->
           @lsiImageResources
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 21328aee44eba68d79cfc4a53a00af04e765e627
 
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
