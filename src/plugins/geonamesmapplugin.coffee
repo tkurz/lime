@@ -37,43 +37,38 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
 
         jQuery(annotation).bind "becomeInactive", (e) =>
           annotation.widgets[@name].setInactive()
-  ###
-  showInModalWindow: (annotation, output) ->
-    try
-      if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest()
-      else # code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.open "POST", annotation.resource.value + "/about.rdf", false
-      xmlhttp.send()
-      xmlDoc = xmlhttp.responseXML
 
-      #document.write("<table border='1'>");
-      x = xmlDoc.getElementsByTagName("Feature")
-      i = 0
-      while i < x.length
 
-        #document.write("<tr><td>");
-        locationName = x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue
+        jQuery(widget).bind "leftarrow", (e) =>
+          # @geotabsiterator += 1
+          @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
+          $('.geotab.selected').removeClass 'selected'
+          if (@geotabsiterator == 0)
+            $("#geoMap").trigger 'click'
+            $("#geoMap").addClass 'selected'
+          if (@geotabsiterator == 1)
+            $("#geoWeather").trigger 'click'
+            $("#geoWeather").addClass 'selected'
+          if (@geotabsiterator == 2)
+            $("#geoRout").trigger 'click'
+            $("#geoRout").addClass 'selected'
+          if (@geotabsiterator == 3)
+            $("#geoPanoramio").trigger 'click'
+            $("#geoPanoramio").addClass 'selected'
 
-        #document.write("</td><td>");
-        latitude = x[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue
+        jQuery(widget).bind "rightarrow", (e) =>
+          # @geotabsiterator += 1
+          @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
+          if (@geotabsiterator == 0)
+            $("#geoMap").trigger 'click'
+          if (@geotabsiterator == 1)
+            $("#geoWeather").trigger 'click'
+          if (@geotabsiterator == 2)
+            $("#geoRout").trigger 'click'
+          if (@geotabsiterator == 3)
+            $("#geoPanoramio").trigger 'click'
 
-        #document.write("</td><td>");
-        longitude = x[i].getElementsByTagName("long")[0].childNodes[0].nodeValue
-        i++
-    latlng = new google.maps.LatLng(latitude, longitude)
 
-    #	console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
-    myOptions =
-      zoom: 13
-      center: latlng
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-
-    map = new google.maps.Map(output[0], myOptions)
-    return;
-
-  ###
   showInModalWindow: (annotation, outputElement) ->
     modalContent = undefined
     result = undefined
@@ -91,11 +86,11 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       result = """
                <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: absolute; top: 0; z-index: 100; width: 600px; right: 0; height: 600px;">
                <div id="map_area" style="left: 0px; top: 0px; width: 600px; height: 600px; position: relative;"></div>
-               <div id="mapMenu" style="position: absolute; z-index: 900; width: auto; right: 0px; bottom: 0px; height: 39px;">
-               <div id="geoMap" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 38px; width: 86px;"></div>
-               <div id="geoWeather" style="position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 38px;"></div>
-               <div id="geoRout" style="background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
-               <div id="geoPanoramio" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
+               <div id="mapMenu" style="position: absolute; z-index: 900; width: auto; right: 1px; bottom: 0px; height: 41px;">
+               <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
+               <div id="geoWeather" class="geotab" style="position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
+               <div id="geoRout" class="geotab" style="background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
+               <div id="geoPanoramio" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                </div>
               <!-- <div id="closingButton" style="position: absolute; z-index: 900; width: 87px; height: 38px; background-color: #414040; left: 513px; top: 408px;"><span data-dojo-type="shapes.Text" style="font-size: 14px; position: absolute; z-index: 900; color: #ffffff; left: 41px; top: 8.5px;">X</span></div> -->
                </div>
@@ -103,6 +98,8 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     else
       result = "<div id=\"map_area\" class=\"mainWidgetContainer\" style=\"position: absolute; z-index: 900; background-image: url('img/map.png'); background-repeat: no-repeat; background-position: left top; background-size: cover; box-shadow: inset 0 0 5px #888; height: " + (widgetHeight - 116) + "px; width: 740px; left: 0px; top: 116px;\"></div>\n <div id=\"geowidgetheader\" style=\"position: absolute; z-index: 900; background-color: #9c9c9b; background-repeat: no-repeat; background-position: 0px 0px; background-size: cover; background-image: url('img/mapBckg.png'); width: 660px; height: 116px; left: 80px; top: 0;\">\n   <div id=\"location_bar\" style=\"background-color: #45c048; width: 617px; position: relative; left: 0px; top: 0px; height: 38px;\">\n  </div>\n   <div id=\"weather_bar\" style=\"height: 38px; width: 617px; background-color: #f8cb86;\"></div>\n   <div id=\"close\" style=\"position: absolute; background-color: #070606; width: 48px; height: 100%; left: 616px; top: 0px;\">\n</div>\n   <p id=\"elevation\" style=\"bottom: 1px; float: none; display: inline; position: absolute; z-index: 900; font-family: Arial,Helvetica,sans-serif; font-size: 22px; text-align: right; line-height: normal; font-weight: bold; color: #ffffff; vertical-align: baseline; text-decoration: none; font-style: normal; text-indent: 0; margin-top: 0px; margin-bottom: 0px; margin-right: 1em; right: 48px;\"> &nbsp; </p>\n   <div id=\"rout_bar\" style=\"width: 617px; height: 40px; background-color: #fc8466;\"></div>\n </div>\n <div id=\"menu_bar\" style=\"border: none; border-radius: 6px; -moz-border-radius: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; position: absolute; z-index: 900; background-color: transparent; width: 77px; height: 113px; left: 0px; top: 0;\">\n <div id=\"menu_button_container\" style=\"position: relative; top: 0px; display: block; right: 0px; z-index: 900; float: right; width: 80px; height: 117px; left: 0px;\">\n<div id=\"geoMap\" style=\"position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: none; height: 38px; width: 86px;\"></div>\n<div id=\"geoWeather\" style=\"position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: none; width: 86px; height: 38px;\"></div>\n<div id=\"geoRout\" style=\"background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: none; width: 86px; height: 40px;\"></div>\n</div>\n </div>\n </body>"  if language.indexOf("de") >= 0
     modalContent.append result
+    @geotabs = $('.geotab:not(.disabled)')
+    @geotabsiterator = 0
 
     # control widget
     $("#geoMap").click ->
@@ -269,9 +266,10 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
               alert "Permission denied"
             when error.UNKNOWN_ERROR
               alert "Unknown error"
-
+    $("#geoPanoramio").click ->
 
 
     # default selection
     $("#geoMap").trigger "click"
+    $("#geoMap").addClass 'selected'
     return;
