@@ -75,17 +75,17 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
 
         jQuery(widget).bind "uparrow", (e) =>
           console.info 'uparrow pressed'
-          customEvent = jQuery.Event "keydown"
-          customEvent.which = 107 # + key code value
+          # customEvent = jQuery.Event "keydown"
+          # customEvent.which = 107 # + key code value
 
-          #$("#geoMap").trigger 'click'
-          $("#geoMap").trigger customEvent
+          # $("#geoMap").trigger 'click'
+          # $("#map_area").trigger customEvent
+          currentZoom = @geomap.getZoom()
+          @geomap.setZoom currentZoom + 1
 
         jQuery(widget).bind "downarrow", (e) =>
-          console.info 'downarrow pressed'
-          customEvent = jQuery.Event "keydown"
-          customEvent.which = 109  # - key code value
-          #$("#map_area:first-child").trigger customEvent
+          currentZoom = @geomap.getZoom()
+          @geomap.setZoom currentZoom - 1
 
 
   showInModalWindow: (annotation, outputElement) ->
@@ -121,7 +121,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     @geotabsiterator = 0
 
     # control widget
-    $("#geoMap").click ->
+    $("#geoMap").click =>
       $('.geotab.selected').removeClass 'selected'
       # menu handling
       $("#location_bar").css "visibility", "visible"
@@ -164,10 +164,12 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           mapTypeId: google.maps.MapTypeId.ROADMAP
 
         map = new google.maps.Map(output, myOptions)
-        google.maps.event.addListener(output, 'keydown', console.info 'map catched the keydown event');
+        @geomap = map
+        console.info @geomap
+        # google.maps.event.addListener(output, 'keydown', console.info 'map catched the keydown event');
       $("#geoMap").addClass 'selected'
 
-    $("#geoWeather").click ->
+    $("#geoWeather").click =>
       $('.geotab.selected').removeClass 'selected'
       # menu handling
       $("#location_bar").css "visibility", "hidden"
@@ -213,9 +215,10 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       map = new google.maps.Map(output, myOptions)
       weatherLayer = new google.maps.weather.WeatherLayer(temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS)
       weatherLayer.setMap map
+      @geomap = map
       $("#geoWeather").addClass 'selected'
 
-    $("#geoRout").click ->
+    $("#geoRout").click =>
       $('.geotab.selected').removeClass 'selected'
       # menu handling
       $("#location_bar").css "visibility", "hidden"
@@ -269,6 +272,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           # set direction map
           #alert(start);
           directionsDisplay.setMap map
+          @geomap = map
           request =
             origin: start
             destination: destination
@@ -292,7 +296,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
               alert "Unknown error"
       $("#geoRout").addClass 'selected'
 
-    $("#geoPanoramio").click ->
+    $("#geoPanoramio").click =>
       $('.geotab.selected').removeClass 'selected'
       $("#geoPanoramio").addClass 'selected'
 
