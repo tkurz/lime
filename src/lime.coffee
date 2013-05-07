@@ -222,6 +222,7 @@ class window.LIMEPlayer
             event = $.Event 'playpause'
         if event
           $(@activeWidget).trigger event
+        $(@activeWidget).trigger e
         if e.keyCode is 27
           if @modalContainer?.is(':visible')
             @modalContainer.trigger $.Event 'close'
@@ -229,6 +230,11 @@ class window.LIMEPlayer
 
     # When loading the video, the player has to process all key events so navigation between widgets is possible.
     @claimKeyEvents @
+
+    $(window).bind 'popstate', (event) =>
+      console.log('pop: ' + event.originalEvent.state)
+      if @modalContainer?.is(':visible')
+        @modalContainer.trigger $.Event 'close'
 
     # If the down arrow was pressed, find the next or first active widget and make it active.
     $(@).bind 'downarrow', (e) =>

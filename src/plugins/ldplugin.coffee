@@ -177,7 +177,10 @@ class window.LDPlugin extends window.LimePlugin
                 value = entity.get('foaf:homepage')
                 if value
                   return value
-            return @entities[0].fromReference(entity.getSubject())
+            if @entities.length
+              return @entities[0].fromReference(entity.getSubject())
+            else
+              return @resource.value
           return homepage
 
         annotation.entityPromise.resolve annotation.entities
