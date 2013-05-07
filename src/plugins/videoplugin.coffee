@@ -175,7 +175,7 @@ class window.VideoPlugin extends window.LimePlugin
     result = """
              <div id="videoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; width: 600px; height: 600px;">
                 <div id="videoArea" style="left: 0px; top: 0px; width: 600px; position: relative; height: 450px; background-color: #f16f6f; float: left;">
-                <iframe id="embededVideo" width="600" height="450" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}" frameborder="0" allowfullscreen>
+                <iframe id="embededVideo" width="600" height="450" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}&autoplay=1" frameborder="0" allowfullscreen>
                 <p>Your browser does not support iframes.</p>
                 </iframe>
                 </div>
@@ -206,7 +206,7 @@ class window.VideoPlugin extends window.LimePlugin
       url = videoList[0].locator;
       url = url.split('=')[1];
       $("#embededVideo").empty()
-      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}"
+      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}&autoplay=1"
       $(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"
       $("#expandedwidget-videoicon1").css "background-image","url('img/youtube_gr.png')"
       $("#video1").addClass 'selected'
@@ -216,7 +216,7 @@ class window.VideoPlugin extends window.LimePlugin
       url = videoList[1].locator;
       url = url.split('=')[1];
       $("#embededVideo").empty()
-      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}"
+      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}&autoplay=1"
       $(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"
       $("#expandedwidget-videoicon2").css "background-image","url('img/youtube_gr.png')"
       $("#video2").addClass 'selected'
@@ -226,7 +226,7 @@ class window.VideoPlugin extends window.LimePlugin
       url = videoList[2].locator;
       url = url.split('=')[1];
       $("#embededVideo").empty()
-      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}"
+      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}&autoplay=1"
       $(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"
       $("#expandedwidget-videoicon3").css "background-image","url('img/youtube_gr.png')"
       $("#video3").addClass 'selected'
@@ -236,7 +236,7 @@ class window.VideoPlugin extends window.LimePlugin
       url = videoList[3].locator;
       url = url.split('=')[1];
       $("#embededVideo").empty()
-      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}"
+      $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}&autoplay=1"
       $(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"
       $("#expandedwidget-videoicon4").css "background-image","url('img/youtube_gr.png')"
       $("#video3").addClass 'selected'
