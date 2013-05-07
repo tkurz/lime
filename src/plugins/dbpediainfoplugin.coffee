@@ -57,7 +57,6 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
           @lsiImageResources
 
 
-
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
     modalContent = $(outputElement)
