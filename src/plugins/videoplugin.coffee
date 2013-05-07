@@ -3,7 +3,7 @@ class window.VideoPlugin extends window.LimePlugin
     @name = 'VideoPlugin'
     console.info "Initialize #{@name}"
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("dbpedia.org/resource/Sledding") > 0
+      if annotation.resource.value.indexOf("dbpedia.org/resource/Sledding") > 0 and annotation.relation.value in ['http://www.w3.org/ns/ma-ont#hasKeyword']
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context

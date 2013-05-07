@@ -5,7 +5,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     console.info "Initialize GeoNamesMapPlugin"
 
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("sws.geonames.org") > 0
+      if annotation.resource.value.indexOf("sws.geonames.org") > 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context
@@ -164,7 +164,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           mapTypeId: google.maps.MapTypeId.ROADMAP
 
         map = new google.maps.Map(output, myOptions)
-        google.maps.event.addDomListener(output, 'keydown', console.info 'map catched the keydown event');
+        google.maps.event.addListener(output, 'keydown', console.info 'map catched the keydown event');
       $("#geoMap").addClass 'selected'
 
     $("#geoWeather").click ->
