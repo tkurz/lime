@@ -5,7 +5,7 @@ class window.BusinessPlugin extends window.LimePlugin
     console.info "Initialize BusinessPlugin"
 
     for annotation in @lime.annotations
-      if annotation.isBookmark() and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
+      if annotation.isBookmark() and annotation.resource.value.indexOf("youtube.com") < 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
         # if annotation.resource.value.indexOf("geonames") < 0 && annotation.resource.value.indexOf("dbpedia") < 0 && annotation.resource.value.indexOf("youtube") < 0
         @handleAnnotation annotation
 
@@ -31,7 +31,7 @@ class window.BusinessPlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
-        @getModalContainer().html @renderContent annotation
+        @showAbstractInModalWindow annotation, @getModalContainer()
 
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
@@ -42,7 +42,10 @@ class window.BusinessPlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation.widgets[@name].setInactive()
 
-  renderContent: (annotation) ->
+  showAbstractInModalWindow: (annotation, outputElement) ->
+    modalContent = $(outputElement)
+    modalContent.css "width", "800px"
+    modalContent.css "height", "600px"
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
     lime = this.lime
     resource = ""
@@ -54,8 +57,8 @@ class window.BusinessPlugin extends window.LimePlugin
     console.log resource
     #result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
     result = """
-             <iframe frameborder="0" style="height: 95%; width: 100%; position: relative; margin: 0 auto;" src="#{resource}">
+             <iframe frameborder="0" style="height: 600px; width: 800px; position: relative; margin: 0 auto;" src="#{resource}">
              <p>Your browser does not support iframes.</p>
              </iframe>
              """
-    return result
+    modalContent.append result
