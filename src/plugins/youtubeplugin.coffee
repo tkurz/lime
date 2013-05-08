@@ -5,7 +5,7 @@ class window.YoutubePlugin extends window.LimePlugin
     console.info "Initialize YoutubePlugin"
 
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("geonames") < 0 && annotation.resource.value.indexOf("dbpedia") < 0 && annotation.resource.value.indexOf("youtube") > 0
+      if annotation.resource.value.indexOf("geonames") < 0 and annotation.resource.value.indexOf("dbpedia") < 0 and annotation.resource.value.indexOf("youtube") > 0
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context
@@ -27,7 +27,7 @@ class window.YoutubePlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
-        @displayModal annotation
+        @showAbstractInModalWindow annotation, @getModalContainer()
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
 
@@ -37,23 +37,25 @@ class window.YoutubePlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation.widgets[@name].setInactive()
 
-  showInModalWindow: (annotation, outputElement) ->
+  showAbstractInModalWindow: (annotation, outputElement) ->
+    modalContent = $(outputElement)
+    modalContent.css "width", "600px"
+    modalContent.css "height", "auto"
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
     lime = this.lime
     url = annotation.resource.value
-    url = url.split('=')[1]
-    console.log url
+    url = url.split('v=')[1]
+    console.info annotation.resource.value, url
     # result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
     result = """
-             <iframe width="560" height="315" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}" frameborder="0" allowfullscreen>
+             <iframe width="600" height="338" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}?autoplay=1" frameborder="0" allowfullscreen>
                   <p>Your browser does not support iframes.</p>
               </iframe>
             """
-    modalContent = $("#modalContent");
-    $(modalContent).append(result);
+    modalContent.append result
 
 
-  displayModal: (annotation) -> # Modal window script usin jquery
+  ### displayModal: (annotation) -> # Modal window script usin jquery
     # Get Modal Window
     #var modalcontainer;
     if @lime.player.isFullScreen
@@ -143,3 +145,5 @@ class window.YoutubePlugin extends window.LimePlugin
 
     #box.blur(function() { setTimeout(<bluraction>, 100); });
     @showInModalWindow annotation, "modalContent"
+
+    ###
