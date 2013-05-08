@@ -35,7 +35,7 @@ class window.LimeWidget
           widget: widget
         time = @lime.player.currentTime()
 
-        history.pushState { annotation: widget.annotation.hash.annotation.value, widgetType: widget.options.type, time: time }, 'state123', "#time=#{time}&widgetType=#{widget.options.type}"
+        history.pushState? { annotation: widget.annotation.hash.annotation.value, widgetType: widget.options.type, time: time }, 'state123', "#time=#{time}&widgetType=#{widget.options.type}"
         @lime.claimKeyEvents widget
       else
         plugin.lime.player.seek widget.annotation.start

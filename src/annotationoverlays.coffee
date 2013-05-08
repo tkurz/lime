@@ -64,6 +64,25 @@ class window.AnnotationOverlays extends window.LimePlugin
         else
           false
 
+    resize = =>
+      videoEl = $('video', @lime.element)
+      playerWidth = videoEl.width()
+      videoEl.css
+        width: 'auto'
+        # border: "1px red solid"
+      videoWidth = videoEl.width()
+      console.info('video width', playerWidth, videoWidth, @spacialAnnotationOverlay[0])
+      videoEl.css('width', '')
+      @spacialAnnotationOverlay.css
+        left: Math.floor((playerWidth - videoWidth) / 2)
+        right: (playerWidth - videoWidth) / 2
+        position: 'absolute'
+        height: '100%'
+        # border: "1px red solid"
+        "pointer-events": 'none'
+    $(window).resize resize
+    resize()
+
   initTimeAnnotations: ->
     console.info "Initialize TimeAnnotationOverlays"
     # @lime.player.controlBar.progressControl.addComponent "TimeAnnotationOverlaysComponent"

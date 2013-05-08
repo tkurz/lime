@@ -125,7 +125,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
       # className: "spacial-annotation-overlays-wrapper"
         className: "lime-overlay"
         style: 'border: 2px red solid'
-      el.innerHTML = "&nbsp;"
+      #el.innerHTML = "&nbsp;"
       el
 
   # ConnectME annotation toggler button that shows/hides the annotations on Fullscreen

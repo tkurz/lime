@@ -43,7 +43,7 @@ class window.LIMEPlayer
       annotations: []
 
       # LMF URL
-      annotFrameworkURL: "http://www.corsproxy.com/connectme.salzburgresearch.at/CMF/"
+      annotFrameworkURL: "http://connectme.salzburgresearch.at/CMF/"
 
       # list of allowed widgets TODO Add possibility for defining configuration
       plugins: {
@@ -225,7 +225,10 @@ class window.LIMEPlayer
         $(@activeWidget).trigger e
         if e.keyCode is 27
           if @modalContainer?.is(':visible')
-            @modalContainer.trigger $.Event 'close'
+            if history.pushState
+              history.back()
+            else
+              @modalContainer.trigger $.Event 'close'
 
 
     # When loading the video, the player has to process all key events so navigation between widgets is possible.
