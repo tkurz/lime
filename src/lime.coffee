@@ -225,8 +225,10 @@ class window.LIMEPlayer
         $(@activeWidget).trigger e
         if e.keyCode is 27
           if @modalContainer?.is(':visible')
-            history.back()
-            # @modalContainer.trigger $.Event 'close'
+            if history.pushState
+              history.back()
+            else
+              @modalContainer.trigger $.Event 'close'
 
 
     # When loading the video, the player has to process all key events so navigation between widgets is possible.
