@@ -136,7 +136,7 @@ class window.LIMEPlayer
     console.info "Initializing the player"
     window.LIMEPlayer.VideoPlayerInit @videoEl[0], {}, (err, playerInstance) =>
       if err
-        alert err
+        console.info err
         return
       console.info "Player initialized"
       @player = playerInstance
