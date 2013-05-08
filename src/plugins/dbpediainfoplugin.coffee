@@ -119,8 +119,8 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       if(lsiImageList.length >0)
         result = """
                <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
-               <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
-               <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
+               <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 600px; font-family: caviardreamsregular;">
+               <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{comment}</span>
                <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
                </div>
 
@@ -136,7 +136,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                 </div>
 
-                <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
+                <div id="infoSecondText" style=" display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
                   #{secondarytext}
                 </div>
 
@@ -148,8 +148,8 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       else
         result = """
                  <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
-                 <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
-                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
+                 <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 600px; font-family: caviardreamsregular;">
+                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{comment}</span>
                  <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
                  </div>
 
@@ -165,11 +165,11 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                  </div>
 
-                 <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
+                 <div id="infoSecondText" style="display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
                        #{secondarytext}
                  </div>
 
-                 <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px; opacity: 0;"></div>
+                 <div id="infoSecondPic" style=" background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px; opacity: 0;"></div>
 
 
                  </div>
