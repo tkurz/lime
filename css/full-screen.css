@@ -61,7 +61,7 @@
     transition: right 2s;
 }
 .inactive {
-display: none !important;
+    display: none !important;
 }
 
 .help:hover {
@@ -245,6 +245,10 @@ html {
     height: 100%
 }
 body {
+    /* background-image: url('../img/background.png'); */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: black;
     background-image: url('../img/background.png');
     height: 100%;
     margin: 0;

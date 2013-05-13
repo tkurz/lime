@@ -264,7 +264,8 @@ html {
     height: 100%
 }
 body {
-    background-image: url('../img/background.png');
+    /* background-image: url('../img/background.png'); */
+    background: #ffffff;
     height: 100%;
     margin: 0;
     padding: 0;
