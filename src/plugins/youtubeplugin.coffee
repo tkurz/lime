@@ -18,7 +18,7 @@ class window.YoutubePlugin extends window.LimePlugin
     if(nonConcept.length >= 3)
       widget = @lime.allocateWidgetSpace @,
         thumbnail: "img/youtube.png" # should go into CSS
-        title: "Youtube Video"
+        title: "#{annotation.getLabel()} Video"
         type: "YoutubeWidget"
         sortBy: ->
           10000 * annotation.start + annotation.end
