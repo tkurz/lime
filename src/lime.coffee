@@ -164,6 +164,17 @@ class window.LIMEPlayer
         if widget.isActive
           @options.widgetVisibility()
 
+  getHiddenWidgetTypes: ->
+    JSON.parse(localStorage.getItem('hiddenWidgetTypes')) or []
+
+  updateDeactivatedWidgetStates: (activeWidgetTypes) ->
+    for widget in @widgets
+      widgetType = widget.options.type
+      if activeWidgetTypes.indexOf(widgetType) isnt -1
+        widget.element.removeClass 'deactivated'
+      else
+        widget.element.addClass 'deactivated'
+
   # Widget states are changed, update the display of them
   updateWidgetsList: _.throttle ->
     console.info "updateWidgetsList: scroll, hide, etc."
@@ -409,6 +420,8 @@ class window.LIMEPlayer
         @widgets.push res
         res.show()
         res.setInactive()
+        unless @getHiddenWidgetTypes().indexOf(options.type) is -1
+          res.element.addClass 'deactivated'
         @updateWidgetsList()
     return res
 

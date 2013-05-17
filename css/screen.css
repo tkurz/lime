@@ -650,3 +650,11 @@ a:hover {
 .nav-selected {
     border: turquoise 1px solid;
 }
+
+#video_player {
+    position: relative;
+}
+
+.lime-widget.deactivated {
+    display: none !important;
+}
