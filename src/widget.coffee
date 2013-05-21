@@ -61,7 +61,7 @@ class window.LimeWidget
   _init: ->
     @state = 'hidden'
   show: ->
-    @element.slideDown @options.showSpeed
+    @element.slideDown @options.showSpeed # , -> $(@).css('display', '')
     @state = 'visible'
   hide: ->
     @element.slideUp @options.showSpeed
