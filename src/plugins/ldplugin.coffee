@@ -183,6 +183,17 @@ class window.LDPlugin extends window.LimePlugin
               return @resource.value
           return homepage
 
+        annotation.getType = ->
+
+          for entity in @entities
+            typeSet = entity.get('@type')
+            if _.isArray typeSet
+                result = typeSet
+            else
+                result = [typeSet]
+          return result
+
+
         annotation.entityPromise.resolve annotation.entities
         readyCb()
 
