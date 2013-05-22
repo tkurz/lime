@@ -9,6 +9,13 @@ class window.UserSettingsPlugin extends window.LimePlugin
       @lime.player.pause()
       @renderUserSettingsInModalWindow()
 
+    button = $ "<div class='vjs-control usersettings'><div>OOO</div></div>"
+    button.click (e) =>
+      @lime.player.pause()
+      @renderUserSettingsInModalWindow()
+
+    $(@lime.player.buttonContainer).append button
+
   defaults:
     unhidable: []
 

@@ -402,7 +402,7 @@ a:hover {
     border-radius: 5px;
     -webkit-border-radius: 5px;*/
     overflow: hidden;
-    /* background-color: black; */
+    background-color: black;
     color: white;
     font: 22px 'Trebuchet MS', sans-serif;
     /*padding: 20px;*/

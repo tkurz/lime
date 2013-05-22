@@ -89,7 +89,8 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
         'pointer-events': 'none'
 
       # player.buttonContainer is the DOM element in the button bar that can accomodate switch elements (eg show/hide annotations)
-      player.buttonContainer = player.instance.controlBar.addComponent("AnnotationToggle").el
+      player.buttonContainer = player.instance.controlBar.el
+      player.instance.controlBar.addComponent("AnnotationToggle").el
 
       # # Events
       # timeupdate event
