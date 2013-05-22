@@ -3,7 +3,7 @@ class window.VideoPlugin extends window.LimePlugin
     @name = 'VideoPlugin'
     console.info "Initialize #{@name}"
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("dbpedia.org/resource/Sledding") > 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
+      if annotation.resource.value.indexOf("dbpedia.org") > 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context
@@ -14,12 +14,16 @@ class window.VideoPlugin extends window.LimePlugin
       nonConcept = annotation.getDescription()
       nonConcept = nonConcept.replace("No description found.","")
       if(nonConcept.length >= 3)
+        #if(@getLSIVideos annotation)
+        console.log "++++++ I should render a LSI video widget"
         widget = @lime.allocateWidgetSpace @,
           thumbnail: "img/youtube.png" # should go into CSS
           title: "#{annotation.getLabel()} Videos"
           type: "VideoWidget"
           sortBy: ->
             10000 * annotation.start + annotation.end
+
+        @getLSIVideos annotation
 
         # We're going to need the annotation for the widget's `activate` event
         widget.annotation = annotation
@@ -31,12 +35,15 @@ class window.VideoPlugin extends window.LimePlugin
         annotation.widgets[@name] = widget
 
         jQuery(annotation).bind "becomeActive", (e) =>
-          annotation.widgets[@name].setActive()
+          if (annotation.lsiVideoResources)
+              if(annotation.lsiVideoResources.length > 0)
+                  annotation.widgets[@name].setActive()
 
         jQuery(annotation).bind "becomeInactive", (e) =>
           annotation.widgets[@name].setInactive()
 
-        @getLSIVideos annotation
+
+
 
         jQuery(widget).bind "leftarrow", (e) =>
           @videotabsiterator = if @videotabs.length is @videotabsiterator + 1 then 0 else @videotabsiterator + 1
@@ -88,6 +95,8 @@ class window.VideoPlugin extends window.LimePlugin
 
         annotation.getLsiVideoResources = ->
           @lsiVideoResources
+
+
 
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
@@ -173,27 +182,63 @@ class window.VideoPlugin extends window.LimePlugin
     ###
 
     result = """
-             <div id="videoWidgetExpanded" style="border: 1px dotted lightgray; position: relative; width: 600px; height: 600px;">
+             <div id="videoWidgetExpanded" style="border-top: 1px dotted lightgray; position: relative; width: 600px; height: auto;">
                 <div id="videoArea" style="left: 0px; top: 0px; width: 600px; position: relative; height: 450px; background-color: #f16f6f; float: left;">
                 <iframe id="embededVideo" width="600" height="450" style="margin: 0 auto; display: block;" src="http://www.youtube.com/embed/#{url}?autoplay=1" frameborder="0" allowfullscreen>
                 <p>Your browser does not support iframes.</p>
                 </iframe>
                 </div>
-                <div id="videoList" style="background-color: #0a0a0a; position: relative; float: left; width: 600px; height: 150px;">
-                    <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
+            """
+    if (videoList.length == 2)
+      result +="""<div id="videoList" style="background-color: #0a0a0a; position: relative; float: left; width: 600px; height: 150px;">
+               <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 298px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
+               <div id="expandedwidget-videoicon1" style="position: absolute; z-index: 900; width: 50px; height: 50px; bottom: 0px; left: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 298px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
+               <div id="expandedwidget-videoicon2" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video3" class="videotab disabled" style="display:none; border: 1px solid black; position: relative; float: right; width: 198px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
+               <div id="expandedwidget-videoicon3" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video4" class="videotab disabled" style="display: none; border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
+               <div id="expandedwidget-videoicon4" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               </div>
+               """
+    if (videoList.length == 3)
+      result +="""<div id="videoList" style="background-color: #0a0a0a; position: relative; float: left; width: 600px; height: 150px;">
+                    <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 198px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
                         <div id="expandedwidget-videoicon1" style="position: absolute; z-index: 900; width: 50px; height: 50px; bottom: 0px; left: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover;" class="expandedwidget-videoicon"></div>
                     </div>
-                    <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
+                    <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 198px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
                         <div id="expandedwidget-videoicon2" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                     </div>
-                    <div id="video3" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
+                    <div id="video3" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 198px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
                         <div id="expandedwidget-videoicon3" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                     </div>
-                    <div id="video4" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
+                    <div id="video4" class="videotab disabled" style="display: none; border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
                         <div id="expandedwidget-videoicon4" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                     </div>
                 </div>
-             </div>
+                """
+    if (videoList.length >= 4)
+      result +="""<div id="videoList" style="background-color: #0a0a0a; position: relative; float: left; width: 600px; height: 150px; ">
+               <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
+               <div id="expandedwidget-videoicon1" style="position: absolute; z-index: 900; width: 50px; height: 50px; bottom: 0px; left: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
+               <div id="expandedwidget-videoicon2" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video3" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
+               <div id="expandedwidget-videoicon3" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               <div id="video4" class="videotab" style=" border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
+               <div id="expandedwidget-videoicon4" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
+               </div>
+               </div>
+               """
+
+    result +=""" </div>
              """
     modalContent.append result
 
