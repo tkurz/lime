@@ -663,6 +663,9 @@ a:hover {
     display: none !important;
 }
 
+.vjs-control.usersettings {
+    float: right;
+}
 .vjs-control.usersettings div {
     background: url('video-js.png') -50px -75px;
     width: 22px;

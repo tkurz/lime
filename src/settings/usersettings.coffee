@@ -59,7 +59,10 @@ class window.UserSettingsPlugin extends window.LimePlugin
     modalContent.append '<div class="settingscontent" style="color: white;">'
     settingsElement = $('.settingscontent', modalContent)
     settingsElement.append """
-      <p class="settingstitle" style="font-size: 20px; "> Video Settings </p>
+      <p class="settingstitle" style="font-size: 20px; ">LIME player settings </p>
+    """
+    ###
+    settingsElement.append """
       <p class="settingssection" style="font-size: 16px; "> Annotations </p>
       <form style="margin: 0 auto; text-align: left; font-size: 14px;width: 75%;">
         <div class="settingssection overlay-plugins" style="margin: 0 auto; ">
@@ -68,6 +71,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
         </div>
       </form>
     """
+    ###
 
     $('.annotationspatialoverlay', settingssection).click (e) =>
       console.info 'TODO: implement'
