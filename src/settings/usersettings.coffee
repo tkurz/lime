@@ -9,7 +9,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
       @lime.player.pause()
       @renderUserSettingsInModalWindow()
 
-    button = $ "<div class='vjs-control usersettings'><div>OOO</div></div>"
+    button = $ "<div class='vjs-control usersettings'><div></div></div>"
     button.click (e) =>
       @lime.player.pause()
       @renderUserSettingsInModalWindow()
@@ -63,8 +63,8 @@ class window.UserSettingsPlugin extends window.LimePlugin
       <p class="settingssection" style="font-size: 16px; "> Annotations </p>
       <form style="margin: 0 auto; text-align: left; font-size: 14px;width: 75%;">
         <div class="settingssection overlay-plugins" style="margin: 0 auto; ">
-          <input type="checkbox" class="annotationspatialoverlay " checked="checked"> Show annotation overlays on the video &nbsp; &nbsp; &nbsp;
-          <input type="checkbox" class="annotationtimelineoverlay setting" checked="checked"> Show annotation overlays on the timeline
+          <label><input type="checkbox" class="annotationspatialoverlay " checked="checked"> Show annotation overlays on the video</label><br/>
+          <label><input type="checkbox" class="annotationtimelineoverlay setting" checked="checked"> Show annotation overlays on the timeline</label>
         </div>
       </form>
     """
@@ -85,7 +85,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
     settingssection = $('div.settingssection.widget-types', settingsElement)
     for widgetType in @getAllWidgetTypes()
       checked = if @getHiddenWidgetTypes().indexOf(widgetType) is -1 then 'checked' else ''
-      settingssection.append "<div><input type='checkbox' name='#{widgetType}' class='#{widgetType} setting' #{checked} > Show '#{widgetType}' widgets </div>"
+      settingssection.append "<div><label><input type='checkbox' name='#{widgetType}' class='#{widgetType} setting' #{checked} > Show '#{widgetType}' widgets</label></div>"
 
     $('.setting', settingssection).click (e) =>
       widgetName = e.target.name
