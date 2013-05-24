@@ -206,7 +206,7 @@ border-top: 3px solid #FFFFFF;
 
 /* style for annotations toggle */
 .vjs-default-skin .vjs-annotationstoggler {
-    width: 86px;
+    width: 65px;
     height: 20px;
     cursor: pointer !important;
     float: left;
@@ -223,8 +223,12 @@ border-top: 3px solid #FFFFFF;
     background: -ms-linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
     background: linear-gradient(top,  #4d4d4d 0%,#3f3f3f 50%,#333333 50%,#252525 100%);
 }
+
+.vjs-control.vjs-annotationstoggler {
+    width: 65px;
+}
 .vjs-annotationstoggler div {
-    width: 86px;
+    width: 65px;
     height: 16px;
     background: url('../img/connectme_logo_16.png');
     margin: 0.3em auto 0;
@@ -402,7 +406,7 @@ a:hover {
     border-radius: 5px;
     -webkit-border-radius: 5px;*/
     overflow: hidden;
-    /* background-color: black; */
+    background-color: black;
     color: white;
     font: 22px 'Trebuchet MS', sans-serif;
     /*padding: 20px;*/
@@ -518,4 +522,18 @@ a:hover {
 }
 .selected{
     border: turquoise 1px solid;
+}
+
+.lime-widget.deactivated {
+    display: none !important;
+}
+
+.vjs-control.usersettings {
+    float: right;
+}
+.vjs-control.usersettings div {
+    background: url('video-js.png') -50px -75px;
+    width: 22px;
+    height: 16px;
+    margin: 0.5em auto 0;
 }

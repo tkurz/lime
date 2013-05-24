@@ -108,7 +108,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     depiction = annotation.getDepiction(without: 'thumb')
     if(depiction == null)
       depiction = "img/noimagenew.png"
-    lsiImageList = annotation.getLsiImagesResources()
+    lsiImageList = annotation.getLsiImagesResources?() or []
     console.log "Asociated images ",label ,lsiImageList
 
     ###
