@@ -56,10 +56,10 @@ class window.UserSettingsPlugin extends window.LimePlugin
     modalContent.css('overflow','auto');
     console.info "widget types:", @getAllWidgetTypes()
 
-    modalContent.append '<div class="settingscontent" style="color: white;">'
+    modalContent.append '<div class="settingscontent" style="color: white; width: 100%; height: auto; margin-top: 0; background: rgba(0,0,0,0.6);">'
     settingsElement = $('.settingscontent', modalContent)
     settingsElement.append """
-      <p class="settingstitle" style="font-size: 20px; ">LIME player settings </p>
+      <span class="settingstitle" style="font-size: 20px; margin-left: 10px;">LIME player settings </span>
     """
     ###
     settingsElement.append """
@@ -80,10 +80,11 @@ class window.UserSettingsPlugin extends window.LimePlugin
       console.info 'TODO: implement'
 
     settingsElement.append """
-      <p class="settingssection" style="font-size: 16px; "> Widgets </p>
+      <p class="settingssection" style="font-size: 16px; margin-left: 10px;"> Widgets </p>
       <form style="margin: 0 auto; text-align: left; font-size: 14px; width: 75%;" >
         <div class="settingssection widget-types" style="margin: 0 auto;"></div>
       </form>
+      <br/>
     """
 
     settingssection = $('div.settingssection.widget-types', settingsElement)
