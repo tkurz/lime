@@ -184,7 +184,6 @@ class window.LDPlugin extends window.LimePlugin
           return homepage
 
         annotation.getType = ->
-
           for entity in @entities
             typeSet = entity.get('@type')
             if _.isArray typeSet
@@ -192,6 +191,19 @@ class window.LDPlugin extends window.LimePlugin
             else
                 result = [typeSet]
           return result
+
+        annotation.getStarring = ->
+          starringList = @_detectProperty @entities, 'dbpedia-owl:birthDate'
+          unless starringList
+            for entity in @entities
+              value = entity.get('dbpedia-owl:birthDate')
+              if _.isArray value
+                starringList = value
+              else
+                starringList = [value]
+          console.log "===== LDPlugin - getStarring reslut: ", starringList
+          return starringList
+
 
 
         annotation.entityPromise.resolve annotation.entities

@@ -25,11 +25,12 @@ class window.ActorPlugin extends window.LimePlugin
     annotation.entityPromise.done =>
       isActor = false
       typeSet = annotation.getType()
-
-      for annotationType in typeSet
-        isActor = true if annotationType.id in @actorOntologySet
-        console.log annotationType.id
-
+      ###
+          for annotationType in typeSet
+          isActor = true if annotationType.id in @actorOntologySet
+          console.log annotationType.id
+      ###
+      isActor = true
       if isActor
         console.info "entities for annotation #{annotation.resource} loaded, is actor #{isActor} create a widget for it!"
         nonConcept = annotation.getDescription()
@@ -85,6 +86,8 @@ class window.ActorPlugin extends window.LimePlugin
     modalContent.css "height", "auto"
     label = annotation.getLabel()
     page = annotation.getPage()
+    starringList = annotation.getStarring()
+    console.log "---- Movies", starringList
     ###
     -- added 29.apr.2013 --
      LSIimages = list of images from the LSI that target the current annotation's DBPedia resource URI
@@ -155,7 +158,7 @@ class window.ActorPlugin extends window.LimePlugin
              <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
              Movies</div>
              <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-             The Big Bang Theory</div>
+             #{starringList}</div>
              <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
              Awards</div>
              <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
