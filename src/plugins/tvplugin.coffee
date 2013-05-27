@@ -158,6 +158,7 @@ class window.TVPlugin extends window.LimePlugin
     modalContent.css "height", "auto"
     label = annotation.getLabel()
     page = annotation.getPage()
+    comment = annotation.getDescription()
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
@@ -192,6 +193,7 @@ class window.TVPlugin extends window.LimePlugin
     modalContent.css "height", "auto"
     label = annotation.getLabel()
     page = annotation.getPage()
+    comment = annotation.getDescription()
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
