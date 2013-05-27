@@ -76,10 +76,11 @@ class window.TVPlugin extends window.LimePlugin
         entity = @vie.entities.get annotation.resource.value
         if entity and entity.isof('dbpedia:Person')
           @_loadFullDbpediaEntity entity, (fullEntity) =>
-            @processAnnotation annotation, fullEntity.attributes['@type']
+            # @processAnnotation annotation, fullEntity.attributes['@type']
+            @processAnnotation annotation, fullEntity
 
   processAnnotation: (annotation, typeArray) ->
-    if _.intersection(typeArray, @options.actorTypes).length
+    if _.intersection(typeArray.attributes['@type'], @options.actorTypes).length
       # There's at least one type in common
       console.info 'Render Actor widget'
       widgetType = 'ActorWidget'
@@ -90,7 +91,7 @@ class window.TVPlugin extends window.LimePlugin
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(typeArray, @options.characterTypes).length
+    if _.intersection(typeArray.attributes['@type'], @options.characterTypes).length
       console.info 'Render Character widget'
       # There's at least one type in common
       widgetType = 'CharacterWidget'
@@ -101,7 +102,7 @@ class window.TVPlugin extends window.LimePlugin
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(typeArray, @options.directorTypes).length
+    if _.intersection(typeArray.attributes['@type'], @options.directorTypes).length
       console.info 'Render Director widget'
       # There's at least one type in common
       widgetType = 'DirectorWidget'
