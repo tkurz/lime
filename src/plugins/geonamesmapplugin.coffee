@@ -15,7 +15,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
       nonConcept = annotation.getDescription()
       nonConcept = nonConcept.replace("No description found.","")
-      if(nonConcept.length >= 3)
+      if(nonConcept.length >= 3 or true)
         widget = @lime.allocateWidgetSpace @,
           thumbnail: "img/mapIcon.png" # should go into CSS
           title: "#{annotation.getLabel()} Map"
