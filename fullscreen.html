@@ -38,8 +38,7 @@
 <script src="lib/plugins/videoplugin.js"></script>
 <script src="lib/plugins/youtubeplugin.js"></script>
 <script src="lib/plugins/businessplugin.js"></script>
-<script src="lib/plugins/characterplugin.js"></script>
-<script src="lib/plugins/actorplugin.js"></script>
+<script src="lib/plugins/tvplugin.js"></script>
 <!--
 <script src="lib/plugins/googledirectionplugin.js"></script>
 -->
@@ -141,45 +140,18 @@
                     // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                     annotFrameworkURL:cmfurl,
                     plugins:{
-                        GeoNamesMapPlugin:{
-                            preferredContainer:{ element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'}
-                        },
+                        GeoNamesMapPlugin:{},
                         /* GoogleWeatherPlugin:{
                             preferredContainer:{ element:jQuery('#widget-container-2'),
                                 orientation:'horizontal'}
                         }, */
                         AnnotationModalWindow:{},
-                        DBPediaInfoPlugin:{
-                            preferredContainer:{ element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'}
+                        DBPediaInfoPlugin:{},
+                        BusinessPlugin:{}
                         },
-                         /*CharacterPlugin:{
-                            preferredContainer:{ element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'}
-                        },*/
-                        /* ActorPlugin:{
-                            preferredContainer:{ element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'}
-                        },*/
-                        BusinessPlugin:{
-                            preferredContainer:{
-                                element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'
-                            }
-                        },
-                         YoutubePlugin:{
-                            preferredContainer:{
-                                element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'
-                            }
-                        },
-                         VideoPlugin:{
-                            preferredContainer:{
-                                element:jQuery('#widget-container-2'),
-                                orientation:'horizontal'
-                            }
-                        },
+                         YoutubePlugin:{},
+                         VideoPlugin:{},
+                        TVPlugin: {},
                         /* LSIImagePlugin: {
                          preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                          },*/
@@ -193,8 +165,7 @@
                         stanbolUrl: "http://www.corsproxy.com/connectme.salzburgresearch.at/CMF/stanbol/config"
                     },
                     widgetContainers:[
-                        {element:jQuery('#widget-container-2'), orientation:'horizontal'},
-                        {element:jQuery('#widget-container-1'), orientation:'horizontal'}
+                        {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                     ],
                     annotationsVisible:true,
                     preferredLanguage:lang

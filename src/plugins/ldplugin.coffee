@@ -23,6 +23,7 @@ class window.LDPlugin extends window.LimePlugin
 
     for annotation in @lime.annotations
       annotation.lime = @lime
+      annotation.vie = @vie
       @loadAnnotation annotation, =>
         waitForAnnotationFetch--
         console.info "still waiting for so many annotations...", waitForAnnotationFetch
