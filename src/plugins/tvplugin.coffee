@@ -96,7 +96,7 @@ class window.TVPlugin extends window.LimePlugin
       widgetType = 'CharacterWidget'
       widget = @_initWidget annotation, widgetType, @renderCharacter,
         thumbnail: "img/info.png" # should go into CSS
-        title: "#{annotation.getLabel()} (Actor)"
+        title: "#{annotation.getLabel()} (Character)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
@@ -107,7 +107,7 @@ class window.TVPlugin extends window.LimePlugin
       widgetType = 'DirectorWidget'
       widget = @_initWidget annotation, widgetType, @renderDirector,
         thumbnail: "img/info.png" # should go into CSS
-        title: "#{annotation.getLabel()} (Actor)"
+        title: "#{annotation.getLabel()} (Director)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
