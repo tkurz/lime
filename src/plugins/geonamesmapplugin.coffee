@@ -13,79 +13,76 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
     annotation.entityPromise.done =>
       # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
-      nonConcept = annotation.getDescription()
-      nonConcept = nonConcept.replace("No description found.","")
-      if(nonConcept.length >= 3)
-        widget = @lime.allocateWidgetSpace @,
-          thumbnail: "img/mapIcon.png" # should go into CSS
-          title: "#{annotation.getLabel()} Map"
-          type: "GeoNamesMapWidget"
-          sortBy: ->
-            10000 * annotation.start + annotation.end
+      widget = @lime.allocateWidgetSpace @,
+        thumbnail: "img/mapIcon.png" # should go into CSS
+        title: "#{annotation.getLabel()} Map"
+        type: "GeoNamesMapWidget"
+        sortBy: ->
+          10000 * annotation.start + annotation.end
 
-        # We're going to need the annotation for the widget's `activate` event
-        widget.annotation = annotation
-        # widget was activated, we show details now
-        jQuery(widget).bind 'activate', (e) =>
-          @showInModalWindow annotation, @getModalContainer()
+      # We're going to need the annotation for the widget's `activate` event
+      widget.annotation = annotation
+      # widget was activated, we show details now
+      jQuery(widget).bind 'activate', (e) =>
+        @showInModalWindow annotation, @getModalContainer()
 
-        # Hang the widget on the annotation
-        annotation.widgets[@name] = widget
+      # Hang the widget on the annotation
+      annotation.widgets[@name] = widget
 
-        jQuery(annotation).bind "becomeActive", (e) =>
-          annotation.widgets[@name].setActive()
+      jQuery(annotation).bind "becomeActive", (e) =>
+        annotation.widgets[@name].setActive()
 
-        jQuery(annotation).bind "becomeInactive", (e) =>
-          annotation.widgets[@name].setInactive()
+      jQuery(annotation).bind "becomeInactive", (e) =>
+        annotation.widgets[@name].setInactive()
 
 
-        jQuery(widget).bind "leftarrow", (e) =>
-          # @geotabsiterator += 1
-          @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
-          #$('.geotab.selected').removeClass 'selected'
-          if (@geotabsiterator == 0)
-            $("#geoMap").trigger 'click'
-            #$("#geoMap").addClass 'selected'
-          if (@geotabsiterator == 1)
-            $("#geoWeather").trigger 'click'
+      jQuery(widget).bind "leftarrow", (e) =>
+        # @geotabsiterator += 1
+        @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
+        #$('.geotab.selected').removeClass 'selected'
+        if (@geotabsiterator == 0)
+          $("#geoMap").trigger 'click'
+          #$("#geoMap").addClass 'selected'
+        if (@geotabsiterator == 1)
+          $("#geoWeather").trigger 'click'
 
-          if (@geotabsiterator == 2)
-            $("#geoRout").trigger 'click'
-            #$("#geoRout").addClass 'selected'
-          if (@geotabsiterator == 3)
-            $("#geoPanoramio").trigger 'click'
-            #$("#geoPanoramio").addClass 'selected'
+        if (@geotabsiterator == 2)
+          $("#geoRout").trigger 'click'
+          #$("#geoRout").addClass 'selected'
+        if (@geotabsiterator == 3)
+          $("#geoPanoramio").trigger 'click'
+          #$("#geoPanoramio").addClass 'selected'
 
-        jQuery(widget).bind "rightarrow", (e) =>
-          # @geotabsiterator += 1
-          @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
-          #$('.geotab.selected').removeClass 'selected'
-          if (@geotabsiterator == 0)
-            $("#geoMap").trigger 'click'
-            #$("#geoMap").addClass 'selected'
-          if (@geotabsiterator == 1)
-            $("#geoWeather").trigger 'click'
-            #$("#geoWeather").addClass 'selected'
-          if (@geotabsiterator == 2)
-            $("#geoRout").trigger 'click'
-            #$("#geoRout").addClass 'selected'
-          if (@geotabsiterator == 3)
-            $("#geoPanoramio").trigger 'click'
-            #$("#geoPanoramio").addClass 'selected'
+      jQuery(widget).bind "rightarrow", (e) =>
+        # @geotabsiterator += 1
+        @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
+        #$('.geotab.selected').removeClass 'selected'
+        if (@geotabsiterator == 0)
+          $("#geoMap").trigger 'click'
+          #$("#geoMap").addClass 'selected'
+        if (@geotabsiterator == 1)
+          $("#geoWeather").trigger 'click'
+          #$("#geoWeather").addClass 'selected'
+        if (@geotabsiterator == 2)
+          $("#geoRout").trigger 'click'
+          #$("#geoRout").addClass 'selected'
+        if (@geotabsiterator == 3)
+          $("#geoPanoramio").trigger 'click'
+          #$("#geoPanoramio").addClass 'selected'
 
-        jQuery(widget).bind "uparrow", (e) =>
-          console.info 'uparrow pressed'
-          # customEvent = jQuery.Event "keydown"
-          # customEvent.which = 107 # + key code value
+      jQuery(widget).bind "uparrow", (e) =>
+        console.info 'uparrow pressed'
+        # customEvent = jQuery.Event "keydown"
+        # customEvent.which = 107 # + key code value
 
-          # $("#geoMap").trigger 'click'
-          # $("#map_area").trigger customEvent
-          currentZoom = @geomap.getZoom()
-          @geomap.setZoom currentZoom + 1
+        # $("#geoMap").trigger 'click'
+        # $("#map_area").trigger customEvent
+        currentZoom = @geomap.getZoom()
+        @geomap.setZoom currentZoom + 1
 
-        jQuery(widget).bind "downarrow", (e) =>
-          currentZoom = @geomap.getZoom()
-          @geomap.setZoom currentZoom - 1
+      jQuery(widget).bind "downarrow", (e) =>
+        currentZoom = @geomap.getZoom()
+        @geomap.setZoom currentZoom - 1
 
 
   showInModalWindow: (annotation, outputElement) ->

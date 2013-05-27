@@ -150,14 +150,22 @@
 				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
 				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=72,74" },
                 "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
-			}, 
-			{
-				"annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/a1c1ace2e716561a131fe15d2133aea6" }, 
-				"resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Snowboarding" }, 
-				"relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" }, 
-				"fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=101,104" },
+			},
+            {
+                "annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/a1c1ace2e716561a131fe15d2133aea6" },
+                "resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Snowboarding" },
+                "relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" },
+                "fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=101,104" },
                 "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
-			}
+            },
+
+            {
+                "annotation": { "type": "uri", "value": "http:\/\/connectme.at\/annotation\/TVpluginTestAnnotation" },
+                "resource": { "type": "uri", "value": "http:\/\/dbpedia.org\/resource\/Leonardo_DiCaprio" },
+                "relation": { "type": "uri", "value": "http:\/\/connectme.at\/ontology#explicitlyShows" },
+                "fragment": { "type": "uri", "value": "https:\/\/s3-eu-west-1.amazonaws.com\/yoo.120\/connectme\/6306_519_20120508125738_standard.mp4#t=1,10" },
+                "type": { "type": "uri", "value": "http:\/\/www.openannotation.org/ns\/Annotation" }
+            }
 		]
 	}
 }
