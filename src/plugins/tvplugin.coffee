@@ -124,23 +124,29 @@ class window.TVPlugin extends window.LimePlugin
     label = annotation.getLabel()
     page = annotation.getPage()
 
+    starringListArray = []
     starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
     starringList = ""
-    for starringItem in starringListArray
-      starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      starringItem = starringItem.replace /_/g, " "
-      starringItem = starringItem.replace />/, ""
-      starringItem = starringItem + "<\/br>"
-      starringList += starringItem
+    if (starringListArray)
+      for starringItem in starringListArray
+        starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        starringItem = starringItem.replace /_/g, " "
+        starringItem = starringItem.replace />/, ""
+        starringItem = starringItem + "<\/br>"
+        starringList += starringItem
 
-    awardsListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+    awardsListArray = []
+    awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
+    console.log "awardsListArray = ", awardsListArray
     awardsList = ""
-    for awardsItem in awardsListArray
-      awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      awardsItem = awardsItem.replace /_/g, " "
-      awardsItem = awardsItem.replace />/, ""
-      awardsItem = awardsItem + "<\/br>"
-      awardsItem += awardsItem
+    if (awardsListArray)
+      for awardsItem in awardsListArray
+        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        awardsItem = awardsItem.replace /_/g, " "
+        awardsItem = awardsItem.replace />/, ""
+        awardsItem = awardsItem + "<\/br>"
+        if awardsItem.indexOf("winners") or awardsItem.indexOf("award") or awardsItem.indexOf("awards")
+          awardsItem += awardsItem
 
 
     lime = this.lime
@@ -160,17 +166,26 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
     #{comment}
              </div>
-             <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Movies and TV Series</div>
-                   <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-    #{starringList}</div>
-                   <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-                   Awards</div>
-                   <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-                  #{awardsList}</div>
-                   </div>
-                   </div>
-                   """
+             """
+    if (starringList.length > 3)
+      result += """
+                <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+                Movies and TV Series</div>
+                     <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
+      #{starringList}</div>
+                     """
+    if (awardsList.length > 3)
+      result += """ <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+                     Awards</div>
+                     <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
+                    #{awardsList}</div>
+                """
+
+    result += """
+              </div>
+              </div>
+              """
+
     container.append result
 
   renderCharacter: (annotation, fullEntity, container) ->
@@ -198,14 +213,6 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
     #{comment}
              </div>
-             <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Movies</div>
-             <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-             The Big Bang Theory</div>
-             <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Awards</div>
-             <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-             Spaghetti Master</div>
              </div>
              </div>
              """
@@ -220,6 +227,33 @@ class window.TVPlugin extends window.LimePlugin
 
     label = annotation.getLabel()
     page = annotation.getPage()
+    comment = annotation.getDescription()
+    starringListArray = []
+    starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+    starringList = ""
+    if (starringListArray)
+      for starringItem in starringListArray
+        starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        starringItem = starringItem.replace /_/g, " "
+        starringItem = starringItem.replace />/, ""
+        starringItem = starringItem + "<\/br>"
+        starringList += starringItem
+
+    awardsListArray = []
+    awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
+    console.log "awardsListArray = ", awardsListArray
+    awardsList = ""
+    if (awardsListArray)
+      for awardsItem in awardsListArray
+        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        awardsItem = awardsItem.replace /_/g, " "
+        awardsItem = awardsItem.replace />/, ""
+        awardsItem = awardsItem + "<\/br>"
+        if awardsItem.indexOf("winners") or awardsItem.indexOf("award") or awardsItem.indexOf("awards")
+          awardsItem += awardsItem
+
+
+    lime = this.lime
     comment = annotation.getDescription()
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
@@ -236,17 +270,25 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
     #{comment}
              </div>
-             <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Movies</div>
-             <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-             The Big Bang Theory</div>
-             <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Awards</div>
-             <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-             Spaghetti Master</div>
-             </div>
-             </div>
              """
+    if (starringList.length > 3)
+      result += """
+                <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+                Movies and TV Series</div>
+                     <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
+      #{starringList}</div>
+                     """
+    if (awardsList.length > 3)
+      result += """ <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+                Awards</div>
+                   <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
+      #{awardsList}</div>
+                   """
+
+    result += """
+              </div>
+              </div>
+              """
     container.append result
 
   _loadFullDbpediaEntity: (entity, callback) =>
