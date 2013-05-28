@@ -125,13 +125,13 @@ class window.TVPlugin extends window.LimePlugin
     page = annotation.getPage()
     starringListArray = []
     starringList = ""
-    @_getStarringList annotation, (data) =>
-      if (starringListArray.length > 0)
-        starringListArray = []
+    starringListArray = @_getStarringList annotation, (data, result) =>
+      result = []
       for show in data.results.bindings
-        starringListArray.push "<#{show.show.value}>"
-        console.log show.show.value
+        result.push "<#{show.show.value}>"
+      return result
 
+    console.log starringListArray
     if (starringListArray.length <= 0)
       starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
 
@@ -228,7 +228,49 @@ class window.TVPlugin extends window.LimePlugin
     label = annotation.getLabel()
     page = annotation.getPage()
     comment = annotation.getDescription()
+    occupation = ""
+    try
+      occupation = fullEntity.attributes['<http://dbpedia.org/ontology/occupation>']
+      occupation = occupation.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      occupation = occupation.replace /_/g, " "
+      occupation = occupation.replace />/, ""
+      occupation = "<b>Occupation:</b> " + occupation + "<br>"
+    catch error
 
+    nationality = ""
+    try
+      nationality = fullEntity.attributes['<http://dbpedia.org/ontology/nationality>']
+      nationality = nationality.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      nationality = nationality.replace /_/g, " "
+      nationality = nationality.replace />/, ""
+      nationality = "<b>Nationality:</b> " +nationality + "<br>"
+    catch error
+
+    firstAppearance = ""
+    try
+      firstAppearance = fullEntity.attributes['<http://dbpedia.org/ontology/firstAppearance>']
+      firstAppearance = firstAppearance.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      firstAppearance = firstAppearance.replace /_/g, " "
+      firstAppearance = firstAppearance.replace />/, ""
+      firstAppearance = "<b>First Appearance:</b> " + firstAppearance + "<br>"
+    catch error
+
+    nickname = ""
+    try
+      nickname = "<b>Nick name:</b> "
+      nicknameList = fullEntity.attributes['<http://xmlns.com/foaf/0.1/nick>']
+      for nick in nicknameList
+        nickname += nick['@value'] + "<br>"
+    catch error
+
+    portayer = ""
+    try
+      portayer = fullEntity.attributes['<http://dbpedia.org/property/portrayer>']
+      portayer = portayer.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      portayer = portayer.replace /_/g, " "
+      portayer = portayer.replace />/, ""
+      portayer = "<b>Played by:</b> " + portayer + "<br>"
+    catch error
 
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
@@ -243,6 +285,12 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
+    #{portayer}
+    #{firstAppearance}
+    #{nationality}
+    #{occupation}
+    #{nickname}
+              <br>
     #{comment}
              </div>
              </div>
@@ -288,7 +336,7 @@ class window.TVPlugin extends window.LimePlugin
 
     lime = this.lime
     comment = annotation.getDescription()
-    comment = comment.split(". ")[0] + ". "
+    # comment = comment.split(". ")[0] + ". "
     birthDate = "Birth date: "
     try
       birthDate += fullEntity.attributes['<http://dbpedia.org/property/birthDate>']
@@ -317,9 +365,10 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-    #{comment} <br>
     #{birthDate} <br>
-    #{birthPlace} <br>
+    #{birthPlace} <br> <br>
+    #{comment}
+
              </div>
              """
     if (starringList.length > 3)
@@ -349,6 +398,7 @@ class window.TVPlugin extends window.LimePlugin
       callback fullEntity
 
   _getStarringList: (annotation, callback) =>
+    result = []
     query = """
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -365,6 +415,7 @@ class window.TVPlugin extends window.LimePlugin
         """
     url = "http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=" + escape(query) + "&format=json"
     $.getJSON url, callback
+    return result
 
 
   _initWidget: (annotation, fullEntity, widgetType, renderMethod, widgetOptions) ->
