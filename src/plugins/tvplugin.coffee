@@ -61,6 +61,7 @@ class window.TVPlugin extends window.LimePlugin
       "<http://dbpedia.org/class/yago/PortuguEseFilmDirectors>"
       "<http://dbpedia.org/class/yago/AmericanFilmDirectors>"
       "<http://dbpedia.org/class/yago/English-languAgeFilmDirectors>"
+      "<http://dbpedia.org/class/yago/AmericanTelevisionDirectors>"
     ]
 
   # Putting this into a function keeps the annotation in the context
@@ -79,49 +80,69 @@ class window.TVPlugin extends window.LimePlugin
             # @processAnnotation annotation, fullEntity.attributes['@type']
             @processAnnotation annotation, fullEntity
 
-  processAnnotation: (annotation, typeArray) ->
-    if _.intersection(typeArray.attributes['@type'], @options.actorTypes).length
+  processAnnotation: (annotation, fullEntity) ->
+    if _.intersection(fullEntity.attributes['@type'], @options.actorTypes).length
       # There's at least one type in common
       console.info 'Render Actor widget'
       widgetType = 'ActorWidget'
-      widget = @_initWidget annotation, widgetType, @renderActor,
-        thumbnail: "img/info.png" # should go into CSS
+      widget = @_initWidget annotation, fullEntity, widgetType, @renderActor,
+        thumbnail: "img/starIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Actor)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(typeArray.attributes['@type'], @options.characterTypes).length
+    if _.intersection(fullEntity.attributes['@type'], @options.characterTypes).length
       console.info 'Render Character widget'
       # There's at least one type in common
       widgetType = 'CharacterWidget'
-      widget = @_initWidget annotation, widgetType, @renderCharacter,
-        thumbnail: "img/info.png" # should go into CSS
+      widget = @_initWidget annotation, fullEntity, widgetType, @renderCharacter,
+        thumbnail: "img/characterIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Character)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(typeArray.attributes['@type'], @options.directorTypes).length
+    if _.intersection(fullEntity.attributes['@type'], @options.directorTypes).length
       console.info 'Render Director widget'
       # There's at least one type in common
       widgetType = 'DirectorWidget'
-      widget = @_initWidget annotation, widgetType, @renderDirector,
-        thumbnail: "img/info.png" # should go into CSS
+      widget = @_initWidget annotation, fullEntity, widgetType, @renderDirector,
+        thumbnail: "img/directorIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Director)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
 
 
-  renderActor: (annotation, container) ->
+  renderActor: (annotation, fullEntity, container) ->
     modalContent = $(container)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    console.log fullEntity;
+
     label = annotation.getLabel()
     page = annotation.getPage()
-    starringList = annotation.getStarring()
-    console.log "---- Movies", starringList
+
+    starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+    starringList = ""
+    for starringItem in starringListArray
+      starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      starringItem = starringItem.replace /_/g, " "
+      starringItem = starringItem.replace />/, ""
+      starringItem = starringItem + "<\/br>"
+      starringList += starringItem
+
+    awardsListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+    awardsList = ""
+    for awardsItem in awardsListArray
+      awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+      awardsItem = awardsItem.replace /_/g, " "
+      awardsItem = awardsItem.replace />/, ""
+      awardsItem = awardsItem + "<\/br>"
+      awardsItem += awardsItem
+
+
     lime = this.lime
     comment = annotation.getDescription()
     result = """
@@ -140,22 +161,25 @@ class window.TVPlugin extends window.LimePlugin
     #{comment}
              </div>
              <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
-             Movies</div>
+             Movies and TV Series</div>
                    <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
     #{starringList}</div>
                    <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                    Awards</div>
                    <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
-                   Spaghetti Master</div>
+                  #{awardsList}</div>
                    </div>
                    </div>
                    """
     container.append result
 
-  renderCharacter: (annotation, container) ->
+  renderCharacter: (annotation, fullEntity, container) ->
     modalContent = $(container)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+
+    console.log fullEntity
+
     label = annotation.getLabel()
     page = annotation.getPage()
     comment = annotation.getDescription()
@@ -187,10 +211,13 @@ class window.TVPlugin extends window.LimePlugin
              """
     container.append result
 
-  renderDirector: (annotation, container) ->
+  renderDirector: (annotation, fullEntity, container) ->
     modalContent = $(container)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+
+    console.log fullEntity
+
     label = annotation.getLabel()
     page = annotation.getPage()
     comment = annotation.getDescription()
@@ -228,14 +255,14 @@ class window.TVPlugin extends window.LimePlugin
       entity.set fullEntity
       callback fullEntity
 
-  _initWidget: (annotation, widgetType, renderMethod, widgetOptions) ->
+  _initWidget: (annotation, fullEntity, widgetType, renderMethod, widgetOptions) ->
     widget = @lime.allocateWidgetSpace @, widgetOptions
 
     # We're going to need the annotation for the widget's `activate` event
     widget.annotation = annotation
     # widget was activated, we show details now
     jQuery(widget).bind 'activate', (e) =>
-      renderMethod annotation, @getModalContainer()
+      renderMethod annotation,fullEntity , @getModalContainer()
 
     # Hang the widget on the annotation
     annotation.widgets[widgetType] = widget
