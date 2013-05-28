@@ -115,7 +115,7 @@ class window.TVPlugin extends window.LimePlugin
           10000 * annotation.start + annotation.end
 
 
-  renderActor: (annotation, fullEntity, container) ->
+  renderActor: (annotation, fullEntity, container) =>
     modalContent = $(container)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
@@ -123,10 +123,18 @@ class window.TVPlugin extends window.LimePlugin
 
     label = annotation.getLabel()
     page = annotation.getPage()
-
     starringListArray = []
-    starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
     starringList = ""
+    @_getStarringList annotation, (data) =>
+      if (starringListArray.length > 0)
+        starringListArray = []
+      for show in data.results.bindings
+        starringListArray.push "<#{show.show.value}>"
+        console.log show.show.value
+
+    if (starringListArray.length <= 0)
+      starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+
     if (starringListArray)
       for starringItem in starringListArray
         starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
@@ -146,11 +154,30 @@ class window.TVPlugin extends window.LimePlugin
         awardsItem = awardsItem.replace />/, ""
         awardsItem = awardsItem + "<\/br>"
         if awardsItem.indexOf("winners")>0 or awardsItem.indexOf("award")>0 or awardsItem.indexOf("awards")>0
+          if (awardsItem.indexOf("winners")>0)
+            awardsItem = awardsItem.replace /winners/, ""
           awardsList += awardsItem
     console.log "awardsListArray = ", awardsList, " from this list: ", awardsListArray
 
     lime = this.lime
     comment = annotation.getDescription()
+    comment = comment.split(". ")[0] + ". "
+    birthDate = "Birth date: "
+    try
+      birthDate += fullEntity.attributes['<http://dbpedia.org/property/birthDate>']
+    catch error
+      try
+        birthDate += fullEntity.attributes['<http://dbpedia.org/property/dateOfBirth>']
+      catch error
+
+    birthPlace = "Birth place: "
+    try
+      birthPlace += fullEntity.attributes['<http://dbpedia.org/property/birthPlace>']['@value']
+    catch error
+      try
+        birthPlace += fullEntity.attributes['<http://dbpedia.org/property/placeOfBirth>']['@value']
+      catch error
+
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
@@ -164,7 +191,10 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-    #{comment}
+    #{comment} <br>
+    #{birthDate} <br>
+    #{birthPlace} <br>
+
              </div>
              """
     if (starringList.length > 0)
@@ -198,6 +228,8 @@ class window.TVPlugin extends window.LimePlugin
     label = annotation.getLabel()
     page = annotation.getPage()
     comment = annotation.getDescription()
+
+
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
@@ -227,7 +259,7 @@ class window.TVPlugin extends window.LimePlugin
 
     label = annotation.getLabel()
     page = annotation.getPage()
-    comment = annotation.getDescription()
+    console.log page
     starringListArray = []
     starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
     starringList = ""
@@ -256,6 +288,22 @@ class window.TVPlugin extends window.LimePlugin
 
     lime = this.lime
     comment = annotation.getDescription()
+    comment = comment.split(". ")[0] + ". "
+    birthDate = "Birth date: "
+    try
+      birthDate += fullEntity.attributes['<http://dbpedia.org/property/birthDate>']
+    catch error
+      try
+        birthDate += fullEntity.attributes['<http://dbpedia.org/property/dateOfBirth>']
+      catch error
+
+    birthPlace = "Birth place: "
+    try
+      birthPlace += fullEntity.attributes['<http://dbpedia.org/property/birthPlace>']['@value']
+    catch error
+      try
+        birthPlace += fullEntity.attributes['<http://dbpedia.org/property/placeOfBirth>']['@value']
+      catch error
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
@@ -269,7 +317,9 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-    #{comment}
+    #{comment} <br>
+    #{birthDate} <br>
+    #{birthPlace} <br>
              </div>
              """
     if (starringList.length > 3)
@@ -297,6 +347,25 @@ class window.TVPlugin extends window.LimePlugin
     .success (fullEntity) =>
       entity.set fullEntity
       callback fullEntity
+
+  _getStarringList: (annotation, callback) =>
+    query = """
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX dcterms: <http://purl.org/dc/terms/>
+        PREFIX dbpedia-owl: <http://dbpedia.org/ontology/>
+        PREFIX dbprop: <http://dbpedia.org/property/>
+        PREFIX dbcat: <http://dbpedia.org/resource/Category:>
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        SELECT DISTINCT ?show ?date WHERE {
+             ?show dbprop:starring <#{annotation.resource.value}> .
+             ?show <http://dbpedia.org/ontology/releaseDate> ?date .
+            }
+            ORDER BY ?date
+        """
+    url = "http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=" + escape(query) + "&format=json"
+    $.getJSON url, callback
+
 
   _initWidget: (annotation, fullEntity, widgetType, renderMethod, widgetOptions) ->
     widget = @lime.allocateWidgetSpace @, widgetOptions
