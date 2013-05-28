@@ -137,17 +137,17 @@ class window.TVPlugin extends window.LimePlugin
 
     awardsListArray = []
     awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
-    console.log "awardsListArray = ", awardsListArray
+
     awardsList = ""
     if (awardsListArray)
       for awardsItem in awardsListArray
-        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\/Category:/, ""
         awardsItem = awardsItem.replace /_/g, " "
         awardsItem = awardsItem.replace />/, ""
         awardsItem = awardsItem + "<\/br>"
-        if awardsItem.indexOf("winners") or awardsItem.indexOf("award") or awardsItem.indexOf("awards")
-          awardsItem += awardsItem
-
+        if awardsItem.indexOf("winners")>0 or awardsItem.indexOf("award")>0 or awardsItem.indexOf("awards")>0
+          awardsList += awardsItem
+    console.log "awardsListArray = ", awardsList, " from this list: ", awardsListArray
 
     lime = this.lime
     comment = annotation.getDescription()
@@ -167,14 +167,14 @@ class window.TVPlugin extends window.LimePlugin
     #{comment}
              </div>
              """
-    if (starringList.length > 3)
+    if (starringList.length > 0)
       result += """
                 <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                 Movies and TV Series</div>
                      <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
       #{starringList}</div>
                      """
-    if (awardsList.length > 3)
+    if (awardsList.length > 0)
       result += """ <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                      Awards</div>
                      <div id="infoTextAwards" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
@@ -241,16 +241,17 @@ class window.TVPlugin extends window.LimePlugin
 
     awardsListArray = []
     awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
-    console.log "awardsListArray = ", awardsListArray
+
     awardsList = ""
     if (awardsListArray)
       for awardsItem in awardsListArray
-        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\/Category:/, ""
         awardsItem = awardsItem.replace /_/g, " "
         awardsItem = awardsItem.replace />/, ""
         awardsItem = awardsItem + "<\/br>"
-        if awardsItem.indexOf("winners") or awardsItem.indexOf("award") or awardsItem.indexOf("awards")
-          awardsItem += awardsItem
+        if awardsItem.indexOf("winners")>0 or awardsItem.indexOf("award")>0 or awardsItem.indexOf("awards")>0
+          awardsList += awardsItem
+    console.log "awardsListArray = ", awardsList, " from this list: ", awardsListArray
 
 
     lime = this.lime
