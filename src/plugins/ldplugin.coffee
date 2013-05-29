@@ -194,15 +194,15 @@ class window.LDPlugin extends window.LimePlugin
           return result
 
         annotation.getStarring = ->
-          starringList = @_detectProperty @entities, 'dbpedia-owl:birthDate'
+          starringList = @_detectProperty @entities, 'dbpedia-owl:knownFor'
           unless starringList
             for entity in @entities
-              value = entity.get('dbpedia-owl:birthDate')
+              value = entity.get('dbpedia-owl:knownFor')
               if _.isArray value
                 starringList = value
               else
                 starringList = [value]
-          console.log "===== LDPlugin - getStarring reslut: ", starringList
+          console.log "===== LDPlugin - getStarring result: ", starringList
           return starringList
 
 
