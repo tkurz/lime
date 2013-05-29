@@ -137,7 +137,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
 
     onClick: ->
       if LimePlayer.options.annotationsVisible is false
-        $(".vjs-annotationstoggler").removeClass "annotationstoggler-off"
+        jQuery(".vjs-annotationstoggler").removeClass "annotationstoggler-off"
         LimePlayer.options.annotationsVisible = true
         LimePlayer.player.AnnotationOverlaysComponent.show()  if LimePlayer.player.AnnotationOverlaysComponent
         if @player.isFullScreen #show Annotations sidebars
@@ -145,7 +145,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
         else #only show in fullscreen
           LimePlayer.player.AnnotationsSidebars.hide()
       else #toggle off Annotation overlays
-        $(".vjs-annotationstoggler").addClass "annotationstoggler-off"
+        jQuery(".vjs-annotationstoggler").addClass "annotationstoggler-off"
         LimePlayer.player.AnnotationsSidebars.hide()
         LimePlayer.player.AnnotationOverlaysComponent.hide()  if LimePlayer.player.AnnotationOverlaysComponent
         LimePlayer.options.annotationsVisible = false
