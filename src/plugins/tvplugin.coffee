@@ -125,13 +125,29 @@ class window.TVPlugin extends window.LimePlugin
     page = annotation.getPage()
     starringListArray = []
     starringList = ""
-    starringListArray = @_getStarringList annotation, (data, result) =>
+    @_getStarringList annotation.resource.value, (data, result) =>
       result = []
       for show in data.results.bindings
         result.push "<#{show.show.value}>"
+      starringListArray = result
+      if (starringListArray)
+        for starringItem in starringListArray
+          starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+          starringItem = starringItem.replace /_/g, " "
+          starringItem = starringItem.replace />/, ""
+          starringItem = starringItem + "<\/br>"
+          starringList += starringItem
+
+        $('#infoText').append """<div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+                              Movies and TV Series</div>
+                              <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
+        #{starringList}</div>"""
+
+      console.log '1) starringListArray = ', starringListArray
       return result
 
-    console.log starringListArray
+    console.log '2) starringListArray = ',starringListArray
+    ###
     if (starringListArray.length <= 0)
       starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
 
@@ -142,7 +158,7 @@ class window.TVPlugin extends window.LimePlugin
         starringItem = starringItem.replace />/, ""
         starringItem = starringItem + "<\/br>"
         starringList += starringItem
-
+    ###
     awardsListArray = []
     awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
 
@@ -197,13 +213,16 @@ class window.TVPlugin extends window.LimePlugin
 
              </div>
              """
+    ###
     if (starringList.length > 0)
       result += """
                 <div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                 Movies and TV Series</div>
                      <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
       #{starringList}</div>
-                     """
+                    """
+
+    ###
     if (awardsList.length > 0)
       result += """ <div id="infoTextAwardsTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                      Awards</div>
@@ -397,7 +416,7 @@ class window.TVPlugin extends window.LimePlugin
       entity.set fullEntity
       callback fullEntity
 
-  _getStarringList: (annotation, callback) =>
+  _getStarringList: (dbpediaResourceURI, callback) =>
     result = []
     query = """
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -408,12 +427,12 @@ class window.TVPlugin extends window.LimePlugin
         PREFIX dbcat: <http://dbpedia.org/resource/Category:>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         SELECT DISTINCT ?show ?date WHERE {
-             ?show dbprop:starring <#{annotation.resource.value}> .
+             ?show dbprop:starring <#{dbpediaResourceURI}> .
              ?show <http://dbpedia.org/ontology/releaseDate> ?date .
-            }
-            ORDER BY ?date
+            } ORDER BY DESC(?date)
+            LIMIT 5
         """
-    url = "http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=" + escape(query) + "&format=json"
+    url = "http://dbpedia.org/sparql?query=" + escape(query) + "&format=json"
     $.getJSON url, callback
     return result
 
