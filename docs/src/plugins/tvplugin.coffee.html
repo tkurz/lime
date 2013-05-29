@@ -1,0 +1,139 @@
+<!DOCTYPE html><html><head><title>tvplugin.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../src/annotation.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotation.coffee</span></a><a href="../../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../../src/cmf.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../../src/jquery.scrollTo.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">jquery.scrollTo.coffee</span></a><a href="../../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../../src/plugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">plugin.coffee</span></a><a href="../../src/plugins/actorplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">actorplugin.coffee</span></a><a href="../../src/plugins/businessplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">businessplugin.coffee</span></a><a href="../../src/plugins/characterplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">characterplugin.coffee</span></a><a href="../../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../../src/plugins/directorplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">directorplugin.coffee</span></a><a href="../../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../../src/plugins/objectplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">objectplugin.coffee</span></a><a href="../../src/plugins/tvplugin.coffee.html" class="source selected"><span class="base_path">src / plugins / </span><span class="file_name">tvplugin.coffee</span></a><a href="../../src/plugins/videoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">videoplugin.coffee</span></a><a href="../../src/plugins/youtubeplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">youtubeplugin.coffee</span></a><a href="../../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a><a href="../../src/widget.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">widget.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>tvplugin.coffee</h1><div class="filepath">src/plugins/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">TVPlugin</span> <span class="k">extends</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
+  <span class="nv">init: </span><span class="o">-&gt;</span>
+    <span class="vi">@name = </span><span class="s">&#39;TVPlugin&#39;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize </span><span class="si">#{</span><span class="nx">@name</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="k">for</span> <span class="nx">annotation</span> <span class="k">in</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">annotations</span>
+      <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;dbpedia&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nx">@handleAnnotation</span> <span class="nx">annotation</span>
+
+  <span class="nv">defaults:</span>
+    <span class="nv">actorTypes: </span><span class="p">[</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/Actor109765278&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AustrianFilmActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/FilmActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanTelevisionActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanVoiceActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanActorsOfEnglishDescent&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanSoapOperaActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanFilmActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/Actress109767700&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/AmericanChildActors&gt;&#39;</span>
+      <span class="s">&#39;&lt;http://dbpedia.org/class/yago/ActorsFromCalifornia&gt;&#39;</span>
+    <span class="p">]</span>
+    <span class="nv">characterTypes: </span><span class="p">[</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/ontology/FictionalCharacter&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/FictionalCharactersFromCalifornia&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/FictionalCharacter109587565&gt;&quot;</span>
+    <span class="p">]</span>
+    <span class="nv">directorTypes: </span><span class="p">[</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/Director110014939&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/EnglishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/DanishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/SilentFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/ItalianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/ScottishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/EnglishTheatreDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/DutchFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/ArtisticDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/IndianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/TurkishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/HindiFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/PolishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/RomanianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/MuslimAmericanFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/SpanishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/BelgianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/EgyptianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/PakistaniFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/IranianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/ItalianBritishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/BrazilianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/IcelandicFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/AustralianTelevisionDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/M%C3%A9tisFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/BengaliFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/ColombianFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/KannadaFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/AmericanFilmDirectorsOfArmenianDescent&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/BangladeshiFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/KurdishFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/NativeAmericanFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/PortuguEseFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/AmericanFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/English-languAgeFilmDirectors&gt;&quot;</span>
+    <span class="p">]</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Putting this into a function keeps the annotation in the context</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">handleAnnotation: </span><span class="nf">(annotation) -&gt;</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">annotation</span><span class="p">.</span><span class="nx">entityPromise</span><span class="p">.</span><span class="nx">done</span> <span class="o">=&gt;</span>
+      <span class="nx">unless</span> <span class="nx">@vie</span>
+        <span class="vi">@vie = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">vie</span>
+        <span class="nx">@vie</span><span class="p">.</span><span class="nx">namespaces</span><span class="p">.</span><span class="nx">add</span>
+          <span class="nv">umbel: </span><span class="s">&#39;http://umbel.org/umbel/rc/&#39;</span>
+        <span class="nx">@vie</span><span class="p">.</span><span class="nx">use</span> <span class="k">new</span> <span class="nx">@vie</span><span class="p">.</span><span class="nx">DBPediaService</span>
+      <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;dbpedia&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="nv">entity = </span><span class="nx">@vie</span><span class="p">.</span><span class="nx">entities</span><span class="p">.</span><span class="nx">get</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span>
+        <span class="k">if</span> <span class="nx">entity</span> <span class="o">and</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">isof</span><span class="p">(</span><span class="s">&#39;dbpedia:Person&#39;</span><span class="p">)</span>
+          <span class="nx">@_loadFullDbpediaEntity</span> <span class="nx">entity</span><span class="p">,</span> <span class="p">(</span><span class="nx">fullEntity</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">@processAnnotation</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;@type&#39;</span><span class="p">]</span>
+
+  <span class="nv">processAnnotation: </span><span class="nf">(annotation, typeArray) -&gt;</span>
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">actorTypes</span><span class="p">).</span><span class="nx">length</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Actor widget&#39;</span>
+      <span class="nv">widgetType = </span><span class="s">&#39;ActorWidget&#39;</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderActor</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+        <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Actor)&quot;</span>
+        <span class="nv">type: </span><span class="nx">widgetType</span>
+        <span class="nv">sortBy: </span><span class="o">-&gt;</span>
+          <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
+
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">characterTypes</span><span class="p">).</span><span class="nx">length</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Character widget&#39;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nv">widgetType = </span><span class="s">&#39;CharacterWidget&#39;</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderCharacter</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+        <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Character)&quot;</span>
+        <span class="nv">type: </span><span class="nx">widgetType</span>
+        <span class="nv">sortBy: </span><span class="o">-&gt;</span>
+          <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
+
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">directorTypes</span><span class="p">).</span><span class="nx">length</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Director widget&#39;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nv">widgetType = </span><span class="s">&#39;DirectorWidget&#39;</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderDirector</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+        <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Director)&quot;</span>
+        <span class="nv">type: </span><span class="nx">widgetType</span>
+        <span class="nv">sortBy: </span><span class="o">-&gt;</span>
+          <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
+
+
+  <span class="nv">renderActor: </span><span class="nf">(annotation, container) -&gt;</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Actor </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+
+  <span class="nv">renderCharacter: </span><span class="nf">(annotation, container) -&gt;</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Character </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+
+  <span class="nv">renderDirector: </span><span class="nf">(annotation, container) -&gt;</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Director </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+
+  <span class="nv">_loadFullDbpediaEntity: </span><span class="p">(</span><span class="nx">entity</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nx">@vie</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nv">entity: </span><span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">()).</span><span class="nx">using</span><span class="p">(</span><span class="s">&#39;dbpedia&#39;</span><span class="p">).</span><span class="nx">execute</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">success</span> <span class="p">(</span><span class="nx">fullEntity</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">entity</span><span class="p">.</span><span class="nx">set</span> <span class="nx">fullEntity</span>
+      <span class="nx">callback</span> <span class="nx">fullEntity</span>
+
+  <span class="nv">_initWidget: </span><span class="nf">(annotation, widgetType, renderMethod, widgetOptions) -&gt;</span>
+    <span class="nv">widget = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">allocateWidgetSpace</span> <span class="nx">@</span><span class="p">,</span> <span class="nx">widgetOptions</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>We're going to need the annotation for the widget's <code>activate</code> event</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">widget.annotation = </span><span class="nx">annotation</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>widget was activated, we show details now</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;activate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">renderMethod</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">@getModalContainer</span><span class="p">()</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>Hang the widget on the annotation</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">annotation</span><span class="p">.</span><span class="nx">widgets</span><span class="p">[</span><span class="nx">widgetType</span><span class="p">]</span> <span class="o">=</span> <span class="nx">widget</span>
+
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;becomeActive&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">annotation</span><span class="p">.</span><span class="nx">widgets</span><span class="p">[</span><span class="nx">widgetType</span><span class="p">].</span><span class="nx">setActive</span><span class="p">()</span>
+
+    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;becomeInactive&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">annotation</span><span class="p">.</span><span class="nx">widgets</span><span class="p">[</span><span class="nx">widgetType</span><span class="p">].</span><span class="nx">setInactive</span><span class="p">()</span>
+
+</pre></div></td></tr></tbody></table><div id="projectname"><a href="../../index.html">LIME - Linked Media Player</a></div></div></body></html>
