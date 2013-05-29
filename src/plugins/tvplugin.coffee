@@ -128,13 +128,15 @@ class window.TVPlugin extends window.LimePlugin
     @_getStarringList annotation.resource.value, (data, result) =>
       result = []
       for show in data.results.bindings
-        result.push "<#{show.show.value}>"
+        result.push "<#{show.date.value}> - <#{show.show.value}>"
       starringListArray = result
       if (starringListArray)
         for starringItem in starringListArray
-          starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
+          starringItem = starringItem.replace /</g, ""
+          starringItem = starringItem.replace />/g, ""
+          starringItem = starringItem.replace /http:\/\/dbpedia.org\/resource\//, ""
           starringItem = starringItem.replace /_/g, " "
-          starringItem = starringItem.replace />/, ""
+
           starringItem = starringItem + "<\/br>"
           starringList += starringItem
 
@@ -310,7 +312,7 @@ class window.TVPlugin extends window.LimePlugin
     #{occupation}
     #{nickname}
               <br>
-    #{comment}
+    
              </div>
              </div>
              </div>
