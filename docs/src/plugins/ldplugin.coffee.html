@@ -177,15 +177,15 @@ triggers an <code>ldLoaded</code> event on the annotation</p>
           <span class="k">return</span> <span class="nx">result</span>
 
         <span class="nv">annotation.getStarring = </span><span class="o">-&gt;</span>
-          <span class="nv">starringList = </span><span class="nx">@_detectProperty</span> <span class="nx">@entities</span><span class="p">,</span> <span class="s">&#39;dbpedia-owl:birthDate&#39;</span>
+          <span class="nv">starringList = </span><span class="nx">@_detectProperty</span> <span class="nx">@entities</span><span class="p">,</span> <span class="s">&#39;dbpedia-owl:knownFor&#39;</span>
           <span class="nx">unless</span> <span class="nx">starringList</span>
             <span class="k">for</span> <span class="nx">entity</span> <span class="k">in</span> <span class="nx">@entities</span>
-              <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;dbpedia-owl:birthDate&#39;</span><span class="p">)</span>
+              <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;dbpedia-owl:knownFor&#39;</span><span class="p">)</span>
               <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span> <span class="nx">value</span>
                 <span class="nv">starringList = </span><span class="nx">value</span>
               <span class="k">else</span>
                 <span class="nv">starringList = </span><span class="p">[</span><span class="nx">value</span><span class="p">]</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;===== LDPlugin - getStarring reslut: &quot;</span><span class="p">,</span> <span class="nx">starringList</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;===== LDPlugin - getStarring result: &quot;</span><span class="p">,</span> <span class="nx">starringList</span>
           <span class="k">return</span> <span class="nx">starringList</span>
 
 

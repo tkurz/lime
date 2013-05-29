@@ -62,6 +62,7 @@
       <span class="s">&quot;&lt;http://dbpedia.org/class/yago/PortuguEseFilmDirectors&gt;&quot;</span>
       <span class="s">&quot;&lt;http://dbpedia.org/class/yago/AmericanFilmDirectors&gt;&quot;</span>
       <span class="s">&quot;&lt;http://dbpedia.org/class/yago/English-languAgeFilmDirectors&gt;&quot;</span>
+      <span class="s">&quot;&lt;http://dbpedia.org/class/yago/AmericanTelevisionDirectors&gt;&quot;</span>
     <span class="p">]</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Putting this into a function keeps the annotation in the context</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">handleAnnotation: </span><span class="nf">(annotation) -&gt;</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nx">annotation</span><span class="p">.</span><span class="nx">entityPromise</span><span class="p">.</span><span class="nx">done</span> <span class="o">=&gt;</span>
@@ -73,49 +74,331 @@
       <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;dbpedia&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
         <span class="nv">entity = </span><span class="nx">@vie</span><span class="p">.</span><span class="nx">entities</span><span class="p">.</span><span class="nx">get</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span>
         <span class="k">if</span> <span class="nx">entity</span> <span class="o">and</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">isof</span><span class="p">(</span><span class="s">&#39;dbpedia:Person&#39;</span><span class="p">)</span>
-          <span class="nx">@_loadFullDbpediaEntity</span> <span class="nx">entity</span><span class="p">,</span> <span class="p">(</span><span class="nx">fullEntity</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="nx">@processAnnotation</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;@type&#39;</span><span class="p">]</span>
+          <span class="nx">@_loadFullDbpediaEntity</span> <span class="nx">entity</span><span class="p">,</span> <span class="p">(</span><span class="nx">fullEntity</span><span class="p">)</span> <span class="o">=&gt;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>@processAnnotation annotation, fullEntity.attributes['@type']</p>
+</td><td class="code"><div class="highlight"><pre>            <span class="nx">@processAnnotation</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span>
 
-  <span class="nv">processAnnotation: </span><span class="nf">(annotation, typeArray) -&gt;</span>
-    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">actorTypes</span><span class="p">).</span><span class="nx">length</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+  <span class="nv">processAnnotation: </span><span class="nf">(annotation, fullEntity) -&gt;</span>
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;@type&#39;</span><span class="p">],</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">actorTypes</span><span class="p">).</span><span class="nx">length</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Actor widget&#39;</span>
       <span class="nv">widgetType = </span><span class="s">&#39;ActorWidget&#39;</span>
-      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderActor</span><span class="p">,</span>
-        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderActor</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/starIcon.png&quot;</span> <span class="c1"># should go into CSS</span>
         <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Actor)&quot;</span>
         <span class="nv">type: </span><span class="nx">widgetType</span>
         <span class="nv">sortBy: </span><span class="o">-&gt;</span>
           <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
 
-    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">characterTypes</span><span class="p">).</span><span class="nx">length</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Character widget&#39;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;@type&#39;</span><span class="p">],</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">characterTypes</span><span class="p">).</span><span class="nx">length</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Character widget&#39;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">widgetType = </span><span class="s">&#39;CharacterWidget&#39;</span>
-      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderCharacter</span><span class="p">,</span>
-        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderCharacter</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/characterIcon.png&quot;</span> <span class="c1"># should go into CSS</span>
         <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Character)&quot;</span>
         <span class="nv">type: </span><span class="nx">widgetType</span>
         <span class="nv">sortBy: </span><span class="o">-&gt;</span>
           <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
 
-    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">typeArray</span><span class="p">,</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">directorTypes</span><span class="p">).</span><span class="nx">length</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Director widget&#39;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
+    <span class="k">if</span> <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;@type&#39;</span><span class="p">],</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">directorTypes</span><span class="p">).</span><span class="nx">length</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Render Director widget&#39;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>There's at least one type in common</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nv">widgetType = </span><span class="s">&#39;DirectorWidget&#39;</span>
-      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderDirector</span><span class="p">,</span>
-        <span class="nv">thumbnail: </span><span class="s">&quot;img/info.png&quot;</span> <span class="c1"># should go into CSS</span>
+      <span class="nv">widget = </span><span class="nx">@_initWidget</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">,</span> <span class="nx">widgetType</span><span class="p">,</span> <span class="nx">@renderDirector</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/directorIcon.png&quot;</span> <span class="c1"># should go into CSS</span>
         <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s"> (Director)&quot;</span>
         <span class="nv">type: </span><span class="nx">widgetType</span>
         <span class="nv">sortBy: </span><span class="o">-&gt;</span>
           <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span>
 
 
-  <span class="nv">renderActor: </span><span class="nf">(annotation, container) -&gt;</span>
-    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Actor </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+  <span class="nv">renderActor: </span><span class="p">(</span><span class="nx">annotation</span><span class="p">,</span> <span class="nx">fullEntity</span><span class="p">,</span> <span class="nx">container</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nv">modalContent = </span><span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="s">&quot;600px&quot;</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">fullEntity</span><span class="p">;</span>
 
-  <span class="nv">renderCharacter: </span><span class="nf">(annotation, container) -&gt;</span>
-    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Character </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+    <span class="nv">label = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span>
+    <span class="nv">page = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getPage</span><span class="p">()</span>
+    <span class="nv">starringListArray = </span><span class="p">[]</span>
+    <span class="nv">starringList = </span><span class="s">&quot;&quot;</span>
+    <span class="nx">@_getStarringList</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">resource</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nv">result = </span><span class="p">[]</span>
+      <span class="k">for</span> <span class="nx">show</span> <span class="k">in</span> <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">bindings</span>
+        <span class="nx">result</span><span class="p">.</span><span class="nx">push</span> <span class="s">&quot;&lt;</span><span class="si">#{</span><span class="nx">show</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">value</span><span class="si">}</span><span class="s">&gt; - &lt;</span><span class="si">#{</span><span class="nx">show</span><span class="p">.</span><span class="nx">show</span><span class="p">.</span><span class="nx">value</span><span class="si">}</span><span class="s">&gt;&quot;</span>
+      <span class="nv">starringListArray = </span><span class="nx">result</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">starringListArray</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">starringItem</span> <span class="k">in</span> <span class="nx">starringListArray</span>
+          <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;/g</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+          <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/g</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+          <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+          <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
 
-  <span class="nv">renderDirector: </span><span class="nf">(annotation, container) -&gt;</span>
-    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;Hello Director </span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span><span class="si">}</span><span class="s">!&lt;/div&gt;&quot;</span>
+          <span class="nv">starringItem = </span><span class="nx">starringItem</span> <span class="o">+</span> <span class="s">&quot;&lt;\/br&gt;&quot;</span>
+          <span class="nx">starringList</span> <span class="o">+=</span> <span class="nx">starringItem</span>
+
+        <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#infoText&#39;</span><span class="p">).</span><span class="nx">append</span> <span class="s">&quot;&quot;&quot;&lt;div id=&quot;infoTextCareerTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;&quot;&gt;</span>
+<span class="s">                              Movies and TV Series&lt;/div&gt;</span>
+<span class="s">                              &lt;div id=&quot;infoTextCareer&quot; style=&quot;font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; line-height: normal;&quot;&gt;</span>
+<span class="s">        </span><span class="si">#{</span><span class="nx">starringList</span><span class="si">}</span><span class="s">&lt;/div&gt;&quot;&quot;&quot;</span>
+
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;1) starringListArray = &#39;</span><span class="p">,</span> <span class="nx">starringListArray</span>
+      <span class="k">return</span> <span class="nx">result</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;2) starringListArray = &#39;</span><span class="p">,</span><span class="nx">starringListArray</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">starringListArray</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="nv">starringListArray = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/ontology/knownFor&gt;&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">starringListArray</span><span class="p">)</span>
+      <span class="k">for</span> <span class="nx">starringItem</span> <span class="k">in</span> <span class="nx">starringListArray</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span> <span class="o">+</span> <span class="s">&quot;&lt;\/br&gt;&quot;</span>
+        <span class="nx">starringList</span> <span class="o">+=</span> <span class="nx">starringItem</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">awardsListArray = </span><span class="p">[]</span>
+    <span class="nv">awardsListArray = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://purl.org/dc/terms/subject&gt;&#39;</span><span class="p">]</span>
+
+    <span class="nv">awardsList = </span><span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">awardsListArray</span><span class="p">)</span>
+      <span class="k">for</span> <span class="nx">awardsItem</span> <span class="k">in</span> <span class="nx">awardsListArray</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\/Category:/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span> <span class="o">+</span> <span class="s">&quot;&lt;\/br&gt;&quot;</span>
+        <span class="k">if</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;winners&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="o">or</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;award&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="o">or</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;awards&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;winners&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+            <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/winners/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+          <span class="nx">awardsList</span> <span class="o">+=</span> <span class="nx">awardsItem</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;awardsListArray = &quot;</span><span class="p">,</span> <span class="nx">awardsList</span><span class="p">,</span> <span class="s">&quot; from this list: &quot;</span><span class="p">,</span> <span class="nx">awardsListArray</span>
+
+    <span class="nv">lime = </span><span class="k">this</span><span class="p">.</span><span class="nx">lime</span>
+    <span class="nv">comment = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getDescription</span><span class="p">()</span>
+    <span class="nv">comment = </span><span class="nx">comment</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;. &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;. &quot;</span>
+    <span class="nv">birthDate = </span><span class="s">&quot;Birth date: &quot;</span>
+    <span class="k">try</span>
+      <span class="nx">birthDate</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/birthDate&gt;&#39;</span><span class="p">]</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+      <span class="k">try</span>
+        <span class="nx">birthDate</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/dateOfBirth&gt;&#39;</span><span class="p">]</span>
+      <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">birthPlace = </span><span class="s">&quot;Birth place: &quot;</span>
+    <span class="k">try</span>
+      <span class="nx">birthPlace</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/birthPlace&gt;&#39;</span><span class="p">][</span><span class="s">&#39;@value&#39;</span><span class="p">]</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+      <span class="k">try</span>
+        <span class="nx">birthPlace</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/placeOfBirth&gt;&#39;</span><span class="p">][</span><span class="s">&#39;@value&#39;</span><span class="p">]</span>
+      <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">result = </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">             &lt;div id=&quot;ifoWidgetExpanded&quot; style=&quot;border: 1px dotted lightgray; position: relative;height: auto; width: 600px;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoWidget&quot; style=&quot;background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;&quot;&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgeticon&quot; style=&quot;border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: </span><span class="err">#</span><span class="s">3f3e3e; width: 8%;&quot;&gt;</span>
+<span class="s">             &lt;span data-dojo-type=&quot;shapes.Text&quot; id=&quot;iconLabel&quot; style=&quot;font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: </span><span class="err">#</span><span class="s">f38f0b; font-family: &#39;Times New Roman&#39;,Times,serif; font-style: italic;&quot;&gt;i&lt;/span&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgetTitle&quot; style=&quot;font: Arial; position: relative; float: left; height: 100%; width: 86%; font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: white; font-weight: normal; text-align: left; vertical-align: middle; text-indent: 1em; line-height: 140%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">label</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoText&quot; style=&quot;padding: 10px; position: relative; float: left; background-color: rgba(68, 68, 68, 0.7); height: auto; font-style: normal; width: 96%;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBioTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;&quot;&gt;</span>
+<span class="s">             Bio&lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBio&quot; style=&quot;font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">comment</span><span class="si">}</span><span class="s"> &lt;br&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">birthDate</span><span class="si">}</span><span class="s"> &lt;br&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">birthPlace</span><span class="si">}</span><span class="s"> &lt;br&gt;</span>
+
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">starringList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">                &lt;div id=&quot;infoTextCareerTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;&quot;&gt;</span>
+<span class="s">                Movies and TV Series&lt;/div&gt;</span>
+<span class="s">                     &lt;div id=&quot;infoTextCareer&quot; style=&quot;font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; line-height: normal;&quot;&gt;</span>
+<span class="s">      </span><span class="si">#{</span><span class="nx">starringList</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">                    &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">awardsList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot; &lt;div id=&quot;infoTextAwardsTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;&quot;&gt;</span>
+<span class="s">                     Awards&lt;/div&gt;</span>
+<span class="s">                     &lt;div id=&quot;infoTextAwards&quot; style=&quot;font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; line-height: normal;&quot;&gt;</span>
+<span class="s">                    </span><span class="si">#{</span><span class="nx">awardsList</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">                &quot;&quot;&quot;</span>
+
+    <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">              &lt;/div&gt;</span>
+<span class="s">              &lt;/div&gt;</span>
+<span class="s">              &quot;&quot;&quot;</span>
+
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="nx">result</span>
+
+  <span class="nv">renderCharacter: </span><span class="nf">(annotation, fullEntity, container) -&gt;</span>
+    <span class="nv">modalContent = </span><span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="s">&quot;600px&quot;</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">fullEntity</span>
+
+    <span class="nv">label = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span>
+    <span class="nv">page = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getPage</span><span class="p">()</span>
+    <span class="nv">comment = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getDescription</span><span class="p">()</span>
+    <span class="nv">occupation = </span><span class="s">&quot;&quot;</span>
+    <span class="k">try</span>
+      <span class="nv">occupation = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/ontology/occupation&gt;&#39;</span><span class="p">]</span>
+      <span class="nv">occupation = </span><span class="nx">occupation</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">occupation = </span><span class="nx">occupation</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+      <span class="nv">occupation = </span><span class="nx">occupation</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">occupation = </span><span class="s">&quot;&lt;b&gt;Occupation:&lt;/b&gt; &quot;</span> <span class="o">+</span> <span class="nx">occupation</span> <span class="o">+</span> <span class="s">&quot;&lt;br&gt;&quot;</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">nationality = </span><span class="s">&quot;&quot;</span>
+    <span class="k">try</span>
+      <span class="nv">nationality = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/ontology/nationality&gt;&#39;</span><span class="p">]</span>
+      <span class="nv">nationality = </span><span class="nx">nationality</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">nationality = </span><span class="nx">nationality</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+      <span class="nv">nationality = </span><span class="nx">nationality</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">nationality = </span><span class="s">&quot;&lt;b&gt;Nationality:&lt;/b&gt; &quot;</span> <span class="o">+</span><span class="nx">nationality</span> <span class="o">+</span> <span class="s">&quot;&lt;br&gt;&quot;</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">firstAppearance = </span><span class="s">&quot;&quot;</span>
+    <span class="k">try</span>
+      <span class="nv">firstAppearance = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/ontology/firstAppearance&gt;&#39;</span><span class="p">]</span>
+      <span class="nv">firstAppearance = </span><span class="nx">firstAppearance</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">firstAppearance = </span><span class="nx">firstAppearance</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+      <span class="nv">firstAppearance = </span><span class="nx">firstAppearance</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">firstAppearance = </span><span class="s">&quot;&lt;b&gt;First Appearance:&lt;/b&gt; &quot;</span> <span class="o">+</span> <span class="nx">firstAppearance</span> <span class="o">+</span> <span class="s">&quot;&lt;br&gt;&quot;</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">nickname = </span><span class="s">&quot;&quot;</span>
+    <span class="k">try</span>
+      <span class="nv">nickname = </span><span class="s">&quot;&lt;b&gt;Nick name:&lt;/b&gt; &quot;</span>
+      <span class="nv">nicknameList = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://xmlns.com/foaf/0.1/nick&gt;&#39;</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">nick</span> <span class="k">in</span> <span class="nx">nicknameList</span>
+        <span class="nx">nickname</span> <span class="o">+=</span> <span class="nx">nick</span><span class="p">[</span><span class="s">&#39;@value&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;&lt;br&gt;&quot;</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">portayer = </span><span class="s">&quot;&quot;</span>
+    <span class="k">try</span>
+      <span class="nv">portayer = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/portrayer&gt;&#39;</span><span class="p">]</span>
+      <span class="nv">portayer = </span><span class="nx">portayer</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">portayer = </span><span class="nx">portayer</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+      <span class="nv">portayer = </span><span class="nx">portayer</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+      <span class="nv">portayer = </span><span class="s">&quot;&lt;b&gt;Played by:&lt;/b&gt; &quot;</span> <span class="o">+</span> <span class="nx">portayer</span> <span class="o">+</span> <span class="s">&quot;&lt;br&gt;&quot;</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">result = </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">             &lt;div id=&quot;ifoWidgetExpanded&quot; style=&quot;border: 1px dotted lightgray; position: relative;height: auto; width: 600px;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoWidget&quot; style=&quot;background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;&quot;&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgeticon&quot; style=&quot;border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: </span><span class="err">#</span><span class="s">3f3e3e; width: 8%;&quot;&gt;</span>
+<span class="s">             &lt;span data-dojo-type=&quot;shapes.Text&quot; id=&quot;iconLabel&quot; style=&quot;font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: </span><span class="err">#</span><span class="s">f38f0b; font-family: &#39;Times New Roman&#39;,Times,serif; font-style: italic;&quot;&gt;i&lt;/span&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgetTitle&quot; style=&quot;font: Arial; position: relative; float: left; height: 100%; width: 86%; font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: white; font-weight: normal; text-align: left; vertical-align: middle; text-indent: 1em; line-height: 140%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">label</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoText&quot; style=&quot;padding: 10px; position: relative; float: left; background-color: rgba(68, 68, 68, 0.7); height: auto; font-style: normal; width: 96%;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBioTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;&quot;&gt;</span>
+<span class="s">             Bio&lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBio&quot; style=&quot;font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">portayer</span><span class="si">}</span><span class="s"></span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">firstAppearance</span><span class="si">}</span><span class="s"></span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">nationality</span><span class="si">}</span><span class="s"></span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">occupation</span><span class="si">}</span><span class="s"></span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">nickname</span><span class="si">}</span><span class="s"></span>
+<span class="s">              &lt;br&gt;</span>
+<span class="s">    </span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &quot;&quot;&quot;</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="nx">result</span>
+
+  <span class="nv">renderDirector: </span><span class="nf">(annotation, fullEntity, container) -&gt;</span>
+    <span class="nv">modalContent = </span><span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="s">&quot;600px&quot;</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">fullEntity</span>
+
+    <span class="nv">label = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span>
+    <span class="nv">page = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getPage</span><span class="p">()</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">page</span>
+    <span class="nv">starringListArray = </span><span class="p">[]</span>
+    <span class="nv">starringListArray = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/ontology/knownFor&gt;&#39;</span><span class="p">]</span>
+    <span class="nv">starringList = </span><span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">starringListArray</span><span class="p">)</span>
+      <span class="k">for</span> <span class="nx">starringItem</span> <span class="k">in</span> <span class="nx">starringListArray</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\//</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">starringItem = </span><span class="nx">starringItem</span> <span class="o">+</span> <span class="s">&quot;&lt;\/br&gt;&quot;</span>
+        <span class="nx">starringList</span> <span class="o">+=</span> <span class="nx">starringItem</span>
+
+    <span class="nv">awardsListArray = </span><span class="p">[]</span>
+    <span class="nv">awardsListArray = </span><span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://purl.org/dc/terms/subject&gt;&#39;</span><span class="p">]</span>
+
+    <span class="nv">awardsList = </span><span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">awardsListArray</span><span class="p">)</span>
+      <span class="k">for</span> <span class="nx">awardsItem</span> <span class="k">in</span> <span class="nx">awardsListArray</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&lt;http:\/\/dbpedia.org\/resource\/Category:/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/_/g</span><span class="p">,</span> <span class="s">&quot; &quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/&gt;/</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+        <span class="nv">awardsItem = </span><span class="nx">awardsItem</span> <span class="o">+</span> <span class="s">&quot;&lt;\/br&gt;&quot;</span>
+        <span class="k">if</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;winners&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="o">or</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;award&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="o">or</span> <span class="nx">awardsItem</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;awards&quot;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span>
+          <span class="nx">awardsList</span> <span class="o">+=</span> <span class="nx">awardsItem</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;awardsListArray = &quot;</span><span class="p">,</span> <span class="nx">awardsList</span><span class="p">,</span> <span class="s">&quot; from this list: &quot;</span><span class="p">,</span> <span class="nx">awardsListArray</span>
+
+
+    <span class="nv">lime = </span><span class="k">this</span><span class="p">.</span><span class="nx">lime</span>
+    <span class="nv">comment = </span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getDescription</span><span class="p">()</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>comment = comment.split(". ")[0] + ". "</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">birthDate = </span><span class="s">&quot;Birth date: &quot;</span>
+    <span class="k">try</span>
+      <span class="nx">birthDate</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/birthDate&gt;&#39;</span><span class="p">]</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+      <span class="k">try</span>
+        <span class="nx">birthDate</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/dateOfBirth&gt;&#39;</span><span class="p">]</span>
+      <span class="k">catch</span> <span class="nx">error</span>
+
+    <span class="nv">birthPlace = </span><span class="s">&quot;Birth place: &quot;</span>
+    <span class="k">try</span>
+      <span class="nx">birthPlace</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/birthPlace&gt;&#39;</span><span class="p">][</span><span class="s">&#39;@value&#39;</span><span class="p">]</span>
+    <span class="k">catch</span> <span class="nx">error</span>
+      <span class="k">try</span>
+        <span class="nx">birthPlace</span> <span class="o">+=</span> <span class="nx">fullEntity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://dbpedia.org/property/placeOfBirth&gt;&#39;</span><span class="p">][</span><span class="s">&#39;@value&#39;</span><span class="p">]</span>
+      <span class="k">catch</span> <span class="nx">error</span>
+    <span class="nv">result = </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">             &lt;div id=&quot;ifoWidgetExpanded&quot; style=&quot;border: 1px dotted lightgray; position: relative;height: auto; width: 600px;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoWidget&quot; style=&quot;background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;&quot;&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgeticon&quot; style=&quot;border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: </span><span class="err">#</span><span class="s">3f3e3e; width: 8%;&quot;&gt;</span>
+<span class="s">             &lt;span data-dojo-type=&quot;shapes.Text&quot; id=&quot;iconLabel&quot; style=&quot;font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: </span><span class="err">#</span><span class="s">f38f0b; font-family: &#39;Times New Roman&#39;,Times,serif; font-style: italic;&quot;&gt;i&lt;/span&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div class=&quot;infoWidgetTitle&quot; style=&quot;font: Arial; position: relative; float: left; height: 100%; width: 86%; font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: white; font-weight: normal; text-align: left; vertical-align: middle; text-indent: 1em; line-height: 140%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">label</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoText&quot; style=&quot;padding: 10px; position: relative; float: left; background-color: rgba(68, 68, 68, 0.7); height: auto; font-style: normal; width: 96%;&quot;&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBioTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;&quot;&gt;</span>
+<span class="s">             Bio&lt;/div&gt;</span>
+<span class="s">             &lt;div id=&quot;infoTextBio&quot; style=&quot;font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;&quot;&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">birthDate</span><span class="si">}</span><span class="s"> &lt;br&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">birthPlace</span><span class="si">}</span><span class="s"> &lt;br&gt; &lt;br&gt;</span>
+<span class="s">    </span><span class="si">#{</span><span class="nx">comment</span><span class="si">}</span><span class="s"></span>
+
+<span class="s">             &lt;/div&gt;</span>
+<span class="s">             &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">starringList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">                &lt;div id=&quot;infoTextCareerTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;&quot;&gt;</span>
+<span class="s">                Movies and TV Series&lt;/div&gt;</span>
+<span class="s">                     &lt;div id=&quot;infoTextCareer&quot; style=&quot;font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; line-height: normal;&quot;&gt;</span>
+<span class="s">      </span><span class="si">#{</span><span class="nx">starringList</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">                     &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">awardsList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot; &lt;div id=&quot;infoTextAwardsTitle&quot; style=&quot;font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;&quot;&gt;</span>
+<span class="s">                Awards&lt;/div&gt;</span>
+<span class="s">                   &lt;div id=&quot;infoTextAwards&quot; style=&quot;font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: </span><span class="err">#</span><span class="s">f1f1f1; line-height: normal;&quot;&gt;</span>
+<span class="s">      </span><span class="si">#{</span><span class="nx">awardsList</span><span class="si">}</span><span class="s">&lt;/div&gt;</span>
+<span class="s">                   &quot;&quot;&quot;</span>
+
+    <span class="nx">result</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">              &lt;/div&gt;</span>
+<span class="s">              &lt;/div&gt;</span>
+<span class="s">              &quot;&quot;&quot;</span>
+    <span class="nx">container</span><span class="p">.</span><span class="nx">append</span> <span class="nx">result</span>
 
   <span class="nv">_loadFullDbpediaEntity: </span><span class="p">(</span><span class="nx">entity</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span>
     <span class="nx">@vie</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nv">entity: </span><span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">()).</span><span class="nx">using</span><span class="p">(</span><span class="s">&#39;dbpedia&#39;</span><span class="p">).</span><span class="nx">execute</span><span class="p">()</span>
@@ -123,11 +406,32 @@
       <span class="nx">entity</span><span class="p">.</span><span class="nx">set</span> <span class="nx">fullEntity</span>
       <span class="nx">callback</span> <span class="nx">fullEntity</span>
 
-  <span class="nv">_initWidget: </span><span class="nf">(annotation, widgetType, renderMethod, widgetOptions) -&gt;</span>
-    <span class="nv">widget = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">allocateWidgetSpace</span> <span class="nx">@</span><span class="p">,</span> <span class="nx">widgetOptions</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>We're going to need the annotation for the widget's <code>activate</code> event</p>
-</td><td class="code"><div class="highlight"><pre>    <span class="nv">widget.annotation = </span><span class="nx">annotation</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>widget was activated, we show details now</p>
+  <span class="nv">_getStarringList: </span><span class="p">(</span><span class="nx">dbpediaResourceURI</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nv">result = </span><span class="p">[]</span>
+    <span class="nv">query = </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">        PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;</span>
+<span class="s">        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">        PREFIX dcterms: &lt;http://purl.org/dc/terms/&gt;</span>
+<span class="s">        PREFIX dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt;</span>
+<span class="s">        PREFIX dbprop: &lt;http://dbpedia.org/property/&gt;</span>
+<span class="s">        PREFIX dbcat: &lt;http://dbpedia.org/resource/Category:&gt;</span>
+<span class="s">        PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">        SELECT DISTINCT ?show ?date WHERE {</span>
+<span class="s">             ?show dbprop:starring &lt;</span><span class="si">#{</span><span class="nx">dbpediaResourceURI</span><span class="si">}</span><span class="s">&gt; .</span>
+<span class="s">             ?show &lt;http://dbpedia.org/ontology/releaseDate&gt; ?date .</span>
+<span class="s">            } ORDER BY DESC(?date)</span>
+<span class="s">            LIMIT 5</span>
+<span class="s">        &quot;&quot;&quot;</span>
+    <span class="nv">url = </span><span class="s">&quot;http://dbpedia.org/sparql?query=&quot;</span> <span class="o">+</span> <span class="nx">escape</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;&amp;format=json&quot;</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">callback</span>
+    <span class="k">return</span> <span class="nx">result</span>
+
+
+  <span class="nv">_initWidget: </span><span class="nf">(annotation, fullEntity, widgetType, renderMethod, widgetOptions) -&gt;</span>
+    <span class="nv">widget = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">allocateWidgetSpace</span> <span class="nx">@</span><span class="p">,</span> <span class="nx">widgetOptions</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>We're going to need the annotation for the widget's <code>activate</code> event</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">widget.annotation = </span><span class="nx">annotation</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><p>widget was activated, we show details now</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;activate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="nx">renderMethod</span> <span class="nx">annotation</span><span class="p">,</span> <span class="nx">@getModalContainer</span><span class="p">()</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>Hang the widget on the annotation</p>
+      <span class="nx">renderMethod</span> <span class="nx">annotation</span><span class="p">,</span><span class="nx">fullEntity</span> <span class="p">,</span> <span class="nx">@getModalContainer</span><span class="p">()</span></pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><p>Hang the widget on the annotation</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nx">annotation</span><span class="p">.</span><span class="nx">widgets</span><span class="p">[</span><span class="nx">widgetType</span><span class="p">]</span> <span class="o">=</span> <span class="nx">widget</span>
 
     <span class="nx">jQuery</span><span class="p">(</span><span class="nx">annotation</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;becomeActive&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
