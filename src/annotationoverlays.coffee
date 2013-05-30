@@ -33,14 +33,14 @@ class window.AnnotationOverlays extends window.LimePlugin
           domEl.mouseenter (e) => # hover behaviour
             annotation = jQuery(e.target).data().annotation
             mouseenterEvent = jQuery.Event "mouseenter"
-            $(annotation).trigger mouseenterEvent, ['test']
+            jQuery(annotation).trigger mouseenterEvent, ['test']
 
-            $(e.target).fadeOut 50
-            $(e.target).fadeIn 50
+            jQuery(e.target).fadeOut 50
+            jQuery(e.target).fadeIn 50
 
           domEl.mouseleave (e) => # unhover behaviour
             mouseleaveEvent = jQuery.Event "mouseleave"
-            $(annotation).trigger mouseleaveEvent, ['test']
+            jQuery(annotation).trigger mouseleaveEvent, ['test']
 
           domEl.click -> #click behaviour - highlight the related widgets by adding a class to them
             limeplayer.player.pause()
@@ -48,7 +48,7 @@ class window.AnnotationOverlays extends window.LimePlugin
               unless i is "AnnotationOverlays"
                 widget = annotation.widgets[i]
                 widget.addClass("highlighted").delay(2000).queue (next) ->
-                  $(@).removeClass "highlighted"
+                  jQuery(@).removeClass "highlighted"
                   next()
 
           annotation.widgets.AnnotationOverlays = domEl
@@ -65,7 +65,7 @@ class window.AnnotationOverlays extends window.LimePlugin
           false
 
     resize = =>
-      videoEl = $('video', @lime.element)
+      videoEl = jQuery('video', @lime.element)
       playerWidth = videoEl.width()
       videoEl.css
         width: 'auto'
@@ -80,7 +80,7 @@ class window.AnnotationOverlays extends window.LimePlugin
         height: '100%'
         # border: "1px red solid"
         "pointer-events": 'none'
-    $(window).resize resize
+    jQuery(window).resize resize
     resize()
 
   initTimeAnnotations: ->
@@ -111,14 +111,14 @@ class window.AnnotationOverlays extends window.LimePlugin
       domEl.bind 'mouseenter', (e) =>
         annotation = jQuery(e.target).data().annotation
         mouseenterEvent = jQuery.Event "mouseenter"
-        $(annotation).trigger mouseenterEvent, ['test']
+        jQuery(annotation).trigger mouseenterEvent, ['test']
         @fillConceptOverlay @renderConceptOverlay annotation
         @showConceptOverlay()
 
       domEl.mouseleave (e) =>
         annotation = jQuery(e.target).data().annotation
         mouseleaveEvent = jQuery.Event "mouseleave"
-        $(annotation).trigger mouseleaveEvent, ['test']
+        jQuery(annotation).trigger mouseleaveEvent, ['test']
         @hideConceptOverlay()
 
   initConceptOverlay: ->

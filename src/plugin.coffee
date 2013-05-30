@@ -36,7 +36,7 @@ class window.LimePlugin
       modalContainer = @lime.modalContainer
       mask = @lime.modalMask
 
-      $(modalContainer).bind 'close', (e) =>
+      jQuery(modalContainer).bind 'close', (e) =>
         mask.hide()
         modalContainer.hide()
         modalContainer.empty()
@@ -93,7 +93,7 @@ class window.LimePlugin
 
     #Set the popup window to center
     # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-    modalContainer.css "top", $("#header").height()
+    modalContainer.css "top", jQuery("#header").height()
     # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
     modalContainer.css "right", jQuery("#widget-container-2").width()
     #alert modalContainer.height()
@@ -128,7 +128,7 @@ class window.LimePlugin
 
       #Set the popup window to center
       # modalContainer.css "top", winH / 2 - modalContainer.height() / 2
-      modalContainer.css "top",  $("#header").height()
+      modalContainer.css "top",  jQuery("#header").height()
       # modalContainer.css "left", winW / 2 - modalContainer.width() / 2 - (winW * 7/100)
       modalContainer.css "right", jQuery("#widget-container-2").width()
       modalContainer.css "width", "auto"

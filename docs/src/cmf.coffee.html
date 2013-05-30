@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>cmf.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotation.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotation.coffee</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/jquery.scrollTo.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">jquery.scrollTo.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/plugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">plugin.coffee</span></a><a href="../src/plugins/businessplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">businessplugin.coffee</span></a><a href="../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../src/plugins/youtubeplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">youtubeplugin.coffee</span></a><a href="../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a><a href="../src/widget.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">widget.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>cmf.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>The CMF module communicates to the ConnectMe Media Framework (CMF) back-end</p>
+<!DOCTYPE html><html><head><title>cmf.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../src/annotation.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotation.coffee</span></a><a href="../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../src/cmf.coffee.html" class="source selected"><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../src/jquery.scrollTo.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">jquery.scrollTo.coffee</span></a><a href="../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../src/plugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">plugin.coffee</span></a><a href="../src/plugins/actorplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">actorplugin.coffee</span></a><a href="../src/plugins/businessplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">businessplugin.coffee</span></a><a href="../src/plugins/characterplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">characterplugin.coffee</span></a><a href="../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../src/plugins/directorplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">directorplugin.coffee</span></a><a href="../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../src/plugins/objectplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">objectplugin.coffee</span></a><a href="../src/plugins/tvplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">tvplugin.coffee</span></a><a href="../src/plugins/videoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">videoplugin.coffee</span></a><a href="../src/plugins/youtubeplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">youtubeplugin.coffee</span></a><a href="../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a><a href="../src/widget.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">widget.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>cmf.coffee</h1><div class="filepath">src/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><p>The CMF module communicates to the ConnectMe Media Framework (CMF) back-end</p>
 
 <p>Usage of all methods:
 var cmf = new CMF("http://connectme.salzburgresearch.at/CMF");
@@ -85,11 +85,14 @@ covered and generalized by the more convenient methods above</p>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
   <span class="nv">_annotationsForVideo: </span><span class="nf">(resource) -&gt;</span> <span class="s">&quot;&quot;&quot;PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
 <span class="s">      PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
-<span class="s">      SELECT DISTINCT ?annotation ?fragment ?resource ?relation</span>
+<span class="s">      PREFIX cma: &lt;http://connectme.at/ontology</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">      SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel</span>
 <span class="s">      WHERE {</span>
 <span class="s">        &lt;</span><span class="si">#{</span><span class="nx">resource</span><span class="si">}</span><span class="s">&gt;  mao:hasFragment ?f.</span>
 <span class="s">        ?f mao:locator ?fragment.</span>
 <span class="s">        ?annotation oac:hasTarget ?f.</span>
+<span class="s">        ?annotation a ?type.</span>
+<span class="s">        OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}</span>
 <span class="s">        ?annotation oac:hasBody ?resource.</span>
 <span class="s">        ?f ?relation ?resource.</span>
 <span class="s">      }&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Get annotations for a video's locator uri</p>
@@ -100,13 +103,16 @@ covered and generalized by the more convenient methods above</p>
   <span class="nv">_annotationsForLocator: </span><span class="nf">(locator) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
 <span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
 <span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
-<span class="s">    SELECT DISTINCT ?annotation ?fragment ?resource ?relation</span>
+<span class="s">    PREFIX cma: &lt;http://connectme.at/ontology</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel</span>
 <span class="s">    WHERE {</span>
 <span class="s">      ?videoresource mao:locator &lt;</span><span class="si">#{</span><span class="nx">locator</span><span class="si">}</span><span class="s">&gt;.</span>
 <span class="s">      ?videoresource mao:hasFragment ?f.</span>
 <span class="s">      ?f mao:locator ?fragment.</span>
 <span class="s">      ?annotation oac:hasTarget ?f.</span>
 <span class="s">      ?annotation oac:hasBody ?resource.</span>
+<span class="s">      ?annotation a ?type.</span>
+<span class="s">      OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}</span>
 <span class="s">      ?f ?relation ?resource.</span>
 <span class="s">    }&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>Get video locators for a video's CMF resource uri</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getVideoLocators: </span><span class="nf">(resource, resCB) -&gt;</span>
@@ -148,12 +154,50 @@ covered and generalized by the more convenient methods above</p>
 <span class="s">      ?resource  mao:locator ?source.</span>
 <span class="s">      OPTIONAL {?source mao:hasFormat ?type}</span>
 <span class="s">    }</span>
-<span class="s">    ORDER BY ?source&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>running SPARQL query</p>
+<span class="s">    ORDER BY ?source&quot;&quot;&quot;</span>
+  <span class="nv">getLSIVideosForTerm: </span><span class="nf">(keywordUri, resCB) -&gt;</span>
+    <span class="nv">res = </span><span class="p">[]</span>
+    <span class="nv">query = </span><span class="nx">@_getLSIVideosForTerm</span> <span class="nx">keywordUri</span>
+    <span class="nx">@_runSPARQL</span> <span class="nx">query</span><span class="p">,</span> <span class="nf">(err, res) -&gt;</span>
+      <span class="nx">resCB</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+
+  <span class="nv">_getLSIVideosForTerm: </span><span class="nf">(keywordUri) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;</span>
+<span class="s">    SELECT DISTINCT ?video ?duration ?description ?locator ?title ?img</span>
+<span class="s">    WHERE {</span>
+<span class="s">      ?video mao:hasKeyword &lt;</span><span class="si">#{</span><span class="nx">keywordUri</span><span class="si">}</span><span class="s">&gt; .</span>
+<span class="s">      ?video a &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">VideoTrack&gt; .</span>
+<span class="s">      ?video mao:description ?description .</span>
+<span class="s">      ?video mao:locator ?locator .</span>
+<span class="s">      ?video mao:duration ?duration .</span>
+<span class="s">      ?video mao:title ?title .</span>
+<span class="s">      ?video foaf:img ?img .</span>
+<span class="s">    }</span>
+<span class="s">    ORDER BY ?video&quot;&quot;&quot;</span>
+
+  <span class="nv">getLSIImagesForTerm: </span><span class="nf">(keywordUri, resCB) -&gt;</span>
+    <span class="nv">res = </span><span class="p">[]</span>
+    <span class="nv">query = </span><span class="nx">@_getLSIImagesForTerm</span> <span class="nx">keywordUri</span>
+    <span class="nx">@_runSPARQL</span> <span class="nx">query</span><span class="p">,</span> <span class="nf">(err, res) -&gt;</span>
+      <span class="nx">resCB</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">res</span>
+
+  <span class="nv">_getLSIImagesForTerm: </span><span class="nf">(keywordUri) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?image</span>
+<span class="s">    WHERE {</span>
+<span class="s">      ?image a &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">Image&gt; .</span>
+<span class="s">      ?image mao:hasKeyword &lt;</span><span class="si">#{</span><span class="nx">keywordUri</span><span class="si">}</span><span class="s">&gt; .</span>
+<span class="s">    }</span>
+<span class="s">    ORDER BY ?image &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>running SPARQL query</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">_runSPARQL: </span><span class="nf">(query, resCB) -&gt;</span>
     <span class="nv">uri = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">@url</span><span class="si">}</span><span class="s">sparql/select?query=</span><span class="si">#{</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span><span class="si">}</span><span class="s">&amp;output=json&quot;</span>
     <span class="nv">xhr = </span><span class="nx">jQuery</span><span class="p">.</span><span class="nx">getJSON</span> <span class="nx">uri</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span>
       <span class="nv">res = </span><span class="p">[]</span>
       <span class="nv">list = </span><span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">bindings</span>
+      <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">isnt</span> <span class="nx">_</span><span class="p">(</span><span class="nx">list</span><span class="p">).</span><span class="nx">uniq</span><span class="p">().</span><span class="nx">length</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s">&#39;CMF DISTINCT is being ignored!&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span>
+        <span class="nv">list = </span><span class="nx">_</span><span class="p">(</span><span class="nx">list</span><span class="p">).</span><span class="nx">uniq</span><span class="p">()</span>
       <span class="nx">resCB</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">list</span>
     <span class="nx">xhr</span><span class="p">.</span><span class="nx">error</span> <span class="nx">resCB</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>Testing all the methods above. See results in the console</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">test: </span><span class="o">-&gt;</span>

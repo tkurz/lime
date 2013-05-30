@@ -14,8 +14,8 @@
 #       annotFrameworkURL:"http://labs.newmedialab.at/SKOS/",
 #       plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
 #       widgetContainers:[
-#         {element:$('#widget-container-1'), orientation:'vertical'},
-#         {element:$('#widget-container-2'), orientation:'horizontal'}
+#         {element:jQuery('#widget-container-1'), orientation:'vertical'},
+#         {element:jQuery('#widget-container-2'), orientation:'horizontal'}
 #       ],
 #     });
 #
@@ -67,7 +67,7 @@ class window.LIMEPlayer
       widgetVisibility: 'scrolling-list'
       hidingDelay: 2000
 
-      widgetContainers: [{element: $('#widget-container-1'), options: null}]
+      widgetContainers: [{element: jQuery('#widget-container-1'), options: null}]
       annotationsVisible : true
       debug: false
       local: false
@@ -75,12 +75,12 @@ class window.LIMEPlayer
         AnnotationOverlays: {}
         LDPlugin: {}
       widget: {}
-    @options = $.extend options, opts
+    @options = jQuery.extend options, opts
 
     if typeof @options.containerDiv is "string"
-      @el = $ "#" + @options.containerDiv
+      @el = jQuery "#" + @options.containerDiv
     else
-      @el = $(@options.containerDiv)
+      @el = jQuery(@options.containerDiv)
 
     unless @el.length is 1
       console.error "LIMEPlayer options.containerDiv has to be a DOM element or the ID of a DOM element.", @options.containerDiv
@@ -103,7 +103,7 @@ class window.LIMEPlayer
 
   _startScheduler: ->
     ### handle becomeActive and becomeInactive events ###
-    $(@).bind 'timeupdate', (e) =>
+    jQuery(@).bind 'timeupdate', (e) =>
       currentTime = e.currentTime or @player.currentTime()
       currentSrc = @player.currentSource()
       for annotation in @annotations
@@ -111,10 +111,10 @@ class window.LIMEPlayer
           if annotation.state is 'inactive' and annotation.start <= currentTime and annotation.end + 1 > currentTime
             # has to be activated
             annotation.state = 'active'
-            $(annotation).trigger $.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
+            jQuery(annotation).trigger jQuery.Event "becomeActive", annotation: annotation #signal to a particular annotation to become active
           if annotation.state is 'active' and (annotation.start > currentTime or annotation.end + 1 < currentTime)
             annotation.state = 'inactive'
-            $(annotation).trigger $.Event "becomeInactive", annotation: annotation #signal to a particular annotation to become inactive
+            jQuery(annotation).trigger jQuery.Event "becomeInactive", annotation: annotation #signal to a particular annotation to become inactive
 
 
   # Initialize the video player
@@ -132,7 +132,7 @@ class window.LIMEPlayer
         </video>
       </div>
     """
-    @videoEl = $ 'video', @el
+    @videoEl = jQuery 'video', @el
     console.info "Initializing the player"
     window.LIMEPlayer.VideoPlayerInit @videoEl[0], {}, (err, playerInstance) =>
       if err
@@ -143,15 +143,15 @@ class window.LIMEPlayer
       @_initEventListeners()
 
       # Create one container for widget in the fullscreen mode
-      @fullscreenWidgetContainer = $("<div class='fullscreen-annotation-wrapper'></div>")
+      @fullscreenWidgetContainer = jQuery("<div class='fullscreen-annotation-wrapper'></div>")
       @player.videoOverlay.append @fullscreenWidgetContainer
       cb()
 
   _initEventListeners: ->
-    $(@player).bind 'timeupdate', (playerEvent) =>
-      e = $.Event "timeupdate", currentTime: @player.currentTime()
-      $(@).trigger e
-    $(@player).bind 'fullscreenchange', (e) =>
+    jQuery(@player).bind 'timeupdate', (playerEvent) =>
+      e = jQuery.Event "timeupdate", currentTime: @player.currentTime()
+      jQuery(@).trigger e
+    jQuery(@player).bind 'fullscreenchange', (e) =>
       @_moveWidgets e.isFullScreen
     @initKeyEventsHandlers()
 
@@ -184,27 +184,27 @@ class window.LIMEPlayer
     # Sort the widget's DOM elements
     # scroll to the first active widget
     for container in @widgetContainers
-      unless $(container).data().sorted
-        widgetsEls = $(container).find('.lime-widget')
+      unless jQuery(container).data().sorted
+        widgetsEls = jQuery(container).find('.lime-widget')
         widgetsSorted = _.sortBy @widgets, (widgetEl) =>
-          $(widgetEl).data().widget?.options.sortBy()
+          jQuery(widgetEl).data().widget?.options.sortBy()
         console.info "sorting", container
         for el in widgetsSorted
-          $(container).prepend el
-        $(container).data 'sorted', true
+          jQuery(container).prepend el
+        jQuery(container).data 'sorted', true
 
       if @options.widgetVisibility is 'scrolling-list'
-        first = _.detect $(container.element).children(), (widgetElement) =>
-          widget = $(widgetElement).data().widget
+        first = _.detect jQuery(container.element).children(), (widgetElement) =>
+          widget = jQuery(widgetElement).data().widget
           widget?.isActive()
         if first
-          console.info "First active widget found, scrollto", first, $(first).position(), $(first).position().top
-          $(first).parent().scrollTo first
-          $('.nav-selected').removeClass 'nav-selected'
-          $(first).addClass 'nav-selected'
+          console.info "First active widget found, scrollto", first, jQuery(first).position(), jQuery(first).position().top
+          jQuery(first).parent().scrollTo first
+          jQuery('.nav-selected').removeClass 'nav-selected'
+          jQuery(first).addClass 'nav-selected'
       else
-        for widgetElement in $(container.element).children()
-          widget = $(widgetElement).data().widget
+        for widgetElement in jQuery(container.element).children()
+          widget = jQuery(widgetElement).data().widget
           unless widget.isActive()
             widget.hide()
           # if @options.widgetVisibility is 'delayed-hide'
@@ -213,88 +213,88 @@ class window.LIMEPlayer
 
   # Initialize navigation key events.
   initKeyEventsHandlers: ->
-    $(window).keydown (e) =>
+    jQuery(window).keydown (e) =>
       if @activeWidget
         event = null
         switch e.keyCode
           when 37
-            event = $.Event 'leftarrow'
+            event = jQuery.Event 'leftarrow'
           when 38
-            event = $.Event 'uparrow'
+            event = jQuery.Event 'uparrow'
           when 39
-            event = $.Event 'rightarrow'
+            event = jQuery.Event 'rightarrow'
           when 40
-            event = $.Event 'downarrow'
+            event = jQuery.Event 'downarrow'
           when 13
-            event = $.Event 'select'
+            event = jQuery.Event 'select'
           when 178
-            event = $.Event 'stop'
+            event = jQuery.Event 'stop'
           when 179, 32
-            event = $.Event 'playpause'
+            event = jQuery.Event 'playpause'
         if event
-          $(@activeWidget).trigger event
-        $(@activeWidget).trigger e
+          jQuery(@activeWidget).trigger event
+        jQuery(@activeWidget).trigger e
         if e.keyCode is 27
           if @modalContainer?.is(':visible')
             if history.pushState
               history.back()
             else
-              @modalContainer.trigger $.Event 'close'
+              @modalContainer.trigger jQuery.Event 'close'
 
 
     # When loading the video, the player has to process all key events so navigation between widgets is possible.
     @claimKeyEvents @
 
-    $(window).bind 'popstate', (event) =>
+    jQuery(window).bind 'popstate', (event) =>
       console.log('pop: ' + event.originalEvent.state)
       if @modalContainer?.is(':visible')
-        @modalContainer.trigger $.Event 'close'
+        @modalContainer.trigger jQuery.Event 'close'
 
     # If the down arrow was pressed, find the next or first active widget and make it active.
-    $(@).bind 'downarrow', (e) =>
+    jQuery(@).bind 'downarrow', (e) =>
       console.info 'lime is the active widget and down arrow was pressed'
-      activeWidgets = $('.lime-widget:not(.inactive)')
+      activeWidgets = jQuery('.lime-widget:not(.inactive)')
       activeWidget = activeWidgets.filter('.nav-selected')
       nrOfWidgets = activeWidgets.length
       index = activeWidgets.index(activeWidget)
       newIndex = if nrOfWidgets is index + 1 then 0 else index + 1
-      activeWidget = $(activeWidgets[newIndex])
+      activeWidget = jQuery(activeWidgets[newIndex])
       @navActivateWidget activeWidget
 
     # If the up arrow was pressed, find the previous or first active widget and make it active.
-    $(@).bind 'uparrow', (e) =>
-      console.info 'lime is the active widget and up arrow was pressed', $('.lime-widget:not(.inactive)')
-      activeWidgets = $('.lime-widget:not(.inactive)')
+    jQuery(@).bind 'uparrow', (e) =>
+      console.info 'lime is the active widget and up arrow was pressed', jQuery('.lime-widget:not(.inactive)')
+      activeWidgets = jQuery('.lime-widget:not(.inactive)')
       activeWidget = activeWidgets.filter('.nav-selected')
       nrOfWidgets = activeWidgets.length
       index = activeWidgets.index(activeWidget)
       newIndex = if index is 0 then nrOfWidgets - 1 else index - 1
-      activeWidget = $(activeWidgets[newIndex])
+      activeWidget = jQuery(activeWidgets[newIndex])
       @navActivateWidget activeWidget
 
     # If the select button was pressed, trigger a click event on it, this will extend its state.
-    $(@).bind 'select', (e) =>
-      console.info 'lime is the active widget and select was pressed', $('.lime-widget:not(.inactive)')
-      activeWidgets = $('.lime-widget:not(.inactive)')
+    jQuery(@).bind 'select', (e) =>
+      console.info 'lime is the active widget and select was pressed', jQuery('.lime-widget:not(.inactive)')
+      activeWidgets = jQuery('.lime-widget:not(.inactive)')
       activeWidget = activeWidgets.filter('.nav-selected')
       activeWidget.trigger 'click'
 
-    $(@).bind 'playpause', (e) =>
+    jQuery(@).bind 'playpause', (e) =>
       if @player.paused()
         @player.play()
       else
         @player.pause()
 
-    $(@).bind 'rightarrow', (e) =>
+    jQuery(@).bind 'rightarrow', (e) =>
       currentTime = @player.currentTime()
       futureAnnotations = _(@annotations).filter (ann) =>
         ann.start > currentTime
       firstFutureAnnotation = _(futureAnnotations).min (ann) =>
         ann.start
       @player.seek firstFutureAnnotation.start
-      $(@player).trigger 'timeupdate'
+      jQuery(@player).trigger 'timeupdate'
 
-    $(@).bind 'leftarrow', (e) =>
+    jQuery(@).bind 'leftarrow', (e) =>
       currentTime = @player.currentTime()
       pastAnnotations = _(@annotations).filter (ann) =>
         ann.start < currentTime
@@ -304,14 +304,14 @@ class window.LIMEPlayer
         @player.seek latestPastAnnotation.start
       else
         @player.seek 0
-      $(@player).trigger 'timeupdate'
+      jQuery(@player).trigger 'timeupdate'
 
   # Arrow key events are processed by one component. If a widget is extended, then the widget. If not, the player.
   claimKeyEvents: (widget) ->
     @activeWidget = widget
 
   navActivateWidget: (widgetEl) ->
-    $('.nav-selected').removeClass 'nav-selected'
+    jQuery('.nav-selected').removeClass 'nav-selected'
     widgetEl.addClass 'nav-selected'
 
   # according to options.widgetVisibility and the widget's isActive state.
@@ -359,7 +359,7 @@ class window.LIMEPlayer
           # for widgetEl in widgetContainer.element.children()
           widgetContainer.element.append widgetEl
         widgetContainer.element.append '&nbsp;'
-        $(widgetContainer).data 'widgetList', null
+        jQuery(widgetContainer).data 'widgetList', null
 
       # The rest that's still in the fullscreen widget container goes where?
       ###
@@ -369,8 +369,8 @@ class window.LIMEPlayer
 
     for annotation in LimePlayer.annotations # retrigger becomeActive event on each active annotation to force plugins to redraw
       if annotation.state is 'active' # to avoid duplicate display, we inactivate first, then reactivate them
-        # $(annotation).trigger($.Event("becomeInactive", annotation: annotation))
-        $(annotation).trigger($.Event("becomeActive", annotation: annotation))
+        # jQuery(annotation).trigger(jQuery.Event("becomeInactive", annotation: annotation))
+        jQuery(annotation).trigger(jQuery.Event("becomeActive", annotation: annotation))
     # end added SORIN
     console.info "_moveWidgets", isFullscreen
 
@@ -411,7 +411,7 @@ class window.LIMEPlayer
     if container.element
       container = container.element
     container.prepend "<div class='lime-widget'></div>"
-    domEl = $ ".lime-widget:first", container
+    domEl = jQuery ".lime-widget:first", container
     opts = _(@options.widget).extend options
     res = new LimeWidget plugin, domEl, opts
     _.defer =>
@@ -449,4 +449,4 @@ class window.LIMEPlayer
   $.fn.goTo = ->
     $(this).parent().scrollTo this
     this # for chaining...
-) $
+) jQuery
