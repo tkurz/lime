@@ -414,7 +414,7 @@ a:hover {
     color: white;
     font: 22px 'Trebuchet MS', sans-serif;
     /*padding: 20px;*/
-    min-width: 500px;
+    /* min-width: 500px; */
     min-height: 100px
 }
 

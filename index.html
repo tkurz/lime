@@ -48,6 +48,18 @@
             width:100%;
             background: #9feaac;
         }
+        table tr td a.embeded {
+            display:block;
+            height:100%;
+            width:100%;
+            background: white;
+        }
+        table tr td a.embeded:hover{
+            display:block;
+            height:100%;
+            width:100%;
+            background: rgb(162, 203, 248);
+        }
         #loadingDiv {
             position: absolute;
             top: 70px;
@@ -121,9 +133,16 @@
                     </td>
 				
                     <td>
-                        <a class="simple" href="simple.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
-                            <img src="img/simpleplayer.png" width="40" height="40">
-                            <p>Simple player</p>
+                        <a class="simple" href="fullscreentv.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
+                            <img src="img/fullscreenplayer.png" width="40" height="40">
+                            <p>TV player</p>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a class="embeded" href="embeded.html?videoUrl=<%= video.instance.value %>&cmfUrl=<%=cmfUrl%>&lang=<%=lang%>" target="_blank">
+                            <img src="img/embeded.png" width="40" height="40">
+                            <p>Embedded player</p>
                         </a>
                     </td>
                 </tr>
