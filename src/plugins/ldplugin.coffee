@@ -167,6 +167,7 @@ class window.LDPlugin extends window.LimePlugin
             if result
               return result
           return null
+
         annotation.getPage = ->
           homepage = @_detectProperty @entities, 'foaf:homepage'
           unless homepage
@@ -205,7 +206,21 @@ class window.LDPlugin extends window.LimePlugin
           console.log "===== LDPlugin - getStarring result: ", starringList
           return starringList
 
+        annotation.getLatitude = ->
+          value = 0.0
+          for entity in @entities
+            if entity.getSubject().indexOf('geonames') isnt -1
+              value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#lat>']
+          console.log "Latitude = ", value
+          return value
 
+        annotation.getLongitude = ->
+          value = 0.0
+          for entity in @entities
+            if entity.getSubject().indexOf('geonames') isnt -1
+              value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#long>']
+          console.log "Latitude = ", value
+          return value
 
         annotation.entityPromise.resolve annotation.entities
         readyCb()

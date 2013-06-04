@@ -58,7 +58,7 @@
     color: white;
     font-size: 100%;
     /*right: -10000;*/
-    transition: right 2s;
+    /* transition: right 2s; */
 }
 .inactive {
     display: none !important;
