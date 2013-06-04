@@ -1,9 +1,341 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+<title>ConnectMe Player</title>
+<!-- Loading dependencies -->
+<script type="text/javascript" src="lib/jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="lib/underscoreJS/underscore.min.js"></script>
+<script type="text/javascript" src="lib/backboneJS/backbone.js"></script>
+<script type="text/javascript" src="lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
+<script type="text/javascript" src="lib/vie/vie.js"></script>
+<script type="text/javascript" src="lib/iscroll/iscroll.js"></script>
+<!-- Plugin dependencies -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=weather"></script>
+<link href="css/video-js1.css" rel="stylesheet">
+<!--[if lte IE 7]>
+<link rel="stylesheet" href='css/ie_fixes.css' type="text/css" media="screen, projection"/>
+<![endif]-->
+<!-- The VideoJS player -->
+<script src="lib/videojs/video.js"></script>
+
+<script type="text/javascript" src="lib/utils.js"></script>
+<!-- The Lime player -->
+<script type="text/javascript" src="lib/lime.js"></script>
+<!-- plugins -->
+<script src="lib/plugins/geonamesmapplugin.js"></script>
+<script src="lib/plugins/dbpediainfoplugin.js"></script>
+<script src="lib/plugins/googleweatherplugin.js"></script>
+<script src="lib/plugins/annotationmodalwindow.js"></script>
+<script src="lib/plugins/lsiimageplugin.js"></script>
+<script src="lib/plugins/videoplugin.js"></script>
+<script src="lib/plugins/youtubeplugin.js"></script>
+<script src="lib/plugins/businessplugin.js"></script>
+<script src="lib/plugins/tvplugin.js"></script>
+<!--
+<script src="lib/plugins/googledirectionplugin.js"></script>
+-->
+<!-- settings -->
+<script src="lib/settings/admin.js"></script>
+<script src="lib/settings/statistics.js"></script>
+<script src="lib/settings/usersettings.js"></script>
+<script src="lib/settings/help.js"></script>
+
+<link href="css/full-screen-tv.css" rel="stylesheet">
+<!--<script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>-->
+<script type="text/javascript">
+    /*	document.body.addEventListener('touchmove', function(event) {
+     event.preventDefault();
+     }, false); */
+</script>
+<script type="text/javascript" language="javascript">
+    /*
+     VIDEO1: https://s3-eu-west-1.amazonaws.com/yoo.120/connectme/6306_519_20120508125738_standard.mp4
+     VIDEO2: https://s3-eu-west-1.amazonaws.com/yoovis-videos/6256_519_connectme_volksbuehne_heldenmp4_standardmpeg_20120427015958_standard.mp4
+     */
+    $(document).ready(function () {
+        var desiredHeight = window.innerHeight;
+        var desiredWidth = window.innerWidth;
+        var headerHeight = $("#header").height();
+        if (window.innerWidth < desiredHeight)
+            desiredHeight = window.innerWidth * 80 / 100;
+        desiredHeight = desiredHeight - headerHeight;
+
+        var local = JSON.parse(UTILS.getParameterByName('local') || 'false');
+        var videoUrl = UTILS.getParameterByName('videoUrl');
+        var cmfurl = UTILS.getParameterByName('cmfUrl').replace(/\/$/, '') + '/' || "http://connectme.salzburgresearch.at/CMF/";
+        var lang = UTILS.getParameterByName('lang') || 'en';
+        var cmf = new CMF(cmfurl);
+
+        var getAnnotations = function (cb) {
+            if (local) {
+                jQuery.getJSON('annotations.json', function (res) {
+                    console.info('annotation JSON', res.results.bindings);
+                    cb(false, res.results.bindings);
+                });
+            } else {
+                cmf.getAnnotationsForVideoOrLocator(videoUrl, cb);
+            }
+        };
+        var getLocators = function (cb) {
+            if (local) {
+                var dir = "http://s3-eu-west-1.amazonaws.com/yoo.120/connectme";
+                // var dir = "videos";
+                var locators = [
+                    {"source":dir + "/6306_519_20120508125738_ogg.ogv", "type":"video/ogv"},
+                    {"source":dir + "/6306_519_20120508125738_standard.mp4", "type":"video/mp4"},
+                    {"source":dir + "/6306_519_20120508125738_webm.webm", "type":"video/webm"}
+                ];
+                cb(false, locators);
+            } else {
+                cmf.getLocatorsForVideoOrLocator(videoUrl, cb);
+            }
+        };
+
+        getLocators(function (err, locators) {
+            var x = _.uniq(locators,false,function(i){
+
+                return i['source'];
+
+            })
+            locators = x;
+            console.info("locators", locators);
+            if (err || locators.length == 0) {
+                console.error("Error getting video locators", err, locators);
+                alert("Error getting video locators for " + videoUrl);
+                return
+            }
+
+            getAnnotations(function (err, annotations) {
+                if (err) {
+                    console.error("Error getting annotations", err);
+                    alert("Error loading annotations");
+                    return;
+                }
+                console.info("Annotations - before", annotations);
+                /*var x = _.uniq(annotations,false, function(item){
+                 return item.resource.value;
+                 })
+                 annotations = x;*/
+                annotations = _(annotations).map(function (ann) {
+                    return new Annotation(ann);
+                });
+
+                console.info("Annotations", annotations);
+                var options = {
+                    video:locators,
+                    // activeWidgetTypes: ['DbpediaInfoWidget'],
+                    local:local,
+                    annotations:annotations,
+                    containerDiv:"mainwrapper",
+                    videoPlayerSize:{"width":desiredWidth, "height":desiredHeight},
+                    vPlayer:"VideoJS",
+                    // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
+                    annotFrameworkURL:cmfurl,
+                    plugins:{
+                        /* GeoNamesMapPlugin:{}, */
+                        /* GoogleWeatherPlugin:{
+                         preferredContainer:{ element:jQuery('#widget-container-2'),
+                         orientation:'horizontal'}
+                         }, */
+                        AnnotationModalWindow:{},
+                        /* DBPediaInfoPlugin:{}, */
+                        /* BusinessPlugin:{}, */
+                        /* YoutubePlugin:{}, */
+                        /* VideoPlugin:{}, */
+                        TVPlugin: {},
+                        /* LSIImagePlugin: {
+                         preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                         },*/
+                        HelpPlugin : {},
+                        /* AdminPlugin:{}, */
+                        StatisticsPlugin:{},
+                        UserSettingsPlugin:{}
+                    },
+                    // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
+                    LDPlugin: {
+                        stanbolUrl: "http://www.corsproxy.com/connectme.salzburgresearch.at/CMF/stanbol/config"
+                    },
+                    widgetContainers:[
+                        {element:jQuery('#widget-container-2'), orientation:'horizontal'}
+                    ],
+                    annotationsVisible:true,
+                    preferredLanguage:lang
+                };
+                window.lime = LimePlayer = new LIMEPlayer(options);
+                console.log(LimePlayer);
+            });
+        })
+    });
+
+</script>
+<script type="text/javascript">
+    var myScroll;
+    function iScrollloaded() {
+        myScroll = new iScroll('wrapper', { checkDOMChanges:true });
+    }
+    document.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    }, false);
+
+    /* * * * * * * *
+     *
+     * Use this for high compatibility (iDevice + Android)
+     *
+     */
+    /* document.addEventListener('DOMContentLoaded', function() {
+     setTimeout(iScrollloaded, 200);
+     }, false); */
+    /*
+     * * * * * * * */
+
+    /* * * * * * * *
+     *
+     * Use this for iDevice only
+     *
+     */
+    //document.addEventListener('DOMContentLoaded', loaded, false);
+    /*
+     * * * * * * * */
+
+    /* * * * * * * *
+     *
+     * Use this if nothing else works
+     *
+     */
+
+    window.addEventListener('load', setTimeout(function () {
+        console.log("window.load event")
+        iScrollloaded();
+    }, 200), false);
+    /*
+     * * * * * * * */
+
+</script>
+
 </head>
+
 <body>
 
+<div id="header" class="header" align="left">
+    <a href="./" style="float: left"><img src="img/connectme_logo_web.png" width="204" height="40" border="0"/></a>
+
+    <div class="settings" style="position: relative; float:left;">
+        <!-- <div class="stats" style="float: left;"> <img src="img/statistics.png" style="width: 40px; height: 40px; float: left;" /> </div>
+        <div class="usersettings" style="float: left;"> <img src="img/settings.png" style="width: 40px; height: 40px; float: left;" /> </div>
+        <!--	<div class="admin" style="float: left;"> <img src="img/admin.png" style="width: 30px; height: 30px; float: left;" /> </div> -->
+        <div class="help" style="float: left;">
+            <img src="img/help.png" style="width: 36px; height: 35px; float: left;  cursor: hand; cursor: pointer; display: block;"/>
+        </div>
+
+    </div>
+    <div>
+        <img class="slideoutbutton" src="img/slideout.png"
+             style="width: 40px; height: 40px; float: right; margin-right: 15px; cursor: hand; cursor: pointer;"/>
+    </div>
+</div>
+
+<div text-align="center" id="container">
+    <div id="widget-container-1" class="widget-container horizontal" style="display: none">
+        &nbsp;
+    </div>
+
+    <div id="wrapper" data="only for mobile devices">
+        <div id="widget-container-2" data-collapsed="0" class="widget-container horizontal"></div>
+    </div>
+    <div class="mainwrapper" id="mainwrapper" align="center"></div>
+    <!--
+    <div id="widget-container-1" class="widget-container vertical">&nbsp;</div>
+    <div class="mainwrapper" id="mainwrapper" align="center">
+    </div>
+    <div id="widget-container-2" class="widget-container vertical"> &nbsp;</div> -->
+
+</div>
+
+<!-- Attache widget container toggle logic -->
+<script type="text/javascript" language="javascript">
+    slideOut = true;
+    //$("#widget-container-2").css('right',slideRight + "px" );
+    //$("div .lime-widget").css('right',slideRight + "px" );
+    console.log("i should be folded");
+    $(".slideoutbutton").click(function (e) {
+        if (slideOut) {
+            slideRight = $("div .lime-widget").width();
+            slideRight = 10 - slideRight;
+            $("div .lime-widget").css('transition', 'right 2s');
+            $("div .lime-widget").css("-webkit-transition", "right 2s");
+            $("div .lime-widget").css('-webkit-transition', 'right 2s');
+            $("div .lime-widget").css('-o-transition', 'right 2s');
+
+            $("div .lime-widget").css('right', slideRight + "px");
+            $("#widget-container-2").data("collapsed", 1);
+            // change buttn image to src="img/slidein.png"
+            $(".slideoutbutton").attr('src', "img/slidein.png");
+        } else {
+            $("div .lime-widget").css('transition', 'right 2s');
+            $("div .lime-widget").css("-webkit-transition", "right 2s");
+            $("div .lime-widget").css('-webkit-transition', 'right 2s');
+            $("div .lime-widget").css('-o-transition', 'right 2s');
+
+            $("div .lime-widget").css('right', 0);
+            $("#widget-container-2").data("collapsed", 0);
+            //console.log("Widget container 2 - data is set to :");
+            //console.log($("#widget-container-2").data("collapsed"));
+            // change button image to src="img/slideout.png"
+            $(".slideoutbutton").attr('src', "img/slideout.png");
+        }
+        slideOut = !slideOut;
+        console.log("toggle");
+
+    });
+</script>
+
+<!-- Video player resize to full window width+ height -->
+<script type="text/javascript" language="javascript">
+    var resize = function () {
+        desiredHeight = window.innerHeight;
+        if (window.innerWidth / desiredHeight >= 1.3) {
+            desiredHeight = window.innerHeight;
+        } else {
+            desiredHeight = window.innerWidth * 60 / 100;
+        }
+
+        headerHeight = $("#header").height();
+        $("#video_player").css("height", desiredHeight - headerHeight);
+        $("#video_player").css("width", window.innerWidth);
+        //$("#wrapper").css("height", window.innerHeight - 39 - headerHeight);
+        $("#wrapper").css("height", (desiredHeight - $("#header").height() - headerHeight)*30/100);
+        // $(".slideoutbutton").trigger('click');
+
+        var playerWidth = $("#video_player").width();
+        var playerHeight = $("#video_player").height();
+        console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
+    }
+    window.onload = resize;
+    window.onresize = resize;
+</script>
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36834976-1']);
+    _gaq.push(['_setDomainName', 'connectme.at']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 </body>
 </html>

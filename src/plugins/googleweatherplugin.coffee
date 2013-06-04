@@ -15,7 +15,7 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
       # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
       nonConcept = annotation.getDescription()
       nonConcept = nonConcept.replace("No description found.","")
-      if(nonConcept.length >= 3)
+      if(nonConcept.length >= 0)
         widget = @lime.allocateWidgetSpace @,
           thumbnail: "img/weather.png" # should go into CSS
           title: "#{annotation.getLabel()} Weather"
@@ -39,29 +39,9 @@ class window.GoogleWeatherPlugin extends window.LimePlugin
           annotation.widgets[@name].setInactive()
 
   showWeatherInModalWindow: (annotation, output) ->
-    try
-      if window.XMLHttpRequest # code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest()
-      else # code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
-      xmlhttp.open "POST", annotation.resource.value + "/about.rdf", false
-      xmlhttp.send()
-      xmlDoc = xmlhttp.responseXML
-
-      #document.write("<table border='1'>");
-      x = xmlDoc.getElementsByTagName("Feature")
-      i = 0
-      while i < x.length
-
-        #document.write("<tr><td>");
-        locationName = x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue
-
-        #document.write("</td><td>");
-        latitude = x[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue
-
-        #document.write("</td><td>");
-        longitude = x[i].getElementsByTagName("long")[0].childNodes[0].nodeValue
-        i++
+    locationName = annotation.getLabel()
+    latitude = annotation.getLatitude()
+    longitude = annotation.getLongitude()
     latlng = new google.maps.LatLng(latitude, longitude)
 
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);

@@ -150,6 +150,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       x = undefined
       xmlDoc = undefined
       xmlhttp = undefined
+      ###
       try
         if window.XMLHttpRequest
           xmlhttp = new XMLHttpRequest()
@@ -176,6 +177,23 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         @geomap = map
         console.info @geomap
         # google.maps.event.addListener(output, 'keydown', console.info 'map catched the keydown event');
+
+      ###
+      locationName = annotation.getLabel()
+      latitude = annotation.getLatitude()
+      longitude = annotation.getLongitude()
+
+      output = document.getElementById("map_area")
+      latlng = new google.maps.LatLng(latitude, longitude)
+      myOptions =
+        zoom: 13
+        center: latlng
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+
+      map = new google.maps.Map(output, myOptions)
+      @geomap = map
+      console.info @geomap
+
       $("#geoMap").addClass 'selected'
 
     $("#geoWeather").click =>
@@ -199,6 +217,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       x = undefined
       xmlDoc = undefined
       xmlhttp = undefined
+      ###
       try
         if window.XMLHttpRequest
           xmlhttp = new XMLHttpRequest()
@@ -214,6 +233,12 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           latitude = x[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue
           longitude = x[i].getElementsByTagName("long")[0].childNodes[0].nodeValue
           i++
+
+      ###
+      locationName = annotation.getLabel()
+      latitude = annotation.getLatitude()
+      longitude = annotation.getLongitude()
+
       output = document.getElementById("map_area")
       latlng = new google.maps.LatLng(latitude, longitude)
       myOptions =
@@ -252,6 +277,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           destination = undefined
           directionDisplay = undefined
           directionsService = new google.maps.DirectionsService()
+          ###
           try
             if window.XMLHttpRequest
               xmlhttp = new XMLHttpRequest()
@@ -267,6 +293,13 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
               latitude = x[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue
               longitude = x[i].getElementsByTagName("long")[0].childNodes[0].nodeValue
               i++
+
+          ###
+
+          locationName = annotation.getLabel()
+          latitude = annotation.getLatitude()
+          longitude = annotation.getLongitude()
+
           output = document.getElementById("map_area")
           directionsDisplay = new google.maps.DirectionsRenderer()
           destination = new google.maps.LatLng(latitude, longitude)

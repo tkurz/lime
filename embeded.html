@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<script src="lib/jquery/jquery-1.7.1.js"></script>
+<title>ConnectMe</title>
+<script>
+ var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  }
+  console.log(query_string);
+</script>
+
+</head>
+<body id="myapp">
+ <div id="body" style="margin: 0 auto; position: absolute; z-index: 900; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('img/03.jpg'); left: -3px; top: 0px;">
+  <div id="embed" style="margin: 0 auto; position: relative; width: 1000px; height: 651px; top: 30px;"></div>
+  <div id="source" style="border: 1px solid black; margin: 0 auto; width: 1000px; position: relative; height: 100px; top: 100px; box-shadow: 0 0 5px 5px rgb(99, 32, 32); background-color: #ffffff;"></div>
+  <div id="footer" style="margin: 0 auto; position: relative; width: 1000px; height: 20px; top: 110px;" >
+         awesome background image designed by  <a href="http://ineedchemicalx.deviantart.com/">[*]</a>.
+  </div>
+</div>
+</body>
+<script>
+ var videosource = window.location.search.substring(1);
+ var embedsource = videosource.split("?");
+ console.log(videosource);
+ console.log(embedsource);
+ videosource.replace("/","\/");
+ var embedtag = "<embed src=\"http:\/\/localhost\/fullscreen.html?" + videosource + "\" style=\"border: 1px solid black; position: absolute; z-index: 900; width: 1000px; height: 650px; left: -2.5694580078125px; top: -0.0555572509765625px; box-shadow: 0 0 5px 5px rgb(99, 32, 32);\"><\/embed>";
+ $("#embed").append(embedtag);
+ $("#source").text(embedtag).html();
+</script>
+</html>

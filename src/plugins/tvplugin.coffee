@@ -116,8 +116,8 @@ class window.TVPlugin extends window.LimePlugin
 
 
   renderActor: (annotation, fullEntity, container) =>
-    modalContent = $(container)
-    modalContent.css "width", "600px"
+    modalContent = jQuery(container)
+    modalContent.css "width", "450px"
     modalContent.css "height", "auto"
     console.log fullEntity;
 
@@ -140,7 +140,7 @@ class window.TVPlugin extends window.LimePlugin
           starringItem = starringItem + "<\/br>"
           starringList += starringItem
 
-        $('#infoText').append """<div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
+        jQuery('#infoText').append """<div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
                               Movies and TV Series</div>
                               <div id="infoTextCareer" style="font: Helvetica; width: 100%; position: relative; float: left; height: auto; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; line-height: normal;">
         #{starringList}</div>"""
@@ -197,7 +197,7 @@ class window.TVPlugin extends window.LimePlugin
       catch error
 
     result = """
-             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
+             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 100%;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
              <div class="infoWidgeticon" style="border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: #3f3e3e; width: 8%;">
              <span data-dojo-type="shapes.Text" id="iconLabel" style="font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: #f38f0b; font-family: 'Times New Roman',Times,serif; font-style: italic;">i</span>
@@ -240,8 +240,8 @@ class window.TVPlugin extends window.LimePlugin
     container.append result
 
   renderCharacter: (annotation, fullEntity, container) ->
-    modalContent = $(container)
-    modalContent.css "width", "600px"
+    modalContent = jQuery(container)
+    modalContent.css "width", "450px"
     modalContent.css "height", "auto"
 
     console.log fullEntity
@@ -294,7 +294,7 @@ class window.TVPlugin extends window.LimePlugin
     catch error
 
     result = """
-             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
+             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 100%;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
              <div class="infoWidgeticon" style="border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: #3f3e3e; width: 8%;">
              <span data-dojo-type="shapes.Text" id="iconLabel" style="font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: #f38f0b; font-family: 'Times New Roman',Times,serif; font-style: italic;">i</span>
@@ -312,7 +312,7 @@ class window.TVPlugin extends window.LimePlugin
     #{occupation}
     #{nickname}
               <br>
-    
+
              </div>
              </div>
              </div>
@@ -320,8 +320,8 @@ class window.TVPlugin extends window.LimePlugin
     container.append result
 
   renderDirector: (annotation, fullEntity, container) ->
-    modalContent = $(container)
-    modalContent.css "width", "600px"
+    modalContent = jQuery(container)
+    modalContent.css "width", "450px"
     modalContent.css "height", "auto"
 
     console.log fullEntity
@@ -374,7 +374,7 @@ class window.TVPlugin extends window.LimePlugin
         birthPlace += fullEntity.attributes['<http://dbpedia.org/property/placeOfBirth>']['@value']
       catch error
     result = """
-             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 600px;">
+             <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 100%;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
              <div class="infoWidgeticon" style="border-right: 1px dotted lightgray; position: relative; height: 100%; float: left; background-color: #3f3e3e; width: 8%;">
              <span data-dojo-type="shapes.Text" id="iconLabel" style="font: Times; position: relative; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: #f38f0b; font-family: 'Times New Roman',Times,serif; font-style: italic;">i</span>
