@@ -149,17 +149,17 @@
                         AnnotationModalWindow:{},
                         DBPediaInfoPlugin:{},
                         BusinessPlugin:{},
-                        YoutubePlugin:{},
+                        /* YoutubePlugin:{}, */
                         /* VideoPlugin:{}, */
-                        MediaPlugin: {},
+                         MediaPlugin:{},
                         /* TVPlugin: {}, */
                         /* LSIImagePlugin: {
                          preferredContainer: {element:jQuery('#widget-container-2'), orientation:'horizontal'}
                          },*/
                          HelpPlugin : {},
                         /* AdminPlugin:{}, */
-                        StatisticsPlugin:{},
-                        UserSettingsPlugin:{}
+                         StatisticsPlugin:{},
+                         UserSettingsPlugin:{}
                     },
                     // plugins:[TestPlugin, LDPlugin, AnnotationOverlays],
                     LDPlugin: {
@@ -178,49 +178,7 @@
     });
 
 </script>
-<script type="text/javascript">
-    var myScroll;
-    function iScrollloaded() {
-        myScroll = new iScroll('wrapper', { checkDOMChanges:true });
-    }
-    document.addEventListener('touchmove', function (event) {
-        event.preventDefault();
-    }, false);
 
-    /* * * * * * * *
-     *
-     * Use this for high compatibility (iDevice + Android)
-     *
-     */
-    /* document.addEventListener('DOMContentLoaded', function() {
-     setTimeout(iScrollloaded, 200);
-     }, false); */
-    /*
-     * * * * * * * */
-
-    /* * * * * * * *
-     *
-     * Use this for iDevice only
-     *
-     */
-    //document.addEventListener('DOMContentLoaded', loaded, false);
-    /*
-     * * * * * * * */
-
-    /* * * * * * * *
-     *
-     * Use this if nothing else works
-     *
-     */
-
-    window.addEventListener('load', setTimeout(function () {
-        console.log("window.load event")
-        iScrollloaded();
-    }, 200), false);
-    /*
-     * * * * * * * */
-
-</script>
 
 </head>
 

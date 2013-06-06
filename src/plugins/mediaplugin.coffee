@@ -1,4 +1,4 @@
-class window.TVPlugin extends window.LimePlugin
+class window.MediaPlugin extends window.LimePlugin
   init: ->
     @name = 'MediaPlugin'
     console.info "Initialize #{@name}"
@@ -35,12 +35,12 @@ class window.TVPlugin extends window.LimePlugin
         @vie.use new @vie.DBPediaService
       if annotation.resource.value.indexOf('dbpedia') isnt -1
         entity = @vie.entities.get annotation.resource.value
-        if entity and entity.isof('dbpedia:Person')
-          @_loadFullDbpediaEntity entity, (fullEntity) =>
-            # @processAnnotation annotation, fullEntity.attributes['@type']
-            @processAnnotation annotation, fullEntity
+        @_loadFullDbpediaEntity entity, (fullEntity) =>
+          # @processAnnotation annotation, fullEntity.attributes['@type']
+          @processAnnotation annotation, fullEntity
 
   processAnnotation: (annotation, fullEntity) ->
+    console.log "mediaplugin - ", fullEntity
     if _.intersection(fullEntity.attributes['@type'], @options.activityTypes).length or _.intersection(fullEntity.attributes['dcterms:subject'], @options.activityTypes).length
       # There's at least one type in common
       console.info 'Render Media widget'
