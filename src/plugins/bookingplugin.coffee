@@ -5,7 +5,7 @@ class window.BusinessPlugin extends window.LimePlugin
     console.info "Initialize BusinessPlugin"
 
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("dbpedia") < 0 and annotation.resource.value.indexOf("geonames") < 0 and annotation.resource.value.indexOf("youtube.com") < 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions', 'http://connectme.at/ontology#hasContent']
+      if annotation.isBookmark() and annotation.resource.value.indexOf("youtube.com") < 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions', 'http://connectme.at/ontology#hasContent']
         # if annotation.resource.value.indexOf("geonames") < 0 && annotation.resource.value.indexOf("dbpedia") < 0 && annotation.resource.value.indexOf("youtube") < 0
         @handleAnnotation annotation
 
@@ -21,11 +21,11 @@ class window.BusinessPlugin extends window.LimePlugin
       domain = url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace('www.', '')
 
     widget = @lime.allocateWidgetSpace @,
-        thumbnail: "img/shop.png" # should go into CSS
-        title: "#{domain}"
-        type: "BusinessWidget"
-        sortBy: ->
-          10000 * annotation.start + annotation.end
+      thumbnail: "img/shop.png" # should go into CSS
+      title: "#{domain}"
+      type: "BusinessWidget"
+      sortBy: ->
+        10000 * annotation.start + annotation.end
 
       # We're going to need the annotation for the widget's `activate` event
       widget.annotation = annotation
@@ -41,6 +41,34 @@ class window.BusinessPlugin extends window.LimePlugin
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation.widgets[@name].setInactive()
+
+      jQuery(widget).bind "downarrow", (e) =>
+        @bookingtabsiterator = if @videotabs.length is @bookingtabsiterator + 1 then 0 else @bookingtabsiterator + 1
+
+        if (@bookingtabsiterator == 0)
+          $("#video1").trigger 'click'
+          $("#video1").addClass 'selected'
+        if (@bookingtabsiterator == 1)
+          $("#video2").trigger 'click'
+          $("#video2").addClass 'selected'
+        if (@bookingtabsiterator == 2)
+          $("#video3").trigger 'click'
+          $("#video3").addClass 'selected'
+
+
+      jQuery(widget).bind "uparrow", (e) =>
+        @bookingtabsiterator = if @bookingtabsiterator is 0 then @videotabs.length - 1  else @bookingtabsiterator - 1
+        $('.videotab.selected').removeClass 'selected'
+        if (@bookingtabsiterator == 0)
+          $("#video1").trigger 'click'
+          $("#video1").addClass 'selected'
+        if (@bookingtabsiterator == 1)
+          $("#video2").trigger 'click'
+          $("#video2").addClass 'selected'
+        if (@bookingtabsiterator == 2)
+          $("#video3").trigger 'click'
+          $("#video3").addClass 'selected'
+
 
   showAbstractInModalWindow: (annotation, outputElement) ->
     modalContent = $(outputElement)
