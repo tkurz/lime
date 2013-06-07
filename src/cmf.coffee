@@ -49,7 +49,7 @@ class window.CMF
       ?annotation oac:hasTarget ?fragment.
       ?annotation oac:hasBody ?body
     }
-    ORDER BY ?instance"""
+    ORDER BY ASC(?title)"""
 
   # Wrapper for both `getAnnotationsForLocator` and `getAnnotationsForVideo`
   getAnnotationsForVideoOrLocator: (url, resCB) ->
@@ -192,7 +192,7 @@ class window.CMF
       ?video mao:title ?title .
       ?video foaf:img ?img .
     }
-    ORDER BY ?video"""
+    ORDER BY ?video """
 
   getLSIImagesForTerm: (keywordUri, resCB) ->
     res = []
