@@ -42,7 +42,7 @@
  console.log(videosource);
  console.log(embedsource);
  videosource.replace("/","\/");
- var embedtag = "<embed src=\"http:\/\/localhost\/fullscreen.html?" + videosource + "\" style=\"border: 1px solid black; position: absolute; z-index: 900; width: 1000px; height: 650px; left: -2.5694580078125px; top: -0.0555572509765625px; box-shadow: 0 0 5px 5px rgb(99, 32, 32);\"><\/embed>";
+ var embedtag = "<embed src=\"http:\/\/http://tkurz.github.io\/lime\/fullscreen.html?" + videosource + "\" style=\"border: 1px solid black; position: absolute; z-index: 900; width: 1000px; height: 650px; left: -2.5694580078125px; top: -0.0555572509765625px; box-shadow: 0 0 5px 5px rgb(99, 32, 32);\"><\/embed>";
  $("#embed").append(embedtag);
  $("#source").text(embedtag).html();
 </script>

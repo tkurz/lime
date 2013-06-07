@@ -172,6 +172,7 @@ class window.CMF
       OPTIONAL {?source mao:hasFormat ?type}
     }
     ORDER BY ?source"""
+
   getLSIVideosForTerm: (keywordUri, resCB) ->
     res = []
     query = @_getLSIVideosForTerm keywordUri

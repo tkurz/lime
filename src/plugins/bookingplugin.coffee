@@ -85,32 +85,24 @@ class window.BookingPlugin extends window.LimePlugin
     console.log resource
     #result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
     result = """
-             <div id="bookingWidgetExpanded" style="position: relative; z-index: 900; width: 600px; height: 600px; background-color: #f1f1f1;">
+             <div id="bookingWidgetExpanded" style="position: relative; z-index: 900; width: 600px; height: 600px; background-color: transparent;">
              <div id="forthTile" style="position: relative; float: left; width: 300px; height: 300px;">
              <div style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #00BFFF; background-color: #696969;">
-             STI Research and Consulting GmbH.</div>
+             Planai - Hochwurzen - Bahnen Ges.m.b.H.</div>
              <div style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
-             Neubaugasse 10/15, 1070 Wien, Austria</div>
+             Hochwurzen-Gipfelbahn Talstation, 8970 Schladming, AT</div>
              <div style="width: 100%; position: relative; height: 30px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
              +43-3687-22042-0</div>
              <div style="width: 100%; position: relative; height: 190px; font-size: 14pt; background-color: #303030; color: #f1f1f1;">
-             About us</div>
+             About us<br/>
+             Die erste Sommer-Schlittenbahn der Welt befindet sich auf der Hochwurzen.
              </div>
-             <div id="thirdTile" style="width: 300px; height: 300px; float: left; position: relative;">
-             <div id="businessWho" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px;">
-             Who?<div id="businessWhoLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-             STI Research and Consulting GmbH.</div>
-             </div>
-             <div id="businessWhat" style="width: 100%; height: 100px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px;">
-             What?<div id="businessWhatLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-             STI Research and Consulting GmbH.</div>
-             </div>
-             <div id="businessWhere" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px;">
-             Where?<div id="businessWhereLabel" style="position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
-             STI Research and Consulting GmbH.</div>
+             <div id="businessContact" style="width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
+             &lt; Contact us</div>
              </div>
              </div>
-             <div id="secondTile" style="width: 300px; height: 300px; position: relative; float: left;">
+
+             <div id="secondTile" style="width: 300px; height: 300px; position: relative; float: left; display: none;">
              <div id="businessName" style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #FA8072; background-color: #696969;">
              STI Research and Consulting GmbH.</div>
              <div id="businessAddress" style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
@@ -134,10 +126,24 @@ class window.BookingPlugin extends window.LimePlugin
              <div id="businessContact" style="width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
              &lt; Contact us</div>
              </div>
-             <div id="firstTile" style="position: relative; float: left; width: 300px; height: 300px;">
+             <div id="firstTile" style="position: relative; float: left; width: 300px; height: 300px; display: none;">
              <div style="width: 100%; position: relative; height: 30px; font-size: 20px; background-color: #696969; color: #90EE90;">
              STI Research and Consulting GmbH.</div>
              <img data-dojo-type="clipart.StreetMap" id="Map" style="width: 100%; position: absolute; z-index: 900; height: 89%;"></img>
+             </div>
+             <div id="thirdTile" style="width: 300px; height: 300px; float: left; position: relative;">
+             <div id="businessWho" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px;">
+             Who?<div id="businessWhoLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+             About us</div>
+             </div>
+             <div id="businessWhat" style="width: 100%; height: 100px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px;">
+             What?<div id="businessWhatLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+             Our services</div>
+             </div>
+             <div id="businessWhere" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px;">
+             Where?<div id="businessWhereLabel" style="position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
+             Rout map</div>
+             </div>
              </div>
              </div>
              """
