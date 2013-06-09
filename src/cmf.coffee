@@ -209,6 +209,41 @@ class window.CMF
     }
     ORDER BY ?image """
 
+  getGRDataForTerm: (keywordUri, resCB) ->
+    res = []
+    query = @_getGRDataForTerm keywordUri
+    @_runSPARQL query, (err, res) ->
+      resCB err, res
+
+  _getGRDataForTerm: (keywordUri) -> """
+                                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                                        PREFIX gr: <http://purl.org/goodrelations/v1#>
+                                        PREFIX vCard: <http://www.w3.org/2001/vcard-rdf/3.0#>
+                                        PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                                        SELECT DISTINCT ?name ?street ?pcode ?city ?country ?telephone ?email ?description ?geoLat ?geoLong ?pricevalue ?pricecurrency ?product
+                                        WHERE {
+                                        <#{keywordUri}> gr:legalName ?name.
+                                        <#{keywordUri}> vCard:ADR ?address.
+                                        ?address vCard:Street ?street.
+                                        ?address vCard:Pcode ?pcode.
+                                        ?address vCard:City ?city.
+                                        ?address vCard:Country ?country.
+                                        ?address vCard:TEL ?tel.
+                                        <#{keywordUri}> geo:lat ?geoLat.
+                                        <#{keywordUri}> geo:long ?geoLong.
+                                        ?tel rdf:value ?telephone.
+                                        ?address vCard:EMAIL ?em.
+                                        ?em rdf:value ?email.
+                                        <#{keywordUri}> gr:offers ?offer.
+                                        ?offer rdfs:comment ?description.
+                                        ?offer gr:hasPriceSpecification ?price.
+                                        ?price gr:hasCurrencyValue ?pricevalue.
+                                        ?price gr:hasCurrency ?pricecurrency.
+                                        ?price rdfs:comment ?product.
+                                        }
+                                        """
+
   # running SPARQL query
   _runSPARQL: (query, resCB) ->
     uri = "#{@url}sparql/select?query=#{encodeURIComponent(query)}&output=json"
