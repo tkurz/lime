@@ -225,24 +225,24 @@ class window.BookingPlugin extends window.LimePlugin
               time = $.now()
               bemail = grdata[0].email
               bname = grdata[0].name
-              entry = """
-                      <div  style="width: 100%; position: relative; float: left; background-color: #e1e1e1; height: 30px;" class="item">
-                      <div style="height: 100%; color: #32CD32; font-size: 16pt; background-color: #505050; width: 30px; text-align: center; position: relative; float: left;" class="icon">
-                      @</div>
-                      <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center;" class="ip">
-                      #{@clientIP}</div>
-                      <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center;" class="email">
-                      #{bemail}l</div>
-                      <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center;" class="name">
-                      #{bemail}</div>
-                      <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center;" class="time">
-                      #{time}</div>
-                      </div>
-                      """
+
               #entry = @clientIP + ' clicked on '+ grdata[0].name
               #@_htmlEncode entry
-              $.post 'http://devserver.sti2.org/connectme/logger.php',
-                 entry,
+              $.post 'http://devserver.sti2.org/connectme/logger.php?',
+                entry : """
+                        <div  style="width: 100%; position: relative; float: left; background-color: #e1e1e1; height: 30px; border-bottom: 1px dotted #696969;" class="item">
+                        <div style="height: 100%; color: #32CD32; font-size: 16pt; background-color: #505050; width: 30px; text-align: center; position: relative; float: left;" class="icon">
+                        @</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="ip">
+                #{@clientIP}</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="email">
+                #{bemail}l</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="name">
+                #{bname}</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="time">
+                #{time}</div>
+                            </div>
+                          """
                 (data) ->
                   $(".businessContact").html "Thank you!"
 
