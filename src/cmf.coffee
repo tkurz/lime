@@ -34,7 +34,7 @@ class window.CMF
   # Get the list of all annotated videos stored on the CMF server
   getAnnotatedVideos: (resCB) ->
     query = @_annotatedVideosQuery
-    @_runSPARQL(query, resCB)
+    return @_runSPARQL(query, resCB)
   _annotatedVideosQuery: """
     PREFIX mao: <http://www.w3.org/ns/ma-ont#>
     PREFIX oac: <http://www.openannotation.org/ns/>
@@ -255,6 +255,7 @@ class window.CMF
         list = _(list).uniq()
       resCB null, list
     xhr.error resCB
+    xhr
 
   # Testing all the methods above. See results in the console
   test: ->
