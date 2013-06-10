@@ -176,7 +176,7 @@ class window.BookingPlugin extends window.LimePlugin
                  </div>
                  </div>
                  <div id="businessOpeningHours" style="width: 100%; position: relative; height: 60px; background-color: #303030; color: #f1f1f1;">
-                 Opening Hours
+                 
                  </div>
                    <div class="businessContact" style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
                  kontaktieren Sie uns
