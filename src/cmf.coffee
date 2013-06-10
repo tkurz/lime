@@ -186,11 +186,11 @@ class window.CMF
     WHERE {
       ?video mao:hasKeyword <#{keywordUri}> .
       ?video a <http://www.w3.org/ns/ma-ont#VideoTrack> .
-      ?video mao:description ?description .
+      OPTIONAL {?video mao:description ?description}.
       ?video mao:locator ?locator .
-      ?video mao:duration ?duration .
+      OPTIONAL {?video mao:duration ?duration}.
       ?video mao:title ?title .
-      ?video foaf:img ?img .
+      OPTIONAL {?video foaf:img ?img}.
     }
     ORDER BY ?video """
 

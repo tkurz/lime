@@ -28,7 +28,7 @@ class window.BookingPlugin extends window.LimePlugin
 
       widget = @lime.allocateWidgetSpace @,
         thumbnail: "img/shop.png" # should go into CSS
-        title: "#{domain}"
+        title: "#{domain} offer"
         type: "BusinessWidget"
         sortBy: ->
           10000 * annotation.start + annotation.end
@@ -144,7 +144,7 @@ class window.BookingPlugin extends window.LimePlugin
                  #{businessData[0].description}
                  </div>
                  <div class="businessContact"  style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
-                  Contact us
+                 kontaktieren Sie uns
                  </div>
                  </div>
 
@@ -179,7 +179,7 @@ class window.BookingPlugin extends window.LimePlugin
                  Opening Hours
                  </div>
                    <div class="businessContact" style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
-                    Contact us
+                 kontaktieren Sie uns
                    </div>
                  </div>
 
@@ -191,22 +191,22 @@ class window.BookingPlugin extends window.LimePlugin
                  </div>
 
                  <div id="thirdTile" style="width: 298px; height: 300px; float: left; position: relative; border-left:dotted 1px #bbbbbb">
-                 <div id="businessWho" style="width: 100%; height: 98px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px; border-bottom:dotted 1px #bbbbbb" >
-                 Who?
-                 <div id="businessWhoLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-                 About us
+                 <div id="businessWho" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 98px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb" >
+                 Wie?
+                 <div id="businessWhoLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+                 Über uns
                  </div>
                  </div>
-                 <div id="businessWhat" style="width: 100%; height: 98px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px; border-bottom:dotted 1px #bbbbbb">
-                 What?
-                 <div id="businessWhatLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-                 Our services
+                 <div id="businessWhat" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 98px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
+                 Was?
+                 <div id="businessWhatLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+                 Unsere anbieten
                  </div>
                  </div>
-                 <div id="businessWhere" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px;">
-                 Where?
-                 <div id="businessWhereLabel" style="position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
-                 Rout map
+                 <div id="businessWhere" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
+                 Wo?
+                 <div id="businessWhereLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
+                 Reiseroute Karte
                  </div>
                  </div>
                  </div>
@@ -247,6 +247,9 @@ class window.BookingPlugin extends window.LimePlugin
                   $(".businessContact").html "Thank you!"
 
         $("#businessWho").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWho").addClass "selected"
+
           $("#forthTile").css "display", "block"
           $("#firstTile").css "display", "none"
           $("#secondTile").css "display", "none"
@@ -254,6 +257,9 @@ class window.BookingPlugin extends window.LimePlugin
 
 
         $("#businessWhat").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWhat").addClass "selected"
+
           $("#forthTile").css "display", "none"
           $("#firstTile").css "display", "none"
           $("#secondTile").css "display", "block"
@@ -261,6 +267,9 @@ class window.BookingPlugin extends window.LimePlugin
 
 
         $("#businessWhere").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWhere").addClass "selected"
+
           $("#forthTile").css "display", "none"
           $("#firstTile").css "display", "block"
           $("#secondTile").css "display", "none"
@@ -330,3 +339,5 @@ class window.BookingPlugin extends window.LimePlugin
                 when error.UNKNOWN_ERROR
                   alert "Unknown error"
 
+
+        $("#businessWho").trigger "click"

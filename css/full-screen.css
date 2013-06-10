@@ -521,7 +521,7 @@ a:hover {
     border: turquoise 1px solid;
 }
 .selected{
-    border: turquoise 1px solid;
+    border: turquoise 1px solid !important;
 }
 
 .lime-widget.deactivated {
