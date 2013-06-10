@@ -98,7 +98,10 @@
             // this.cmf.test();
             this.cmf.getAnnotatedVideos(function(err, res){
                 if(err){
-                    if(res !== "abort"){
+                    if(err.readyState == 0 || err.status == 0) {
+                        return;
+                    } else {
+                    // if(res !== "abort"){
                         console.error("Error loading annotated videos");
                         alert("Error loading annotated videos: " + err);
                     }
@@ -202,7 +205,7 @@
                     <label>
                         <input type="radio" name="cmf" value="manual">Manual Setting
                     </label> <br/>
-                    <span id="cmfurlmanual">
+                    <span id="cmfurlmanual" style="display:none;">
                             <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/>
                             <button id="load">Load</button>
                         </span>
@@ -231,7 +234,7 @@
                                     loadVideos();
                                 }
                             } else {
-                                $("input[name=cmf]").first().attr('checked', 'checked');
+                                $("input[name=cmf]").first().attr('checked', 'checked').click();
                             }
 
                         });
