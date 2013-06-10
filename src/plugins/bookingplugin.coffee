@@ -139,8 +139,8 @@ class window.BookingPlugin extends window.LimePlugin
                  <div style="width: 100%; position: relative; height: 20px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
                   #{businessData[0].telephone}
                  </div>
-                 <div style="width: 100%; position: relative; height: 170px; font-size: 16px; background-color: #303030; color: #f1f1f1;">
-                 About us<br>
+                 <div style="width: 100%; position: relative; height: 170px; font-size: 16px; background-color: #303030; color: #f1f1f1; overflow-y: scroll;">
+                 Über uns<br>
                  #{businessData[0].description}
                  </div>
                  <div class="businessContact"  style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
@@ -159,7 +159,7 @@ class window.BookingPlugin extends window.LimePlugin
                   #{businessData[0].telephone}
                  </div>
                  <div id="businessService" style="width: 100%; position: relative; height: 110px; background-color: #ffffff;">
-                 <div id="businessService1" style="width: 100%; height: 80px; font-size: 16px; background-color: #696969; position: relative;">
+                 <div id="businessService1" style="width: 100%; height: 80px; font-size: 16px; background-color: #696969; position: relative; overflow-y: scroll;">
                   #{businessData[0].product}
                  </div>
                  <div id="businessService2" style="width: 100%; height: 30px; font-size: 16px; background-color: #303030; position: relative;">
