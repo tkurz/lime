@@ -71,34 +71,69 @@
 
     <link href="css/screen.css" rel="stylesheet">
     <script type="text/javascript">
-        jQuery(document).ready(function(){
-            var cmfUrl = UTILS.getParameterByName("cmfUrl");
-            if(cmfUrl) {
-                jQuery('#cmf-url').val(cmfUrl);
-            }
-            cmfUrl = cmfUrl.replace(/\/$/, '') + '/';
-            function loadVideos() {
-                var container = jQuery('#videolist');
-                container.html("");
-                cmfUrl = jQuery('#cmf-url').val();
-                this.cmf = new CMF(cmfUrl);
-                // this.cmf.test();
-                function renderVideoThumbs(list){
-                    var lang = jQuery('#lang').val();
-                    var template = _.template(jQuery('.videolist-template').html());
-
-                    container.html(template({list:list, cmfUrl: cmfUrl, lang: lang}));
+        $.xhrPool = [];
+        $.xhrPool.abortAll = function(){
+            $(this).each(function(idx, jqXHR) {
+                jqXHR.abort();
+            });
+            $.xhrPool.length = 0;
+        }
+        $.ajaxSetup({
+            beforeSend: function(jqXHR) {
+                $.xhrPool.push(jqXHR);
+            },
+            complete: function(jqXHR) {
+                var index = $.xhrPool.indexOf(jqXHR);
+                if (index > -1) {
+                    $.xhrPool.splice(index, 1);
                 }
-                this.cmf.getAnnotatedVideos(function(err, res){
-                    if(err){
+            }
+        });
+        function loadVideos() {
+            $.xhrPool.abortAll();
+            var container = jQuery('#videolist');
+            container.html("");
+            cmfUrl = getCmfUrl();
+            this.cmf = new CMF(cmfUrl);
+            // this.cmf.test();
+            this.cmf.getAnnotatedVideos(function(err, res){
+                if(err){
+                    if(res !== "abort"){
                         console.error("Error loading annotated videos");
                         alert("Error loading annotated videos: " + err);
-                        return;
                     }
-                    console.info('videos', res);
-                    renderVideoThumbs(res);
-                });
+                    return;
+                }
+                console.info('videos', res);
+                window.videolist = res;
+                renderVideoThumbs();
+            });
+        }
+        function getCmfUrl(){
+            var value = $('input[name=cmf]:checked').val();
+            if(value === 'manual'){
+                return $('input#cmf-url').val();
+            } else {
+                return value;
             }
+        }
+        function renderVideoThumbs(){
+            var list = window.videolist;
+            var lang = $('select[name=language-code]').val();
+            var template = _.template(jQuery('.videolist-template').html());
+
+            var container = jQuery('#videolist');
+            container.html(template({list:list, cmfUrl: cmfUrl, lang: lang}));
+        }
+
+        jQuery(document).ready(function() {
+            var cmfUrl = UTILS.getParameterByName("cmfUrl");
+            if(cmfUrl) {
+                $("input[name=cmf][value=manual]").attr('checked', 'checked');
+                jQuery('#cmf-url').val(cmfUrl);
+                loadVideos();
+            }
+            cmfUrl = cmfUrl.replace(/\/$/, '') + '/';
             jQuery('#loadingDiv')
                     .hide()  // hide it initially
                     .ajaxStart(function() {
@@ -108,7 +143,7 @@
                         $(this).hide();
                     });
             jQuery('button#load').click(loadVideos);
-            loadVideos();
+            // loadVideos();
         });
     </script>
     <script class="videolist-template" type="html">
@@ -161,9 +196,61 @@
 			<div class="mainwrapper" id="mainwrapper" align="center">
                 <div>
                     <!-- CMF URL: <input type="text" id="cmf-url" value="http://www.corsproxy.com/connectme.salzburgresearch.at/CMF" style="width: 300px;"/><br/> -->
-                    CMF URL: <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/><br/>
-                    Language code: <input type="text" id="lang" value="en" style="width: 30px;"/><br/>
-                    <button id="load">Load</button>
+                    CMF URL: <br/>
+                    <label title="http://connectme.salzburgresearch.at/CMF"><input type="radio" name="cmf" value="http://connectme.salzburgresearch.at/CMF">Production CMF</label> <br/>
+                    <label title="http://connectme.salzburgresearch.at:8080/CMF"><input type="radio" name="cmf" value="http://connectme.salzburgresearch.at:8080/CMF">Development CMF</label> <br/>
+                    <label>
+                        <input type="radio" name="cmf" value="manual">Manual Setting
+                    </label> <br/>
+                    <span id="cmfurlmanual">
+                            <input type="text" id="cmf-url" value="http://connectme.salzburgresearch.at/CMF" style="width: 300px;"/>
+                            <button id="load">Load</button>
+                        </span>
+                     <br/>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $('input[name=cmf]').click(function(e){
+                                $.xhrPool.abortAll();
+                                var value = $('input[name=cmf]:checked').val();
+                                if (value === "manual") {
+                                    $('#cmfurlmanual').show();
+                                } else {
+                                    $('#cmfurlmanual').hide();
+                                    loadVideos();
+                                    localStorage.cmf = getCmfUrl();
+                                }
+                            });
+                            if(localStorage.cmf) {
+                                var preselectedCmf = localStorage.cmf;
+                                var preselectedElement = $("input[name=cmf][value='" + preselectedCmf + "']");
+                                if(preselectedElement) {
+                                    preselectedElement.attr('checked', 'checked').click();
+                                } else {
+                                    $("#cmf-url").val(preselectedCmf);
+                                    $("input[name=cmf][value=manual]").attr('checked', 'checked');
+                                    loadVideos();
+                                }
+                            } else {
+                                $("input[name=cmf]").first().attr('checked', 'checked');
+                            }
+
+                        });
+                    </script>
+                    Language:
+                    <select name="language-code">
+                        <option value="en">English</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $('select[name=language-code]').change(function(e){
+                                renderVideoThumbs();
+                            });
+                        });
+                    </script>
+
+                    <!-- <input type="text" id="lang" value="en" style="width: 30px;"/><br/> -->
+
                 </div>
                 Here you see the annotated videos for the above specified CMF end-point:
                 <div id="videolist"></div>
