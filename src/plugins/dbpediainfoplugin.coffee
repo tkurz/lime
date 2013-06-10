@@ -133,7 +133,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                    <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                    <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                    </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                 </div>
 
                 <div id="infoSecondText" style=" display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
@@ -162,7 +162,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                  <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                  </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                  </div>
 
                  <div id="infoSecondText" style="display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
@@ -192,7 +192,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                  <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                  </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                  </div>
 
                  <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2; display: none;">
@@ -221,7 +221,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                  <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                  </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 0px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                  </div>
 
                  <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2; display: none;">

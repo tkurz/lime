@@ -14,6 +14,12 @@ class window.BookingPlugin extends window.LimePlugin
     # console.info "The annotation #{annotation.resource} looks interesting, get the whole entity so we can show it in a widget!", annotation
     # annotation.entityPromise.done (entities) =>
     # console.info "entities for annotation #{annotation.resource} loaded, create a widget for it!", annotation
+
+    $.getJSON "http://smart-ip.net/geoip-json?callback=?", (data) =>
+      @clientIP =  data.host
+      console.log @clientIP
+
+    @getGRData annotation
     nonConcept = annotation.resource.value
     #nonConcept = nonConcept.replace("No description found.","")
     if(nonConcept.length >= 3)
@@ -22,22 +28,27 @@ class window.BookingPlugin extends window.LimePlugin
 
       widget = @lime.allocateWidgetSpace @,
         thumbnail: "img/shop.png" # should go into CSS
-        title: "#{domain}"
+        title: "#{domain} offer"
         type: "BusinessWidget"
         sortBy: ->
           10000 * annotation.start + annotation.end
+
+
+
 
       # We're going to need the annotation for the widget's `activate` event
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
-        @showAbstractInModalWindow annotation, @getModalContainer()
+        @expandWidget annotation, @getModalContainer()
 
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeActive", (e) =>
-        annotation.widgets[@name].setActive()
+        if(annotation.goodRelationsDataResource)
+          if(annotation.goodRelationsDataResource.length > 0)
+            annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation.widgets[@name].setInactive()
@@ -56,199 +67,277 @@ class window.BookingPlugin extends window.LimePlugin
           $("#businessWhere").addClass 'selected'
 
 
-      jQuery(widget).bind "uparrow", (e) =>
-        @bookingtabsiterator = if @bookingtabsiterator is 0 then 2  else @bookingtabsiterator - 1
-        $('.videotab.selected').removeClass 'selected'
-        if (@bookingtabsiterator == 0)
-          $("#businessWho").trigger 'click'
-          $("#businessWho").addClass 'selected'
-        if (@bookingtabsiterator == 1)
-          $("#businessWhat").trigger 'click'
-          $("#businessWhat").addClass 'selected'
-        if (@bookingtabsiterator == 2)
-          $("#businessWhere").trigger 'click'
-          $("#businessWhere").addClass 'selected'
+    jQuery(widget).bind "uparrow", (e) =>
+      @bookingtabsiterator = if @bookingtabsiterator is 0 then 2  else @bookingtabsiterator - 1
+      $('.videotab.selected').removeClass 'selected'
+      if (@bookingtabsiterator == 0)
+        $("#businessWho").trigger 'click'
+        $("#businessWho").addClass 'selected'
+      if (@bookingtabsiterator == 1)
+        $("#businessWhat").trigger 'click'
+        $("#businessWhat").addClass 'selected'
+      if (@bookingtabsiterator == 2)
+        $("#businessWhere").trigger 'click'
+        $("#businessWhere").addClass 'selected'
 
+  getGRData: (annotation) ->
+    @lime.cmf.getGRDataForTerm annotation.resource.value, (err, res) =>
+      if err
+        console.warn "Error getting CMF Good Relations resources", err
+      else
+        console.info "CMF Good Relations resources for", annotation, res
+        annotation.goodRelationsDataResource = _(res).map (resultset) ->
+          entity =
+            name: resultset.name.value
+            street: resultset.street.value
+            pcode: Number(resultset.pcode.value)
+            city: resultset.city.value
+            country: resultset.country.value
+            telephone: resultset.telephone.value
+            email: resultset.email.value
+            description: resultset.description.value
+            geoLat: Number(resultset.geoLat.value)
+            geoLong: Number(resultset.geoLong.value)
+            priceValue: Number(resultset.pricevalue.value)
+            priceCurrency: resultset.pricecurrency.value
+            product: resultset.product.value
+          entity
 
-  showAbstractInModalWindow: (annotation, outputElement) ->
+        annotation.getGRDataResource = ->
+          @goodRelationsDataResource
+
+  _htmlEncode: (str) ->
+    str.replace /[&<>"']/g, ($0) ->
+      "&" + {"&":"amp", "<":"lt", ">":"gt", '"':"quot", "'":"#39"}[$0] + ";"
+
+  expandWidget: (annotation, outputElement) ->
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
-    modalContent.css "height", "600px"
+    modalContent.css "height", "auto"
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
     lime = this.lime
     resource = ""
     resource = annotation.resource.value
 
-    if annotation.resource.value.indexOf("webtv.feratel.com") > 0
-      resource = resource.replace /\$\$/g, "&"
 
-    console.log resource
-    #result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
-    result = """
-             <div id="bookingWidgetExpanded" style="position: relative; z-index: 900; width: 600px; height: 600px; background-color: transparent;">
-             <div id="forthTile" style="position: relative; float: left; width: 300px; height: 300px;">
-             <div style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #00BFFF; background-color: #696969;">
-             Planai - Hochwurzen - Bahnen Ges.m.b.H.
-             </div>
-             <div style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
-             Hochwurzen-Gipfelbahn Talstation, 8970 Schladming, AT
-             </div>
-             <div style="width: 100%; position: relative; height: 30px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
-             +43-3687-22042-0
-             </div>
-             <div style="width: 100%; position: relative; height: 160px; font-size: 16pt; background-color: #303030; color: #f1f1f1;">
-             About us<br>
-             Die erste Sommer-Schlittenbahn der Welt befindet sich auf der Hochwurzen.
-             </div>
-             <div id="businessContact" style="width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
-              Contact us
-             </div>
-             </div>
+    #if annotation.resource.value.indexOf("webtv.feratel.com") > 0
+     # resource = resource.replace /\$\$/g, "&"
+    businessData = annotation.getGRDataResource()
+    console.log "Good relations resources: ", businessData
+    if(businessData.length)
+      if(businessData.length > 0)
+        #result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
+        result = """
+                 <div id="bookingWidgetExpanded" style="position: relative; z-index: 900; width: 600px; height: 600px; background-color: transparent;">
+                 <div id="forthTile" style="position: relative; float: left; width: 300px; height: 300px;">
+                 <div style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #00BFFF; background-color: #696969;">
+                 #{businessData[0].name}
+                 </div>
+                 <div style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
+                 #{businessData[0].street}, #{businessData[0].pcode} #{businessData[0].city}, #{businessData[0].country}
+                 </div>
+                 <div style="width: 100%; position: relative; height: 20px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
+                  #{businessData[0].telephone}
+                 </div>
+                 <div style="width: 100%; position: relative; height: 170px; font-size: 16px; background-color: #303030; color: #f1f1f1;">
+                 About us<br>
+                 #{businessData[0].description}
+                 </div>
+                 <div class="businessContact"  style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
+                 kontaktieren Sie uns
+                 </div>
+                 </div>
 
-             <div id="secondTile" style="width: 300px; height: 300px; position: relative; float: left; display: none;">
-             <div id="businessName" style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #FA8072; background-color: #696969;">
-             Planai - Hochwurzen - Bahnen Ges.m.b.H.
-             </div>
-             <div id="businessAddress" style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
-             Neubaugasse 10/15, 1070 Wien, Austria
-             </div>
-             <div id="businessTelephone" style="width: 100%; position: relative; height: 30px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
-             +43-3687-22042-0
-             </div>
-             <div id="businessService" style="width: 100%; position: relative; height: 100px; background-color: #ffffff;">
-             <div id="businessService1" style="width: 100%; height: 20px; position: relative;">
-             Service 1 - Price XXXX EUR
-             </div>
-             <div id="businessService2" style="width: 100%; height: 20px; position: relative;">
-             Service 2 - Price XXXX EUR
-             </div>
-             <div id="businessService3" style="width: 100%; height: 20px; position: relative;">
-             Service 3 - Price XXXX EUR
-             </div>
-             <div id="businessService4" style="width: 100%; height: 20px; position: relative;">
-             Service 4 - Price XXXX EUR
-             </div>
-             <div id="businessService5" style="width: 100%; height: 20px; position: relative;">
-             Service 5 - Price XXXX EUR
-             </div>
-             </div>
-             <div id="businessOpeningHours" style="width: 100%; position: relative; height: 60px; background-color: #303030; color: #f1f1f1;">
-             Opening Hours
-             </div>
-             <div id="businessContact" style="width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
-             &lt; Contact us
-             </div>
-             </div>
+                 <div id="secondTile" style="width: 300px; height: 300px; position: relative; float: left; display: none;">
+                 <div id="businessName" style="width: 100%; position: relative; height: 30px; font-size: 20px; color: #FA8072; background-color: #696969;">
+                  #{businessData[0].name}
+                 </div>
+                 <div id="businessAddress" style="width: 100%; position: relative; font-size: 16px; height: 50px; background-color: #303030; color: #f1f1f1;">
+                  #{businessData[0].street}, #{businessData[0].pcode} #{businessData[0].city}, #{businessData[0].country}
+                 </div>
+                 <div id="businessTelephone" style="width: 100%; position: relative; height: 20px; font-size: 16px; background-color: #303030; color: #f1f1f1; text-align: center;">
+                  #{businessData[0].telephone}
+                 </div>
+                 <div id="businessService" style="width: 100%; position: relative; height: 110px; background-color: #ffffff;">
+                 <div id="businessService1" style="width: 100%; height: 80px; font-size: 16px; background-color: #696969; position: relative;">
+                  #{businessData[0].product}
+                 </div>
+                 <div id="businessService2" style="width: 100%; height: 30px; font-size: 16px; background-color: #303030; position: relative;">
+                  #{businessData[0].priceValue} #{businessData[0].priceCurrency}
+                 </div>
+                 <div id="businessService3" style="width: 100%; height: 20px; position: relative; display: none;">
+                 Service 3 - Price XXXX EUR
+                 </div>
+                 <div id="businessService4" style="width: 100%; height: 20px; position: relative; display: none;">
+                 Service 4 - Price XXXX EUR
+                 </div>
+                 <div id="businessService5" style="width: 100%; height: 20px; position: relative; display: none;">
+                 Service 5 - Price XXXX EUR
+                 </div>
+                 </div>
+                 <div id="businessOpeningHours" style="width: 100%; position: relative; height: 60px; background-color: #303030; color: #f1f1f1;">
+                 Opening Hours
+                 </div>
+                   <div class="businessContact" style="cursor: hand; cursor: pointer; width: 100%; position: relative; height: 30px; color: black; background-color: lightgray; font-size: 21px; text-align: center; background-image: -webkit-gradient(radial, center center, 10, center center, from(white), to(#909090)); background-image: -o-radial-gradient(white, #909090); background-image: -ms-radial-gradient(white, #909090); background-image: -moz-radial-gradient(white, #909090); background-image: -webkit-radial-gradient(white, #909090); background-image: radial-gradient(white, #909090);">
+                 kontaktieren Sie uns
+                   </div>
+                 </div>
 
-             <div id="firstTile" style="position: relative; float: left; width: 300px; height: 300px; display: none;">
-             <div style="width: 100%; position: relative; height: 30px; font-size: 20px; background-color: #696969; color: #90EE90;">
-             Planai - Hochwurzen - Bahnen Ges.m.b.H.
-             </div>
-             <div id="map" style="width: 100%; height: 270px; position: absolute; z-index: 900; height: 89%; background-color: green;"></div>
-             </div>
+                 <div id="firstTile" style="position: relative; float: left; width: 300px; height: 300px; display: none;">
+                 <div style="width: 100%; position: relative; height: 30px; font-size: 20px; background-color: #696969; color: #90EE90;">
+                 #{businessData[0].name}
+                 </div>
+                 <div id="map" style="width: 100%; height: 270px; position: absolute; z-index: 900; height: 89%; background-color: green;"></div>
+                 </div>
 
-             <div id="thirdTile" style="width: 300px; height: 300px; float: left; position: relative;">
-             <div id="businessWho" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px;">
-             Who?
-             <div id="businessWhoLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-             About us
-             </div>
-             </div>
-             <div id="businessWhat" style="width: 100%; height: 100px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px;">
-             What?
-             <div id="businessWhatLabel" style="position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-             Our services
-             </div>
-             </div>
-             <div id="businessWhere" style="width: 100%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px;">
-             Where?
-             <div id="businessWhereLabel" style="position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
-             Rout map
-             </div>
-             </div>
-             </div>
+                 <div id="thirdTile" style="width: 298px; height: 300px; float: left; position: relative; border-left:dotted 1px #bbbbbb">
+                 <div id="businessWho" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 98px; position: relative; float: left; background-color: #696969; color: #00BFFF; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb" >
+                 Wie?
+                 <div id="businessWhoLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+                 Über uns
+                 </div>
+                 </div>
+                 <div id="businessWhat" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 98px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
+                 Was?
+                 <div id="businessWhatLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
+                 Unsere anbieten
+                 </div>
+                 </div>
+                 <div id="businessWhere" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
+                 Wo?
+                 <div id="businessWhereLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; width: 100%; height: 50%; left: 0px; bottom: 0px; font-size: 14pt; color: white; background-color: #303030;">
+                 Reiseroute Karte
+                 </div>
+                 </div>
+                 </div>
 
-             </div>
+                 </div>
 
-             """
-    modalContent.append result
-    @bookingtabsiterator = 0
-    $("#businessWho").click =>
-      $("#forthTile").css "display", "block"
-      $("#firstTile").css "display", "none"
-      $("#secondTile").css "display", "none"
-      $("#map").empty()
-
-    $("#businessWhat").click =>
-      $("#forthTile").css "display", "none"
-      $("#firstTile").css "display", "none"
-      $("#secondTile").css "display", "block"
-      $("#map").empty()
-
-    $("#businessWhere").click =>
-      $("#forthTile").css "display", "none"
-      $("#firstTile").css "display", "block"
-      $("#secondTile").css "display", "none"
-      # cartography handling
-      if navigator.geolocation
-        navigator.geolocation.getCurrentPosition ((position) ->
-          i = undefined
-          latitude = undefined
-          locationName = undefined
-          longitude = undefined
-          map = undefined
-          myOptions = undefined
-          output = undefined
-          x = undefined
-          xmlDoc = undefined
-          xmlhttp = undefined
-          start = undefined
-          destination = undefined
-          directionDisplay = undefined
-          directionsService = new google.maps.DirectionsService()
+                 """
+        modalContent.append result
+        @bookingtabsiterator = 0
 
 
-          locationName = "Planai - Hochwurzen - Bahnen Ges.m.b.H."
-                          #annotation.getLabel()
-          latitude = 47.392887
-                          #annotation.getLatitude()
-          longitude = 13.693318
-                      #annotation.getLongitude()
+        $(".businessContact").click =>
+          grdata = annotation.getGRDataResource()
+          if(grdata.length)
+            if(grdata.length > 0)
+              time = $.now()
+              bemail = grdata[0].email
+              bname = grdata[0].name
 
-          output = document.getElementById("map")
-          directionsDisplay = new google.maps.DirectionsRenderer()
-          destination = new google.maps.LatLng(latitude, longitude)
-          mapOptions =
-            zoom: 7
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-            center: destination
+              #entry = @clientIP + ' clicked on '+ grdata[0].name
+              #@_htmlEncode entry
+              $.post 'http://devserver.sti2.org/connectme/logger.php?',
+                entry : """
+                        <div  style="width: 100%; position: relative; float: left; background-color: #e1e1e1; height: 30px; border-bottom: 1px dotted #696969;" class="item">
+                        <div style="height: 100%; color: #32CD32; font-size: 16pt; background-color: #505050; width: 30px; text-align: center; position: relative; float: left;" class="icon">
+                        @</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="ip">
+                #{@clientIP}</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="email">
+                #{bemail}l</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="name">
+                #{bname}</div>
+                            <div style="width: 200px; height: 100%; position: relative; float: left; font-size: 16px; text-align: center; border-right: 1px dotted #696969;" class="time">
+                #{time}</div>
+                            </div>
+                          """
+                (data) ->
+                  $(".businessContact").html "Thank you!"
 
-          map = new google.maps.Map(output, mapOptions)
-          start = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        $("#businessWho").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWho").addClass "selected"
 
-          # set direction map
-          #alert(start);
-          directionsDisplay.setMap map
-          @geomap = map
-          request =
-            origin: start
-            destination: destination
-            travelMode: google.maps.TravelMode.DRIVING
-
-          directionsService.route request, (result, status) ->
-            directionsDisplay.setDirections result  if status is google.maps.DirectionsStatus.OK
+          $("#forthTile").css "display", "block"
+          $("#firstTile").css "display", "none"
+          $("#secondTile").css "display", "none"
+          $("#map").empty()
 
 
-          # next function is the error callback
-        ),
-        (error) ->
-          switch error.code
-            when error.TIMEOUT
-              alert "Timeout"
-            when error.POSITION_UNAVAILABLE
-              alert "Position unavailable"
-            when error.PERMISSION_DENIED
-              alert "Permission denied"
-            when error.UNKNOWN_ERROR
-              alert "Unknown error"
+        $("#businessWhat").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWhat").addClass "selected"
 
+          $("#forthTile").css "display", "none"
+          $("#firstTile").css "display", "none"
+          $("#secondTile").css "display", "block"
+          $("#map").empty()
+
+
+        $("#businessWhere").click =>
+          $('.bookingtab.selected').removeClass 'selected'
+          $("#businessWhere").addClass "selected"
+
+          $("#forthTile").css "display", "none"
+          $("#firstTile").css "display", "block"
+          $("#secondTile").css "display", "none"
+          # cartography handling
+          if navigator.geolocation
+            navigator.geolocation.getCurrentPosition ((position) ->
+              i = undefined
+              locationName = "Planai - Hochwurzen"
+              #annotation.getLabel()
+              latitude = 47.392887
+              #annotation.getLatitude()
+              longitude = 13.693318
+              #annotation.getLongitude()
+              map = undefined
+              myOptions = undefined
+              output = undefined
+              x = undefined
+              xmlDoc = undefined
+              xmlhttp = undefined
+              start = undefined
+              destination = undefined
+              directionDisplay = undefined
+              directionsService = new google.maps.DirectionsService()
+              grdata = annotation.getGRDataResource()
+              if(grdata.length)
+                 if(grdata.length > 0)
+                    latitude = grdata[0].geoLat
+                    #annotation.getLatitude()
+                    longitude = grdata[0].geoLong
+                    console.log 'latitude: ',latitude, ' longitude:  ', longitude
+                    #annotation.getLongitude()
+
+              output = document.getElementById("map")
+              directionsDisplay = new google.maps.DirectionsRenderer()
+              destination = new google.maps.LatLng(latitude, longitude)
+              mapOptions =
+                zoom: 7
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+                center: destination
+
+              map = new google.maps.Map(output, mapOptions)
+              start = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+
+              # set direction map
+              #alert(start);
+              directionsDisplay.setMap map
+              @geomap = map
+              request =
+                origin: start
+                destination: destination
+                travelMode: google.maps.TravelMode.DRIVING
+
+              directionsService.route request, (result, status) ->
+                directionsDisplay.setDirections result  if status is google.maps.DirectionsStatus.OK
+
+
+              # next function is the error callback
+            ),
+            (error) ->
+              switch error.code
+                when error.TIMEOUT
+                  alert "Timeout"
+                when error.POSITION_UNAVAILABLE
+                  alert "Position unavailable"
+                when error.PERMISSION_DENIED
+                  alert "Permission denied"
+                when error.UNKNOWN_ERROR
+                  alert "Unknown error"
+
+
+        $("#businessWho").trigger "click"

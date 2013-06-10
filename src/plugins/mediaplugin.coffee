@@ -36,6 +36,7 @@ class window.MediaPlugin extends window.LimePlugin
       if annotation.resource.value.indexOf('dbpedia') isnt -1
         entity = @vie.entities.get annotation.resource.value
         @_loadFullDbpediaEntity entity, (fullEntity) =>
+          console.log fullEntity
           # @processAnnotation annotation, fullEntity.attributes['@type']
           @processAnnotation annotation, fullEntity
 
@@ -177,16 +178,16 @@ class window.MediaPlugin extends window.LimePlugin
                """
     if (videoList.length >= 4)
       result +="""<div id="videoList" style="background-color: #0a0a0a; position: relative; float: left; width: 600px; height: 150px; ">
-               <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
+               <div id="video1" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 147px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[0].img}');">
                <div id="expandedwidget-videoicon1" style="position: absolute; z-index: 900; width: 50px; height: 50px; bottom: 0px; left: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover;" class="expandedwidget-videoicon"></div>
                </div>
-               <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
+               <div id="video2" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 147px; height: 148px; background-color: #9b9393; background-image: url('#{videoList[1].img}'); background-repeat: no-repeat; background-position: center center; background-size: cover;">
                <div id="expandedwidget-videoicon2" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                </div>
-               <div id="video3" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
+               <div id="video3" class="videotab" style="border: 1px solid black; position: relative; float: right; width: 147px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[2].img}');">
                <div id="expandedwidget-videoicon3" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                </div>
-               <div id="video4" class="videotab" style=" border: 1px solid black; position: relative; float: right; width: 148px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
+               <div id="video4" class="videotab" style=" border: 1px solid black; position: relative; float: right; width: 147px; height: 148px; background-color: #9b9393; background-repeat: no-repeat; background-position: center center; background-size: cover; background-image: url('#{videoList[3].img}');">
                <div id="expandedwidget-videoicon4" style="width: 50px; height: 50px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-image: url('img/youtube.png'); background-size: cover; position: absolute; z-index: 900; left: 0px;" class="expandedwidget-videoicon"></div>
                </div>
                </div>
@@ -238,7 +239,7 @@ class window.MediaPlugin extends window.LimePlugin
       jQuery("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}?autoplay=1"
       jQuery(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"
       jQuery("#expandedwidget-videoicon4").css "background-image","url('img/youtube_gr.png')"
-      jQuery("#video3").addClass 'selected'
+      jQuery("#video4").addClass 'selected'
 
     jQuery("#video1").trigger "click"
 
@@ -320,27 +321,27 @@ class window.MediaPlugin extends window.LimePlugin
 
       if (@videotabsiterator == 1)
         jQuery("#video2").trigger 'click'
-        jQuery("#video2").addClass 'selected'
+        #jQuery("#video2").addClass 'selected'
       if (@videotabsiterator == 2)
         jQuery("#video3").trigger 'click'
-        jQuery("#video3").addClass 'selected'
+        #jQuery("#video3").addClass 'selected'
       if (@videotabsiterator == 3)
         jQuery("#video4").trigger 'click'
-        jQuery("#video4").addClass 'selected'
+        #jQuery("#video4").addClass 'selected'
 
     jQuery(widget).bind "rightarrow", (e) =>
       @videotabsiterator = if @videotabsiterator is 0 then @videotabs.length - 1  else @videotabsiterator - 1
       jQuery('.videotab.selected').removeClass 'selected'
       if (@videotabsiterator == 0)
         jQuery("#video1").trigger 'click'
-        jQuery("#video1").addClass 'selected'
+        #jQuery("#video1").addClass 'selected'
       if (@videotabsiterator == 1)
         jQuery("#video2").trigger 'click'
-        jQuery("#video2").addClass 'selected'
+        #jQuery("#video2").addClass 'selected'
       if (@videotabsiterator == 2)
         jQuery("#video3").trigger 'click'
-        jQuery("#video3").addClass 'selected'
+        #jQuery("#video3").addClass 'selected'
       if (@videotabsiterator == 3)
         jQuery("#video4").trigger 'click'
-        jQuery("#video4").addClass 'selected'
+        #jQuery("#video4").addClass 'selected'
 
