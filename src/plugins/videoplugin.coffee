@@ -86,8 +86,8 @@ class window.VideoPlugin extends window.LimePlugin
         annotation.lsiVideoResources = _(res).map (resultset) ->
           entity =
             title: resultset.title.value
-            description: resultset.description.value
-            duration: Number(resultset.duration.value)
+            #description: resultset.description.value
+            #duration: Number(resultset.duration.value)
             locator: resultset.locator.value
             img: resultset.img.value
             video: resultset.video.value

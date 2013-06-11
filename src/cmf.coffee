@@ -178,7 +178,7 @@ class window.CMF
     query = @_getLSIVideosForTerm keywordUri
     @_runSPARQL query, (err, res) ->
       resCB err, res
-  ###
+
   _getLSIVideosForTerm: (keywordUri) -> """
     PREFIX mao: <http://www.w3.org/ns/ma-ont#>
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -208,7 +208,7 @@ class window.CMF
       OPTIONAL {?video foaf:img ?img}.
     }
     ORDER BY ?video  """
-
+  ###
   getLSIImagesForTerm: (keywordUri, resCB) ->
     res = []
     query = @_getLSIImagesForTerm keywordUri
