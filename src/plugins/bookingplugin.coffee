@@ -200,7 +200,7 @@ class window.BookingPlugin extends window.LimePlugin
                  <div id="businessWhat" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 98px; float: left; position: relative; background-color: #696969; color: #FA8072; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
                  Was?
                  <div id="businessWhatLabel" style="cursor: hand; cursor: pointer; position: absolute; z-index: 900; left: 0px; bottom: 0px; height: 50%; width: 100%; font-size: 14pt; color: white; background-color: #303030;">
-                 Unsere anbieten
+                 Unser Angebot
                  </div>
                  </div>
                  <div id="businessWhere" class="bookingtab" style="cursor: hand; cursor: pointer; width: 98%; height: 100px; position: relative; float: left; background-color: #696969; color: #90EE90; font-size: 49px; border-bottom:dotted 1px #bbbbbb; border-right:dotted 1px #bbbbbb">
@@ -219,6 +219,7 @@ class window.BookingPlugin extends window.LimePlugin
 
 
         $(".businessContact").click =>
+          $(".businessContact").text "Danke schön!"
           grdata = annotation.getGRDataResource()
           if(grdata.length)
             if(grdata.length > 0)
@@ -244,7 +245,9 @@ class window.BookingPlugin extends window.LimePlugin
                             </div>
                           """
                 (data) ->
-                  $(".businessContact").html "Thank you!"
+
+
+
 
         $("#businessWho").click =>
           $('.bookingtab.selected').removeClass 'selected'
