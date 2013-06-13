@@ -17,7 +17,7 @@ class window.BookingPlugin extends window.LimePlugin
 
     $.getJSON "http://smart-ip.net/geoip-json?callback=?", (data) =>
       @clientIP =  data.host
-      console.log @clientIP
+
 
     @getGRData annotation
     nonConcept = annotation.resource.value
@@ -85,7 +85,6 @@ class window.BookingPlugin extends window.LimePlugin
       if err
         console.warn "Error getting CMF Good Relations resources", err
       else
-        console.info "CMF Good Relations resources for", annotation, res
         annotation.goodRelationsDataResource = _(res).map (resultset) ->
           entity =
             name: resultset.name.value
@@ -118,12 +117,13 @@ class window.BookingPlugin extends window.LimePlugin
     lime = this.lime
     resource = ""
     resource = annotation.resource.value
+    startTime = new Date().getTime()
 
 
     #if annotation.resource.value.indexOf("webtv.feratel.com") > 0
      # resource = resource.replace /\$\$/g, "&"
     businessData = annotation.getGRDataResource()
-    console.log "Good relations resources: ", businessData
+
     if(businessData.length)
       if(businessData.length > 0)
         #result = "<div id=\"listContainer\" style=\"position:relative; float: left; z-index: 10; width:35%; height: 95%; background: white; box-shadow: rgba(85,85,85,0.5) 0px 0px 24px;\" >" + "<img src=\"" + depiction + "\" style=\"display: block; width: auto; max-height: 300px; max-width:90%; margin-top: 30px; margin-left: auto;  margin-right: auto; border: 5px solid black; \" >" + "</div>" + "<div id=\"displayArea\" style=\"position:relative; float: left; z-index: 1; width: 65%; height:95%; background: #DBDBDB; overflow: auto;\">" + "<p style=\"margin-left: 10px; font-size: 22px; text-align: left; color:black; font-family: 'Share Tech', sans-serif; font-weight: 400;\">" + comment + "</p>" + "</div>";
@@ -217,6 +217,18 @@ class window.BookingPlugin extends window.LimePlugin
         modalContent.append result
         @bookingtabsiterator = 0
 
+        #widget controls
+        $(".close").click (e) =>
+          endTime = new Date().getTime()
+          timeSpent = endTime - startTime
+          eventLabel = annotation.widgets[@.name].options.title
+          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+        $('#mask').click (e) =>
+          endTime = new Date().getTime()
+          timeSpent = endTime - startTime
+          eventLabel = annotation.widgets[@.name].options.title
+          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
 
         $(".businessContact").click =>
           $(".businessContact").text "Danke schön!"

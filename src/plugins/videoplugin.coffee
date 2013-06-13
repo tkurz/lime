@@ -103,6 +103,7 @@ class window.VideoPlugin extends window.LimePlugin
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
     ###
     -- added 29.apr.2013
 
@@ -243,6 +244,19 @@ class window.VideoPlugin extends window.LimePlugin
     result +=""" </div>
              """
     modalContent.append result
+
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
 
     #count the video tabs and init the iterator
     @videotabs = $('.videotab:not(.disabled)')

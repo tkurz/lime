@@ -46,6 +46,7 @@ class window.BusinessPlugin extends window.LimePlugin
     modalContent = $(outputElement)
     modalContent.css "width", "800px"
     modalContent.css "height", "600px"
+    startTime = new Date().getTime()
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
     lime = this.lime
     resource = ""
@@ -62,3 +63,16 @@ class window.BusinessPlugin extends window.LimePlugin
              </iframe>
              """
     modalContent.append result
+
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
