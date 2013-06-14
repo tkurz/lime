@@ -193,7 +193,22 @@ class window.CMF
       OPTIONAL {?video foaf:img ?img}.
     }
     ORDER BY ?video """
-
+  ###
+  _getLSIVideosForTerm: (keywordUri) -> """
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT DISTINCT ?video ?duration ?description ?locator ?title ?img
+    WHERE {
+      ?s <http://connectme.at/ontology#hasRelatedVideo> ?video .
+      ?s <http://www.w3.org/ns/ma-ont#hasKeyword> <#{keywordUri}> .
+      OPTIONAL {?video mao:description ?description}.
+      ?video mao:locator ?locator .
+      ?video mao:duration ?duration.
+      ?video mao:title ?title .
+      OPTIONAL {?video foaf:img ?img}.
+    }
+    ORDER BY ?video  """
+  ###
   getLSIImagesForTerm: (keywordUri, resCB) ->
     res = []
     query = @_getLSIImagesForTerm keywordUri

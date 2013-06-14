@@ -86,8 +86,8 @@ class window.VideoPlugin extends window.LimePlugin
         annotation.lsiVideoResources = _(res).map (resultset) ->
           entity =
             title: resultset.title.value
-            description: resultset.description.value
-            duration: Number(resultset.duration.value)
+            #description: resultset.description.value
+            #duration: Number(resultset.duration.value)
             locator: resultset.locator.value
             img: resultset.img.value
             video: resultset.video.value
@@ -103,6 +103,7 @@ class window.VideoPlugin extends window.LimePlugin
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
     ###
     -- added 29.apr.2013
 
@@ -175,7 +176,9 @@ class window.VideoPlugin extends window.LimePlugin
                   ]
     videoList = annotation.getLsiVideoResources()
     url = videoList[0].locator
-    url = url.split('=')[1]
+    #url = url.split('=')[1]
+    url = url.split('v=')[1];
+    url = url.split('&')[0];
     ###
      -- added 29.apr.2013
       UI handles the first 4 videoList items for now.
@@ -242,6 +245,19 @@ class window.VideoPlugin extends window.LimePlugin
              """
     modalContent.append result
 
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
     #count the video tabs and init the iterator
     @videotabs = $('.videotab:not(.disabled)')
     @videotabsiterator = 0
@@ -249,7 +265,8 @@ class window.VideoPlugin extends window.LimePlugin
     $("#video1").click ->
       $('.videotab.selected').removeClass 'selected'
       url = videoList[0].locator;
-      url = url.split('=')[1];
+      url = url.split('v=')[1];
+      url = url.split('&')[0];
       $("#embededVideo").empty()
       $("#embededVideo").attr 'src',"http://www.youtube.com/embed/#{url}?autoplay=1"
       $(".expandedwidget-videoicon").css "background-image","url('img/youtube.png')"

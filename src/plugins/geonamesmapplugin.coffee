@@ -71,7 +71,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
           #$("#geoPanoramio").addClass 'selected'
 
       jQuery(widget).bind "uparrow", (e) =>
-        console.info 'uparrow pressed'
+
         # customEvent = jQuery.Event "keydown"
         # customEvent.which = 107 # + key code value
 
@@ -89,6 +89,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     modalContent = undefined
     result = undefined
     language = UTILS.getParameterByName("lang")
+    startTime = new Date().getTime()
 
 
     # fix container size
@@ -130,6 +131,18 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     @geotabsiterator = 0
 
     # control widget
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
     $("#geoMap").click =>
       $('.geotab.selected').removeClass 'selected'
       # menu handling
@@ -192,7 +205,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
 
       map = new google.maps.Map(output, myOptions)
       @geomap = map
-      console.info @geomap
+
 
       $("#geoMap").addClass 'selected'
 

@@ -62,6 +62,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
     label = annotation.getLabel()
     page = annotation.getPage()
     ###
@@ -235,4 +236,17 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  """
 
     modalContent.append result
+
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
 
