@@ -16,8 +16,28 @@ class window.UserSettingsPlugin extends window.LimePlugin
 
     $(@lime.player.buttonContainer).append button
 
+    if @options.permanentWidget
+      # Render a permanently shown widget for accessing the user settings e.g. on a TV where the control bar is hidden
+      console.info 'Permanent widgets are on.'
+      widget = @lime.allocateWidgetSpace @,
+        thumbnail: "img/info.png" # should go into CSS
+        title: "User settings"
+        type: "UserSettingsWidget"
+        sortBy: ->
+          100000000
+
+      jQuery(widget).bind 'activate', (e) =>
+        @lime.player.pause()
+        @renderUserSettingsInModalWindow()
+
+      _.defer ->
+        widget.setActive()
+
+
   defaults:
+    # List of widgets (type names) that are not offered to be hidden
     unhidable: []
+    permanentWidget: false
 
   getAllWidgetTypes: ->
     res = _(@lime.widgets).chain()
@@ -25,7 +45,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
         widget.options.type
       .uniq()
       .sort()
-      .difference(@defaults.unhidable)
+      .difference(@defaults.unhidable, 'UserSettingsWidget')
       .value()
     res
 
