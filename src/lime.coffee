@@ -177,7 +177,7 @@ class window.LIMEPlayer
 
   # Widget states are changed, update the display of them
   updateWidgetsList: _.throttle ->
-    console.info "updateWidgetsList: scroll, hide, etc."
+    # console.info "updateWidgetsList: scroll, hide, etc."
     # Sort widgets by starting and ending times
     widgetsSorted = _.sortBy @widgets, (widget) =>
       widget.options.sortBy()

@@ -84,7 +84,7 @@ class window.LimeWidget
     @element.find(".utility-icon").attr "src", grayThumbnail+"_gr.png"
     @element.addClass 'inactive'
     # @element.find(".utility-text").css "color", "#c6c4c4"
-    console.info "Widget inactive, triggering update", @element
+    # console.info "Widget inactive, triggering update", @element
     @lime.updateWidgetsList()
 
   isActive: ->
