@@ -52,8 +52,7 @@ class window.LDPlugin extends window.LimePlugin
 
   loadAnnotation: (annotation, readyCb) ->
     annotation.entityPromise = jQuery.Deferred()
-    # Removing the trailing slash is necessary for geonames because the stanbol geonames index
-    entityUri = annotation.resource.value.replace(/\/$/,'')
+    entityUri = annotation.resource.value
     debug = ''
     # debug = "http://dbpedia.org/resource/Category:Mountains_of_Salzburg"
     if entityUri is debug
