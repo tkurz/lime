@@ -125,7 +125,7 @@ window.LIMEPlayer.VideoPlayerInit = (el, options, cb) ->
       el = _V_.createElement "div",
       # className: "spacial-annotation-overlays-wrapper"
         className: "lime-overlay"
-        style: 'border: 2px red solid'
+        # style: 'border: 2px red solid'
       #el.innerHTML = "&nbsp;"
       el
 

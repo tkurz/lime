@@ -427,7 +427,7 @@ a:hover {
     left: 50%;
     margin-left: -30%;
     z-index: 10;
-    border: 1px red solid;
+    /* border: 1px red solid; */
     width: 60%;
     min-height: 15px;
     background: rgb(238,238,238); /* Old browsers */
