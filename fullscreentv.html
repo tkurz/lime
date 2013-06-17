@@ -214,10 +214,13 @@
      *
      */
 
-    window.addEventListener('load', setTimeout(function () {
-        console.log("window.load event")
-        iScrollloaded();
-    }, 200), false);
+    window.addEventListener('load',
+            function(){
+                setTimeout(function () {
+                    console.log("window.load event");
+                    iScrollloaded();
+                }, 200);
+            }, false);
     /*
      * * * * * * * */
 
