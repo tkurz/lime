@@ -9,7 +9,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
       @lime.player.pause()
       @renderUserSettingsInModalWindow()
 
-    button = $ "<div class='vjs-control usersettings'><div></div></div>"
+    button = $ "<div class='vjs-control usersettings' title='User settings' alt='User settings'><div></div></div>"
     button.click (e) =>
       @lime.player.pause()
       @renderUserSettingsInModalWindow()

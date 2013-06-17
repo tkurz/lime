@@ -663,11 +663,17 @@ a:hover {
     display: none !important;
 }
 
-.vjs-control.usersettings {
+.vjs-control.usersettings, .vjs-control.help {
     float: right;
 }
 .vjs-control.usersettings div {
     background: url('video-js.png') -50px -75px;
+    width: 22px;
+    height: 16px;
+    margin: 0.5em auto 0;
+}
+.vjs-control.help div {
+    /* background: url('video-js.png') -50px -75px; */
     width: 22px;
     height: 16px;
     margin: 0.5em auto 0;
