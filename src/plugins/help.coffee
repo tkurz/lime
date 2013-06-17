@@ -9,7 +9,7 @@ class window.Help extends window.LimePlugin
       @lime.player.pause()
       @renderHelpInModalWindow()
 
-    button = $ "<div class='vjs-control help' title='Help' alt='Help'>?<div></div></div>"
+    button = $ "<div class='vjs-control help' title='Help' alt='Help' style='font-size: 18px;top: 2px;'>?<div></div></div>"
     button.click (e) =>
       @lime.player.pause()
       @renderHelpInModalWindow()
