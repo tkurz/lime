@@ -5,6 +5,7 @@
 class window.LDPlugin extends window.LimePlugin
   init: ->
     @vie = @lime.options.vie or @options.vie
+    @promises = {}
     unless @vie
       if @lime.options.local
         jQuery.noop()
@@ -51,8 +52,14 @@ class window.LDPlugin extends window.LimePlugin
     ]
 
   loadAnnotation: (annotation, readyCb) ->
-    annotation.entityPromise = jQuery.Deferred()
     entityUri = annotation.resource.value
+    if @promises[entityUri]
+      annotation.entityPromise = @promises[entityUri]
+      readyCb()
+      return
+
+    annotation.entityPromise = @promises[entityUri] = jQuery.Deferred()
+
     debug = ''
     # debug = "http://dbpedia.org/resource/Category:Mountains_of_Salzburg"
     if entityUri is debug
