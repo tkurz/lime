@@ -132,12 +132,7 @@ class window.TVPlugin extends window.LimePlugin
       starringListArray = result
       if (starringListArray)
         for starringItem in starringListArray
-          starringItem = starringItem.replace /</g, ""
-          starringItem = starringItem.replace />/g, ""
-          starringItem = starringItem.replace /http:\/\/dbpedia.org\/resource\//, ""
-          starringItem = starringItem.replace /_/g, " "
-
-          starringItem = starringItem + "<\/br>"
+          starringItem = @_cleanupLabel(starringItem) + "<\/br>"
           starringList += starringItem
 
         jQuery('#infoText').append """<div id="infoTextCareerTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange;">
@@ -149,28 +144,13 @@ class window.TVPlugin extends window.LimePlugin
       return result
 
     console.log '2) starringListArray = ',starringListArray
-    ###
-    if (starringListArray.length <= 0)
-      starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
-
-    if (starringListArray)
-      for starringItem in starringListArray
-        starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
-        starringItem = starringItem.replace /_/g, " "
-        starringItem = starringItem.replace />/, ""
-        starringItem = starringItem + "<\/br>"
-        starringList += starringItem
-    ###
     awardsListArray = []
     awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
 
     awardsList = ""
     if (awardsListArray)
       for awardsItem in awardsListArray
-        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\/Category:/, ""
-        awardsItem = awardsItem.replace /_/g, " "
-        awardsItem = awardsItem.replace />/, ""
-        awardsItem = awardsItem + "<\/br>"
+        awardsItem = @_cleanupLabel(awardsItem) + "<\/br>"
         if awardsItem.indexOf("winners")>0 or awardsItem.indexOf("award")>0 or awardsItem.indexOf("awards")>0
           if (awardsItem.indexOf("winners")>0)
             awardsItem = awardsItem.replace /winners/, ""
@@ -252,27 +232,21 @@ class window.TVPlugin extends window.LimePlugin
     occupation = ""
     try
       occupation = fullEntity.attributes['<http://dbpedia.org/ontology/occupation>']
-      occupation = occupation.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      occupation = occupation.replace /_/g, " "
-      occupation = occupation.replace />/, ""
+      occupation = @_cleanupLabel occupation
       occupation = "<b>Occupation:</b> " + occupation + "<br>"
     catch error
 
     nationality = ""
     try
       nationality = fullEntity.attributes['<http://dbpedia.org/ontology/nationality>']
-      nationality = nationality.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      nationality = nationality.replace /_/g, " "
-      nationality = nationality.replace />/, ""
+      nationality = @_cleanupLabel nationality
       nationality = "<b>Nationality:</b> " +nationality + "<br>"
     catch error
 
     firstAppearance = ""
     try
       firstAppearance = fullEntity.attributes['<http://dbpedia.org/ontology/firstAppearance>']
-      firstAppearance = firstAppearance.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      firstAppearance = firstAppearance.replace /_/g, " "
-      firstAppearance = firstAppearance.replace />/, ""
+      firstAppearance = @_cleanupLabel firstAppearance
       firstAppearance = "<b>First Appearance:</b> " + firstAppearance + "<br>"
     catch error
 
@@ -284,13 +258,11 @@ class window.TVPlugin extends window.LimePlugin
         nickname += nick['@value'] + "<br>"
     catch error
 
-    portayer = ""
+    portrayer = ""
     try
-      portayer = fullEntity.attributes['<http://dbpedia.org/property/portrayer>']
-      portayer = portayer.replace /<http:\/\/dbpedia.org\/resource\//, ""
-      portayer = portayer.replace /_/g, " "
-      portayer = portayer.replace />/, ""
-      portayer = "<b>Played by:</b> " + portayer + "<br>"
+      portrayer = fullEntity.attributes['<http://dbpedia.org/property/portrayer>']
+      portrayer = @_cleanupLabel portrayer
+      portrayer = "<b>Played by:</b> " + portrayer + "<br>"
     catch error
 
     result = """
@@ -306,7 +278,7 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-    #{portayer}
+    #{portrayer}
     #{firstAppearance}
     #{nationality}
     #{occupation}
@@ -334,11 +306,7 @@ class window.TVPlugin extends window.LimePlugin
     starringList = ""
     if (starringListArray)
       for starringItem in starringListArray
-        starringItem = starringItem.replace /<http:\/\/dbpedia.org\/resource\//, ""
-        starringItem = starringItem.replace /_/g, " "
-        starringItem = starringItem.replace />/, ""
-        starringItem = starringItem + "<\/br>"
-        starringList += starringItem
+        starringList += @_cleanupLabel starringItem
 
     awardsListArray = []
     awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
@@ -346,10 +314,7 @@ class window.TVPlugin extends window.LimePlugin
     awardsList = ""
     if (awardsListArray)
       for awardsItem in awardsListArray
-        awardsItem = awardsItem.replace /<http:\/\/dbpedia.org\/resource\/Category:/, ""
-        awardsItem = awardsItem.replace /_/g, " "
-        awardsItem = awardsItem.replace />/, ""
-        awardsItem = awardsItem + "<\/br>"
+        awardsItem = @_cleanupLabel(awardsItem) + "<\/br>"
         if awardsItem.indexOf("winners")>0 or awardsItem.indexOf("award")>0 or awardsItem.indexOf("awards")>0
           awardsList += awardsItem
     console.log "awardsListArray = ", awardsList, " from this list: ", awardsListArray
@@ -412,8 +377,16 @@ class window.TVPlugin extends window.LimePlugin
               """
     container.append result
 
+  _cleanupLabel: (label) ->
+    label = label.replace /<http:\/\/dbpedia.org\/resource\/(Category:)?/, ""
+    label = label.replace /_/g, " "
+    label = label.replace /[<>]/g, ""
+    label = decodeURIComponent label
+    label
+
+
   _loadFullDbpediaEntity: (entity, callback) =>
-    @vie.load(entity: entity.getSubject()).using('dbpedia').execute()
+    @vie.load(entity: entity).using('dbpedia').execute()
     .success (fullEntity) =>
       entity.set fullEntity
       callback fullEntity
@@ -446,7 +419,7 @@ class window.TVPlugin extends window.LimePlugin
     widget.annotation = annotation
     # widget was activated, we show details now
     jQuery(widget).bind 'activate', (e) =>
-      renderMethod annotation,fullEntity , @getModalContainer()
+      renderMethod.apply @, [annotation, fullEntity, @getModalContainer()]
 
     # Hang the widget on the annotation
     annotation.widgets[widgetType] = widget
