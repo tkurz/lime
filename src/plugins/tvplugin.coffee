@@ -76,38 +76,38 @@ class window.TVPlugin extends window.LimePlugin
       if annotation.resource.value.indexOf('dbpedia') isnt -1
         entity = @vie.entities.get annotation.resource.value
         if entity and entity.isof('dbpedia:Person')
-          @_loadFullDbpediaEntity entity, (fullEntity) =>
+          # @_loadFullDbpediaEntity entity, (fullEntity) =>
             # @processAnnotation annotation, fullEntity.attributes['@type']
-            @processAnnotation annotation, fullEntity
+            @processAnnotation annotation
 
-  processAnnotation: (annotation, fullEntity) ->
-    if _.intersection(fullEntity.attributes['@type'], @options.actorTypes).length
+  processAnnotation: (annotation) ->
+    if _.intersection(annotation.entities[0].attributes['@type'], @options.actorTypes).length
       # There's at least one type in common
       console.info 'Render Actor widget'
       widgetType = 'ActorWidget'
-      widget = @_initWidget annotation, fullEntity, widgetType, @renderActor,
+      widget = @_initWidget annotation, widgetType, @renderActor,
         thumbnail: "img/starIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Actor)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(fullEntity.attributes['@type'], @options.characterTypes).length
+    if _.intersection(annotation.entities[0].attributes['@type'], @options.characterTypes).length
       console.info 'Render Character widget'
       # There's at least one type in common
       widgetType = 'CharacterWidget'
-      widget = @_initWidget annotation, fullEntity, widgetType, @renderCharacter,
+      widget = @_initWidget annotation, widgetType, @renderCharacter,
         thumbnail: "img/characterIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Character)"
         type: widgetType
         sortBy: ->
           10000 * annotation.start + annotation.end
 
-    if _.intersection(fullEntity.attributes['@type'], @options.directorTypes).length
+    if _.intersection(annotation.entities[0].attributes['@type'], @options.directorTypes).length
       console.info 'Render Director widget'
       # There's at least one type in common
       widgetType = 'DirectorWidget'
-      widget = @_initWidget annotation, fullEntity, widgetType, @renderDirector,
+      widget = @_initWidget annotation, widgetType, @renderDirector,
         thumbnail: "img/directorIcon.png" # should go into CSS
         title: "#{annotation.getLabel()} (Director)"
         type: widgetType
@@ -115,11 +115,10 @@ class window.TVPlugin extends window.LimePlugin
           10000 * annotation.start + annotation.end
 
 
-  renderActor: (annotation, fullEntity, container) =>
+  renderActor: (annotation, container) =>
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
-    console.log fullEntity;
 
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -145,7 +144,7 @@ class window.TVPlugin extends window.LimePlugin
 
     console.log '2) starringListArray = ',starringListArray
     awardsListArray = []
-    awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
+    awardsListArray = annotation._detectProperty 'dcterms:subject'
 
     awardsList = ""
     if (awardsListArray)
@@ -162,18 +161,18 @@ class window.TVPlugin extends window.LimePlugin
     comment = comment.split(". ")[0] + ". "
     birthDate = "Birth date: "
     try
-      birthDate += fullEntity.attributes['<http://dbpedia.org/property/birthDate>']
+      birthDate += annotation._detectProperty 'dbprop:birthDate'
     catch error
       try
-        birthDate += fullEntity.attributes['<http://dbpedia.org/property/dateOfBirth>']
+        birthDate += annotation._detectProperty 'dbprop:dateOfBirth'
       catch error
 
     birthPlace = "Birth place: "
     try
-      birthPlace += fullEntity.attributes['<http://dbpedia.org/property/birthPlace>']['@value']
+      birthPlace += annotation._detectProperty('dbprop:birthPlace')['@value']
     catch error
       try
-        birthPlace += fullEntity.attributes['<http://dbpedia.org/property/placeOfBirth>']['@value']
+        birthPlace += annotation._detectProperty('dbprop:placeOfBirth')['@value']
       catch error
 
     result = """
@@ -219,33 +218,31 @@ class window.TVPlugin extends window.LimePlugin
 
     container.append result
 
-  renderCharacter: (annotation, fullEntity, container) ->
+  renderCharacter: (annotation, container) ->
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
-
-    console.log fullEntity
 
     label = annotation.getLabel()
     page = annotation.getPage()
     comment = annotation.getDescription()
     occupation = ""
     try
-      occupation = fullEntity.attributes['<http://dbpedia.org/ontology/occupation>']
+      occupation = annotation._detectProperty 'dbprop:occupation'
       occupation = @_cleanupLabel occupation
       occupation = "<b>Occupation:</b> " + occupation + "<br>"
     catch error
 
     nationality = ""
     try
-      nationality = fullEntity.attributes['<http://dbpedia.org/ontology/nationality>']
+      nationality = annotation._detectProperty 'dbprop:nationality'
       nationality = @_cleanupLabel nationality
       nationality = "<b>Nationality:</b> " +nationality + "<br>"
     catch error
 
     firstAppearance = ""
     try
-      firstAppearance = fullEntity.attributes['<http://dbpedia.org/ontology/firstAppearance>']
+      firstAppearance = annotation._detectProperty 'dbprop:firstAppearance'
       firstAppearance = @_cleanupLabel firstAppearance
       firstAppearance = "<b>First Appearance:</b> " + firstAppearance + "<br>"
     catch error
@@ -253,14 +250,14 @@ class window.TVPlugin extends window.LimePlugin
     nickname = ""
     try
       nickname = "<b>Nick name:</b> "
-      nicknameList = fullEntity.attributes['<http://xmlns.com/foaf/0.1/nick>']
+      nicknameList = annotation._detectProperty 'foaf:nick'
       for nick in nicknameList
         nickname += nick['@value'] + "<br>"
     catch error
 
     portrayer = ""
     try
-      portrayer = fullEntity.attributes['<http://dbpedia.org/property/portrayer>']
+      portrayer = annotation._detectProperty 'dbprop:portrayer'
       portrayer = @_cleanupLabel portrayer
       portrayer = "<b>Played by:</b> " + portrayer + "<br>"
     catch error
@@ -291,25 +288,23 @@ class window.TVPlugin extends window.LimePlugin
              """
     container.append result
 
-  renderDirector: (annotation, fullEntity, container) ->
+  renderDirector: (annotation, container) ->
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
-
-    console.log fullEntity
 
     label = annotation.getLabel()
     page = annotation.getPage()
     console.log page
     starringListArray = []
-    starringListArray = fullEntity.attributes['<http://dbpedia.org/ontology/knownFor>']
+    starringListArray = annotation._detectProperty 'dbprop:knownFor'
     starringList = ""
     if (starringListArray)
       for starringItem in starringListArray
         starringList += @_cleanupLabel starringItem
 
     awardsListArray = []
-    awardsListArray = fullEntity.attributes['<http://purl.org/dc/terms/subject>']
+    awardsListArray = annotation._detectProperty 'dcterms:subject'
 
     awardsList = ""
     if (awardsListArray)
@@ -325,18 +320,18 @@ class window.TVPlugin extends window.LimePlugin
     # comment = comment.split(". ")[0] + ". "
     birthDate = "Birth date: "
     try
-      birthDate += fullEntity.attributes['<http://dbpedia.org/property/birthDate>']
+      birthDate += annotation._detectProperty 'dbprop:birthDate'
     catch error
       try
-        birthDate += fullEntity.attributes['<http://dbpedia.org/property/dateOfBirth>']
+        birthDate += annotation._detectProperty 'dbprop:dateOfBirth'
       catch error
 
     birthPlace = "Birth place: "
     try
-      birthPlace += fullEntity.attributes['<http://dbpedia.org/property/birthPlace>']['@value']
+      birthPlace += annotation._detectProperty('dbprop:birthPlace')['@value']
     catch error
       try
-        birthPlace += fullEntity.attributes['<http://dbpedia.org/property/placeOfBirth>']['@value']
+        birthPlace += annotation._detectProperty('dbprop:placeOfBirth')['@value']
       catch error
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 100%;">
@@ -412,14 +407,14 @@ class window.TVPlugin extends window.LimePlugin
     return result
 
 
-  _initWidget: (annotation, fullEntity, widgetType, renderMethod, widgetOptions) ->
+  _initWidget: (annotation, widgetType, renderMethod, widgetOptions) ->
     widget = @lime.allocateWidgetSpace @, widgetOptions
 
     # We're going to need the annotation for the widget's `activate` event
     widget.annotation = annotation
     # widget was activated, we show details now
     jQuery(widget).bind 'activate', (e) =>
-      renderMethod.apply @, [annotation, fullEntity, @getModalContainer()]
+      renderMethod.apply @, [annotation, @getModalContainer()]
 
     # Hang the widget on the annotation
     annotation.widgets[widgetType] = widget

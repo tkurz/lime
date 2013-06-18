@@ -532,7 +532,7 @@ a:hover {
     display: none !important;
 }
 
-.vjs-control.usersettings {
+.vjs-control.usersettings, .vjs-control.help {
     float: right;
 }
 .vjs-control.usersettings div {
