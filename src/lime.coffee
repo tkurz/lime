@@ -378,9 +378,16 @@ class window.LIMEPlayer
     @plugins = []
     for pluginClass, options of @options.builtinPlugins
       # @plugins.push new window[pluginClass] @, options
-      @plugins.push new window[pluginClass] @, (@options[pluginClass] or {})
+      try
+        @plugins.push new window[pluginClass] @, (@options[pluginClass] or {})
+      catch error
+        console.error "Error initializing #{pluginClass} plugin", error
+
     for pluginClass, options of @options.plugins
-      @plugins.push new window[pluginClass] @, options
+      try
+        @plugins.push new window[pluginClass] @, options
+      catch error
+        console.error "Error initializing #{pluginClass} plugin", error
     cb()
 
   # options.preferredContainer can contain a widget container
