@@ -190,7 +190,7 @@ class window.LDPlugin extends window.LimePlugin
             console.log "Latitude = ", value
             return value
 
-          annotation.entityPromise.resolve annotation.entities
+        annotation.entityPromise.resolve annotation.entities
         readyCb()
   # Fetches the entity for `entityUri` and the possible redirects based on props, in a decreasing `depth`.
   recursiveFetch: (entityUri, props, depth, cb) =>
