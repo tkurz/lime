@@ -127,7 +127,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         result = """
                <div id="infoWidgetExpanded" unselectable="on" style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; position: relative; height: 600px; width: auto; ">
                <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
-               <span id="infoMainTextContent" >#{pagetext[@index]}</span>
+               <span id="infoMainTextContent" >#{maintext}</span>
                <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
                </div>
 
