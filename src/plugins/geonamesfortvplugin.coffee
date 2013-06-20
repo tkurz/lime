@@ -37,38 +37,30 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
 
 
       jQuery(widget).bind "leftarrow", (e) =>
-        # @geotabsiterator += 1
         @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
-        #$('.geotab.selected').removeClass 'selected'
         if (@geotabsiterator == 0)
           $("#geoMap").trigger 'click'
-        #$("#geoMap").addClass 'selected'
-        if (@geotabsiterator == 1)
-          $("#geoWeather").trigger 'click'
-
         if (@geotabsiterator == 2)
+          $("#geoWeather").trigger 'click'
+        if (@geotabsiterator == 1)
           $("#geoRout").trigger 'click'
-        #$("#geoRout").addClass 'selected'
         if (@geotabsiterator == 3)
           $("#geoPanoramio").trigger 'click'
-      #$("#geoPanoramio").addClass 'selected'
+
+
+        #jQuery(".geotab:not(.disabled):nth-child(#{@geotabsiterator})").trigger 'click'
 
       jQuery(widget).bind "rightarrow", (e) =>
-        # @geotabsiterator += 1
         @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
-        #$('.geotab.selected').removeClass 'selected'
         if (@geotabsiterator == 0)
           $("#geoMap").trigger 'click'
-        #$("#geoMap").addClass 'selected'
-        if (@geotabsiterator == 1)
-          $("#geoWeather").trigger 'click'
-        #$("#geoWeather").addClass 'selected'
         if (@geotabsiterator == 2)
+          $("#geoWeather").trigger 'click'
+        if (@geotabsiterator == 1)
           $("#geoRout").trigger 'click'
-        #$("#geoRout").addClass 'selected'
         if (@geotabsiterator == 3)
           $("#geoPanoramio").trigger 'click'
-      #$("#geoPanoramio").addClass 'selected'
+
 
       jQuery(widget).bind "uparrow", (e) =>
 
@@ -81,14 +73,14 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
         #@geomap.setZoom currentZoom + 1
         @mapzoom++
         @routemapzoom++
-        jQuery(".selected").trigger "click"
+        jQuery(".selected:first").trigger "click"
 
       jQuery(widget).bind "downarrow", (e) =>
         #currentZoom = @geomap.getZoom()
         #@geomap.setZoom currentZoom - 1
         @mapzoom--
         @routemapzoom--
-        jQuery(".selected").trigger "click"
+        jQuery(".selected:first").trigger "click"
 
 
   showInModalWindow: (annotation, outputElement) ->
@@ -108,7 +100,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       # result = "<div id=\"map_area\" class=\"mainWidgetContainer\" style=\"position: absolute; z-index: 900; background-image: url('img/map.png'); background-repeat: no-repeat; background-position: left top; background-size: cover; box-shadow: inset 0 0 5px #888; height: " + (widgetHeight - 116) + "px; width: 740px; left: 0px; top: 116px;\"></div>\n <div id=\"geowidgetheader\" style=\"position: absolute; z-index: 900; background-color: #9c9c9b; background-repeat: no-repeat; background-position: 0px 0px; background-size: cover; background-image: url('img/mapBckg.png'); width: 660px; height: 116px; left: 80px; top: 0;\">\n   <div id=\"location_bar\" style=\"background-color: #45c048; width: 100%; position: relative; left: 0px; top: 0px; height: 38px; visibility: hidden; visibility: hidden;\">\n  </div>\n   <div id=\"weather_bar\" style=\"height: 38px; width: 100%; background-color: #f8cb86; visibility: hidden;\"></div>\n   <div id=\"close\" style=\"position: absolute; background-color: #070606; width: 0px; height: 100%; left: 616px; top: 0px;\">\n</div>\n   <p id=\"elevation\" style=\"bottom: 1px; float: none; display: inline; position: absolute; z-index: 900; font-family: Arial,Helvetica,sans-serif; font-size: 22px; text-align: right; line-height: normal; font-weight: bold; color: #ffffff; vertical-align: baseline; text-decoration: none; font-style: normal; text-indent: 0; margin-top: 0px; margin-bottom: 0px; margin-right: 1em; right: 48px;\"> &nbsp; </p>\n   <div id=\"rout_bar\" style=\"width: 100%; height: 40px; background-color: #fc8466; visibility: hidden;\"></div>\n </div>\n <div id=\"menu_bar\" style=\"border: none; position: absolute; z-index: 900; background-color: transparent; width: 77px; height: 113px; left: 3px; top: 0;\">\n <div id=\"menu_button_container\" style=\"position: relative; top: 0px; display: block; right: 0px; z-index: 900; float: right; width: 80px; height: 117px; left: 0px;\">\n<div id=\"geoMap\" style=\"position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: none; height: 38px; width: 86px;\"></div>\n<div id=\"geoWeather\" style=\"position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: none; width: 86px; height: 38px;\"></div>\n<div id=\"geoRout\" style=\"background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: none; width: 86px; height: 40px;\"></div>\n</div>\n </div>\n </body>"
       result = """
                <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: absolute; top: 0; z-index: 100; width: 600px; right: 0; height: 100%;">
-               <img id="map_area" style="left: 0px; top: 0px; width: 600px; height: 100%; position: relative;"></img>
+               <div id="map_area" style="left: 0px; top: 0px; width: 600px; height: 100%; position: relative;"><img></img></div>
                <div id="mapMenu" style="position: absolute; z-index: 900; width: auto; right: 1px; bottom: 0px; height: 41px;">
                <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
                <div id="geoWeather" class="geotab disabled" style="display: none; position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
@@ -171,10 +163,12 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       locationName = annotation.getLabel()
       latitude = annotation.getLatitude()
       longitude = annotation.getLongitude()
-      @mapzoom = 12
-      map = "#map_area"
 
-      jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{@mapzoom}&size=600x500&maptype=roadmap&sensor=false"
+      map = "#map_area"
+      jQuery(map).empty()
+      newmap = """<img src="http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{@mapzoom}&size=600x500&maptype=roadmap&visual_refresh=true&sensor=false"></img>
+               """
+      jQuery(map).append newmap
       $("#geoMap").addClass 'selected'
 
     $("#geoWeather").click =>
@@ -206,7 +200,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       mapzoom = 12
       map = "#map_area"
 
-      jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&sensor=false"
+      jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&visual_refresh=true&sensor=false"
 
       $("#geoWeather").addClass 'selected'
 
@@ -233,10 +227,13 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           locationName = annotation.getLabel()
           latitude = annotation.getLatitude()
           longitude = annotation.getLongitude()
-          @routemapzoom = 6
-          map = "#map_area"
 
-          jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{@routemapzoom}&size=600x500&maptype=roadmap&sensor=false"
+          map = "#map_area"
+          jQuery(map).empty()
+          newmap =  """<img src="http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{@routemapzoom}&size=600x500&visual_refresh=true&maptype=roadmap&sensor=false"></img>
+                    """
+          jQuery(map).append newmap
+          #jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{@routemapzoom}&size=600x500&visual_refresh=true&maptype=roadmap&sensor=false"
           ###
 
           output = document.getElementById("map_area")
@@ -285,6 +282,8 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
 
 
     # default selection
+    @mapzoom = 12
+    @routemapzoom = 6
     $("#geoMap").trigger "click"
     $("#geoMap").addClass 'selected'
     return;
