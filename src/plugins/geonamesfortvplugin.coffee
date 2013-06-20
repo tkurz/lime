@@ -77,12 +77,18 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
 
         # $("#geoMap").trigger 'click'
         # $("#map_area").trigger customEvent
-        currentZoom = @geomap.getZoom()
-        @geomap.setZoom currentZoom + 1
+        #currentZoom = @geomap.getZoom()
+        #@geomap.setZoom currentZoom + 1
+        @mapzoom++
+        @routemapzoom++
+        jQuery(".selected").trigger "click"
 
       jQuery(widget).bind "downarrow", (e) =>
-        currentZoom = @geomap.getZoom()
-        @geomap.setZoom currentZoom - 1
+        #currentZoom = @geomap.getZoom()
+        #@geomap.setZoom currentZoom - 1
+        @mapzoom--
+        @routemapzoom--
+        jQuery(".selected").trigger "click"
 
 
   showInModalWindow: (annotation, outputElement) ->
@@ -165,10 +171,10 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       locationName = annotation.getLabel()
       latitude = annotation.getLatitude()
       longitude = annotation.getLongitude()
-      mapzoom = 12
+      @mapzoom = 12
       map = "#map_area"
 
-      jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&sensor=false"
+      jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{@mapzoom}&size=600x500&maptype=roadmap&sensor=false"
       $("#geoMap").addClass 'selected'
 
     $("#geoWeather").click =>
@@ -227,10 +233,10 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           locationName = annotation.getLabel()
           latitude = annotation.getLatitude()
           longitude = annotation.getLongitude()
-          mapzoom = 6
+          @routemapzoom = 6
           map = "#map_area"
 
-          jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&sensor=false"
+          jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{@routemapzoom}&size=600x500&maptype=roadmap&sensor=false"
           ###
 
           output = document.getElementById("map_area")
