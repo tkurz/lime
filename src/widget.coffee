@@ -15,8 +15,8 @@ class window.LimeWidget
       <div class="#{@options.type}">
         <table style="margin:0 auto; width: 100%;">
           <tr>
-            <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: left; width: 45px; height: 27px; " ></td>
-            <td><span class="utility-text" style="float: left;">#{@options.title}</span></td>
+            <td style="width: 45px;"><img class="utility-icon" src="#{@options.thumbnail}" style="width: 45px; height: 27px;" ></td>
+            <td><span class="utility-text">#{@options.title}</span></td>
           </tr>
         </table>
       </div>
