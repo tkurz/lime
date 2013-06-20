@@ -227,7 +227,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           locationName = annotation.getLabel()
           latitude = annotation.getLatitude()
           longitude = annotation.getLongitude()
-          mapzoom = 12
+          mapzoom = 6
           map = "#map_area"
 
           jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&sensor=false"
