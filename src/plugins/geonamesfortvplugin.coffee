@@ -247,16 +247,11 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           myOptions = undefined
           output = undefined
           directionsService = new google.maps.DirectionsService()
-          
+
           locationName = annotation.getLabel()
           latitude = annotation.getLatitude()
           longitude = annotation.getLongitude()
 
-          map = "#map_area"
-          jQuery(map).empty()
-          newmap =  """<img src="http://maps.google.com/maps/api/staticmap?markers=#{position.coords.latitude},#{position.coords.longitude},greena|#{latitude},#{longitude},greenb&path=color:0x0000ff|weight:5|#{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude}&zoom=#{@routemapzoom}&size=450x450&visual_refresh=true&maptype=roadmap&sensor=false"></img>
-                    """
-          jQuery(map).append newmap
 
           destination = new google.maps.LatLng(latitude, longitude)
           start = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
@@ -269,12 +264,17 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
             travelMode: google.maps.TravelMode.DRIVING
           @directionString = "#{position.coords.latitude},#{position.coords.longitude}|"
           directionsService.route request, (result, status) ->
-            directionsDisplay.setDirections result  if status is google.maps.DirectionsStatus.OK
+            if status is google.maps.DirectionsStatus.OK
               myRoute = result.routes[0].legs[0]
               for i in myRoute.steps by 3
                 @directionString += i.end_location+'|'
 
-          console.log "@directionString= ", @directionString
+          console.log "route: #{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude} - @directionString= ", @directionString
+          map = "#map_area"
+          jQuery(map).empty()
+          newmap =  """<img src="http://maps.google.com/maps/api/staticmap?path=color:0x0000ff|weight:5|#{@directionString}&zoom=6&size=450x450&visual_refresh=true&maptype=roadmap&sensor=false"></img>
+                    """
+          jQuery(map).append newmap
 
 
 
