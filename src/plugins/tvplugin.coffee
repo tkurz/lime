@@ -119,6 +119,7 @@ class window.TVPlugin extends window.LimePlugin
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
 
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -159,20 +160,24 @@ class window.TVPlugin extends window.LimePlugin
     lime = this.lime
     comment = annotation.getDescription()
     comment = comment.split(". ")[0] + ". "
-    birthDate = "Birth date: "
+    birthDate = ""
     try
-      birthDate += annotation._detectProperty 'dbprop:birthDate'
+      if annotation._detectProperty 'dbprop:birthDate' isnt undefined
+        birthDate += 'Birth date: ' + annotation._detectProperty 'dbprop:birthDate' + '<br>'
     catch error
       try
-        birthDate += annotation._detectProperty 'dbprop:dateOfBirth'
+        if annotation._detectProperty 'dbprop:dateOfBirth' isnt undefined
+          birthDate += 'Birth date: ' + annotation._detectProperty 'dbprop:dateOfBirth'  + '<br>'
       catch error
 
-    birthPlace = "Birth place: "
+    birthPlace = ""
     try
-      birthPlace += annotation._detectProperty('dbprop:birthPlace')['@value']
+      if annotation._detectProperty('dbprop:birthPlace')['@value'] isnt undefined
+        birthPlace += 'Birth place: ' +  annotation._detectProperty('dbprop:birthPlace')['@value'] + '<br>'
     catch error
       try
-        birthPlace += annotation._detectProperty('dbprop:placeOfBirth')['@value']
+        if annotation._detectProperty('dbprop:placeOfBirth')['@value'] isnt undefined
+          birthPlace += 'Birth place: ' + annotation._detectProperty('dbprop:placeOfBirth')['@value'] + '<br>'
       catch error
 
     result = """
@@ -189,8 +194,8 @@ class window.TVPlugin extends window.LimePlugin
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
     #{comment} <br>
-    #{birthDate} <br>
-    #{birthPlace} <br>
+    #{birthDate}
+    #{birthPlace}
 
              </div>
              """
@@ -218,10 +223,30 @@ class window.TVPlugin extends window.LimePlugin
 
     container.append result
 
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
   renderCharacter: (annotation, container) ->
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
 
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -288,10 +313,30 @@ class window.TVPlugin extends window.LimePlugin
              """
     container.append result
 
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@.name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
   renderDirector: (annotation, container) ->
     modalContent = jQuery(container)
     modalContent.css "width", "450px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
 
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -372,6 +417,25 @@ class window.TVPlugin extends window.LimePlugin
               """
     container.append result
 
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
   _cleanupLabel: (label) ->
     label = label.replace /<http:\/\/dbpedia.org\/resource\/(Category:)?/, ""
     label = label.replace /_/g, " "
@@ -414,14 +478,31 @@ class window.TVPlugin extends window.LimePlugin
     widget.annotation = annotation
     # widget was activated, we show details now
     jQuery(widget).bind 'activate', (e) =>
+      try
+        eventClickedLabel = e.target.options.title
+        eventCategory = @name
+        _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+      catch error
       renderMethod.apply @, [annotation, @getModalContainer()]
 
     # Hang the widget on the annotation
     annotation.widgets[widgetType] = widget
 
     jQuery(annotation).bind "becomeActive", (e) =>
+      #attached gogle analytics stack push for active annotation
+      try
+        eventActiveLabel = e.target.widgets[@name].options.title
+        eventCategory = @name
+        _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+      catch error
       annotation.widgets[widgetType].setActive()
 
     jQuery(annotation).bind "becomeInactive", (e) =>
+      #attached gogle analytics stack push for inactive annotation
+      try
+        eventActiveLabel = e.target.widgets[@name].options.title
+        eventCategory = @name
+        _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+      catch error
       annotation.widgets[widgetType].setInactive()
 

@@ -31,15 +31,32 @@ class window.BusinessPlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @showAbstractInModalWindow annotation, @getModalContainer()
 
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeActive", (e) =>
+        #attached gogle analytics stack push for active annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
+        #attached gogle analytics stack push for inactive annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setInactive()
 
   showAbstractInModalWindow: (annotation, outputElement) ->
@@ -68,11 +85,17 @@ class window.BusinessPlugin extends window.LimePlugin
     $(".close").click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
     $('#mask').click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error

@@ -20,7 +20,7 @@ class window.UserSettingsPlugin extends window.LimePlugin
       # Render a permanently shown widget for accessing the user settings e.g. on a TV where the control bar is hidden
       console.info 'Permanent widgets are on.'
       widget = @lime.allocateWidgetSpace @,
-        thumbnail: "img/info.png" # should go into CSS
+        thumbnail: "img/settingsWidget.png" # should go into CSS
         title: "User settings"
         type: "UserSettingsWidget"
         sortBy: ->
@@ -94,10 +94,10 @@ class window.UserSettingsPlugin extends window.LimePlugin
     ###
 
     $('.annotationspatialoverlay', settingssection).click (e) =>
-      console.info 'TODO: implement'
+      #TODO: implement
 
     $('.annotationtimelineoverlay', settingssection).click (e) =>
-      console.info 'TODO: implement'
+      #TODO: implement
 
     settingsElement.append """
       <p class="settingssection" style="font-size: 16px; margin-left: 10px;"> Widgets </p>

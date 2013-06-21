@@ -40,6 +40,11 @@ class window.BookingPlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @expandWidget annotation, @getModalContainer()
 
       # Hang the widget on the annotation
@@ -48,9 +53,21 @@ class window.BookingPlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeActive", (e) =>
         if(annotation.goodRelationsDataResource)
           if(annotation.goodRelationsDataResource.length > 0)
+            #attached gogle analytics stack push for active annotation
+            try
+              eventActiveLabel = e.target.widgets[@name].options.title
+              eventCategory = @name
+              _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+            catch error
             annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
+        #attached gogle analytics stack push for inactive annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setInactive()
 
       jQuery(widget).bind "downarrow", (e) =>
@@ -221,14 +238,20 @@ class window.BookingPlugin extends window.LimePlugin
         jQuery(".close").click (e) =>
           endTime = new Date().getTime()
           timeSpent = endTime - startTime
-          eventLabel = annotation.widgets[@.name].options.title
-          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+          eventLabel = annotation.widgets[@name].options.title
+          try
+            _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+            _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+          catch error
 
         jQuery('#mask').click (e) =>
           endTime = new Date().getTime()
           timeSpent = endTime - startTime
-          eventLabel = annotation.widgets[@.name].options.title
-          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+          eventLabel = annotation.widgets[@name].options.title
+          try
+            _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+            _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+          catch error
 
         jQuery(".businessContact").click =>
           jQuery(".businessContact").text "Danke schön!"
@@ -314,7 +337,7 @@ class window.BookingPlugin extends window.LimePlugin
                     latitude = grdata[0].geoLat
                     #annotation.getLatitude()
                     longitude = grdata[0].geoLong
-                    console.log 'latitude: ',latitude, ' longitude:  ', longitude
+                    #console.log 'latitude: ',latitude, ' longitude:  ', longitude
                     #annotation.getLongitude()
 
               output = document.getElementById("map")

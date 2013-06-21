@@ -123,7 +123,7 @@ class window.LIMEPlayer
     displaysrc=''
     for locator, i in @options.video
       displaysrc = displaysrc + "<source src='#{locator.source}' type='#{locator.type}' />"
-    console.log "dysplaysrc = ", displaysrc
+    #console.log "dysplaysrc = ", displaysrc
     # create center div with player, <video> id is 'videoplayer' - this gets passed to the VideoJS initializer
     @el.append """
       <div class='videowrapper' id='videowrapper'>
@@ -188,7 +188,7 @@ class window.LIMEPlayer
         widgetsEls = jQuery(container).find('.lime-widget')
         widgetsSorted = _.sortBy @widgets, (widgetEl) =>
           jQuery(widgetEl).data().widget?.options.sortBy()
-        console.info "sorting", container
+        #console.info "sorting", container
         for el in widgetsSorted
           jQuery(container).prepend el
         jQuery(container).data 'sorted', true
@@ -198,7 +198,7 @@ class window.LIMEPlayer
           widget = jQuery(widgetElement).data().widget
           widget?.isActive()
         if first
-          console.info "First active widget found, scrollto", first, jQuery(first).position(), jQuery(first).position().top
+          #console.info "First active widget found, scrollto", first, jQuery(first).position(), jQuery(first).position().top
           jQuery(first).parent().scrollTo first
           jQuery('.nav-selected').removeClass 'nav-selected'
           jQuery(first).addClass 'nav-selected'
@@ -246,7 +246,7 @@ class window.LIMEPlayer
     @claimKeyEvents @
 
     jQuery(window).bind 'popstate', (event) =>
-      console.log('pop: ' + event.originalEvent.state)
+      #console.log('pop: ' + event.originalEvent.state)
       if @modalContainer?.is(':visible')
         @modalContainer.trigger jQuery.Event 'close'
 
@@ -372,7 +372,7 @@ class window.LIMEPlayer
         # jQuery(annotation).trigger(jQuery.Event("becomeInactive", annotation: annotation))
         jQuery(annotation).trigger(jQuery.Event("becomeActive", annotation: annotation))
     # end added SORIN
-    console.info "_moveWidgets", isFullscreen
+    #console.info "_moveWidgets", isFullscreen
 
   _initPlugins: (cb) ->
     @plugins = []
@@ -404,7 +404,7 @@ class window.LIMEPlayer
       # no preferred container, then we'll see which ones have space
       containers = _(@widgetContainers).filter (cont) =>
         @_hasFreeSpace cont, options
-    console.log("widget container", container);
+    #console.log("widget container", container);
     # If no container had space, we force to take space from one of the containers.
     unless containers.length
       containers = @widgetContainers

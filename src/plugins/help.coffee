@@ -20,13 +20,18 @@ class window.Help extends window.LimePlugin
       # Render a permanently shown widget for accessing the user settings e.g. on a TV where the control bar is hidden
       console.info 'Permanent widgets are on.'
       widget = @lime.allocateWidgetSpace @,
-        thumbnail: "img/help.png" # should go into CSS
+        thumbnail: "img/helpWidget.png" # should go into CSS
         title: "Help"
         type: "HelpWidget"
         sortBy: ->
           100000000
 
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @lime.player.pause()
         @renderHelpInModalWindow()
 

@@ -24,28 +24,45 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @showInModalWindow annotation, @getModalContainer()
 
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeActive", (e) =>
+        #attached gogle analytics stack push for active annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
+        #attached gogle analytics stack push for inactive annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setInactive()
 
 
       jQuery(widget).bind "leftarrow", (e) =>
         @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
         if (@geotabsiterator == 0)
-          $("#geoMap").trigger 'click'
+          jQuery("#geoMap").trigger 'click'
         if (@geotabsiterator == 2)
-          $("#geoWeather").trigger 'click'
+          jQuery("#geoWeather").trigger 'click'
         if (@geotabsiterator == 1)
-          $("#geoRout").trigger 'click'
+          jQuery("#geoRout").trigger 'click'
         if (@geotabsiterator == 3)
-          $("#geoPanoramio").trigger 'click'
+          jQuery("#geoPanoramio").trigger 'click'
 
 
         #jQuery(".geotab:not(.disabled):nth-child(#{@geotabsiterator})").trigger 'click'
@@ -53,13 +70,13 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       jQuery(widget).bind "rightarrow", (e) =>
         @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
         if (@geotabsiterator == 0)
-          $("#geoMap").trigger 'click'
+          jQuery("#geoMap").trigger 'click'
         if (@geotabsiterator == 2)
-          $("#geoWeather").trigger 'click'
+          jQuery("#geoWeather").trigger 'click'
         if (@geotabsiterator == 1)
-          $("#geoRout").trigger 'click'
+          jQuery("#geoRout").trigger 'click'
         if (@geotabsiterator == 3)
-          $("#geoPanoramio").trigger 'click'
+          jQuery("#geoPanoramio").trigger 'click'
 
 
       jQuery(widget).bind "uparrow", (e) =>
@@ -91,7 +108,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
 
 
     # fix container size
-    modalContent = $(outputElement)
+    modalContent = jQuery(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "500px"
 
@@ -125,29 +142,36 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
                </div>
                """
     modalContent.append result
-    @geotabs = $('.geotab:not(.disabled)')
-    @geotabsiterator = 0
 
     # control widget
-    $(".close").click (e) =>
+    jQuery(".close").click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
-    $('#mask').click (e) =>
+    jQuery('#mask').click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
-    $("#geoMap").click =>
-      $('.geotab.selected').removeClass 'selected'
+    @geotabs = jQuery('.geotab:not(.disabled)')
+    @geotabsiterator = 0
+
+    jQuery("#geoMap").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "visible"
-      $("#weather_bar").css "visibility", "hidden"
-      $("#rout_bar").css "visibility", "hidden"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "visible"
+      jQuery("#weather_bar").css "visibility", "hidden"
+      jQuery("#rout_bar").css "visibility", "hidden"
+      jQuery("#map_area").empty()
 
       # cartography handling
       i = undefined
@@ -169,15 +193,15 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
       newmap = """<img src="http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{@mapzoom}&size=600x500&maptype=roadmap&visual_refresh=true&sensor=false"></img>
                """
       jQuery(map).append newmap
-      $("#geoMap").addClass 'selected'
+      jQuery("#geoMap").addClass 'selected'
 
-    $("#geoWeather").click =>
-      $('.geotab.selected').removeClass 'selected'
+    jQuery("#geoWeather").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "hidden"
-      $("#weather_bar").css "visibility", "visible"
-      $("#rout_bar").css "visibility", "hidden"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "hidden"
+      jQuery("#weather_bar").css "visibility", "visible"
+      jQuery("#rout_bar").css "visibility", "hidden"
+      jQuery("#map_area").empty()
 
       # cartography handling
       i = undefined
@@ -202,15 +226,15 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
 
       jQuery(map).attr "src", "http://maps.google.com/maps/api/staticmap?center=#{latitude},#{longitude}&zoom=#{mapzoom}&size=600x500&maptype=roadmap&visual_refresh=true&sensor=false"
 
-      $("#geoWeather").addClass 'selected'
+      jQuery("#geoWeather").addClass 'selected'
 
-    $("#geoRout").click =>
-      $('.geotab.selected').removeClass 'selected'
+    jQuery("#geoRout").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "hidden"
-      $("#weather_bar").css "visibility", "hidden"
-      $("#rout_bar").css "visibility", "visible"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "hidden"
+      jQuery("#weather_bar").css "visibility", "hidden"
+      jQuery("#rout_bar").css "visibility", "visible"
+      jQuery("#map_area").empty()
 
       # cartography handling
       if navigator.geolocation
@@ -274,16 +298,16 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
               alert "Permission denied"
             when error.UNKNOWN_ERROR
               alert "Unknown error"
-      $("#geoRout").addClass 'selected'
+      jQuery("#geoRout").addClass 'selected'
 
-    $("#geoPanoramio").click =>
-      $('.geotab.selected').removeClass 'selected'
-      $("#geoPanoramio").addClass 'selected'
+    jQuery("#geoPanoramio").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
+      jQuery("#geoPanoramio").addClass 'selected'
 
 
     # default selection
     @mapzoom = 12
     @routemapzoom = 6
-    $("#geoMap").trigger "click"
-    $("#geoMap").addClass 'selected'
+    jQuery("#geoMap").trigger "click"
+    jQuery("#geoMap").addClass 'selected'
     return;

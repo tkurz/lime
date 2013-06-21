@@ -25,16 +25,33 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         widget.annotation = annotation
         # widget was activated, we show details now
         jQuery(widget).bind 'activate', (e) =>
-          # @getModalContainer().html @showAbstractInModalWindow annotation
+          # ataching google analytics
+          try
+            eventClickedLabel = e.target.options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+          catch error
           @showAbstractInModalWindow annotation, @getModalContainer()
 
         # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
         jQuery(annotation).bind "becomeActive", (e) =>
+          #attached gogle analytics stack push for active annotation
+          try
+            eventActiveLabel = e.target.widgets[@name].options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+          catch error
           annotation.widgets[@name].setActive()
 
         jQuery(annotation).bind "becomeInactive", (e) =>
+          #attached gogle analytics stack push for inactive annotation
+          try
+            eventActiveLabel = e.target.widgets[@name].options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+          catch error
           annotation.widgets[@name].setInactive()
 
         @getLSIImages annotation
@@ -182,22 +199,30 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     #widget controls
 
     jQuery(".close").click (e) =>
+      # measures how much time the expanded widget was on screen , in miliseconds
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
     jQuery('#mask').click (e) =>
+      # measures how much time the expanded widget was on screen , in miliseconds
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
     jQuery('#righticon').click =>
       @index++
       if (@index == 1)
         jQuery('#lefticon').css "display", "block"
-      console.log "right icon click"
+      #console.log "right icon click"
       if (@index >= pagetext.length-1)
         @index = pagetext.length - 1
         jQuery('#righticon').css "display", "none"
@@ -210,7 +235,7 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       @index--
       if (@index == pagetext.length - 2)
         jQuery('#righticon').css "display", "block"
-      console.log "left icon click"
+      #console.log "left icon click"
       if (@index <= 0)
         @index = 0
         jQuery('#lefticon').css "display", "none"
