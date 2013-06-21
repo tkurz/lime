@@ -3,7 +3,7 @@ class window.TVPlugin extends window.LimePlugin
     @name = 'TVPlugin'
     console.info "Initialize #{@name}"
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("dbpedia") > 0
+      if annotation.resource.value.indexOf("dbpedia") > 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions']
         @handleAnnotation annotation
 
   defaults:
@@ -162,22 +162,28 @@ class window.TVPlugin extends window.LimePlugin
     comment = comment.split(". ")[0] + ". "
     birthDate = ""
     try
-      if annotation._detectProperty 'dbprop:birthDate' isnt undefined
-        birthDate += 'Birth date: ' + annotation._detectProperty 'dbprop:birthDate' + '<br>'
+      birthDateValue = annotation._detectProperty 'dbprop:birthDate'
+      if birthDateValue isnt undefined
+        birthDateValue = birthDateValue.split("T")[0]
+        birthDate += 'Birth date: ' + birthDateValue + '<br>'
     catch error
       try
-        if annotation._detectProperty 'dbprop:dateOfBirth' isnt undefined
-          birthDate += 'Birth date: ' + annotation._detectProperty 'dbprop:dateOfBirth'  + '<br>'
+        birthDateValue = annotation._detectProperty 'dbprop:dateOfBirth'
+        birthDateValue = birthDateValue.split("T")[0]
+        if birthDateValue isnt undefined
+          birthDate += 'Birth date: ' + birthDateValue  + '<br>'
       catch error
 
     birthPlace = ""
     try
-      if annotation._detectProperty('dbprop:birthPlace')['@value'] isnt undefined
-        birthPlace += 'Birth place: ' +  annotation._detectProperty('dbprop:birthPlace')['@value'] + '<br>'
+      birthPlaceValue = annotation._detectProperty('dbprop:birthPlace')['@value']
+      if birthPlaceValue isnt undefined
+        birthPlace += 'Birth place: ' + birthPlaceValue + '<br>'
     catch error
       try
-        if annotation._detectProperty('dbprop:placeOfBirth')['@value'] isnt undefined
-          birthPlace += 'Birth place: ' + annotation._detectProperty('dbprop:placeOfBirth')['@value'] + '<br>'
+        birthPlaceValue = annotation._detectProperty('dbprop:placeOfBirth')['@value']
+        if birthPlaceValue isnt undefined
+          birthPlace += 'Birth place: ' + birthPlaceValue + '<br>'
       catch error
 
     result = """
@@ -223,6 +229,7 @@ class window.TVPlugin extends window.LimePlugin
 
     container.append result
 
+    ###
     #widget controls
     $(".close").click (e) =>
       endTime = new Date().getTime()
@@ -241,6 +248,7 @@ class window.TVPlugin extends window.LimePlugin
         _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
       catch error
+    ###
 
   renderCharacter: (annotation, container) ->
     modalContent = jQuery(container)
@@ -313,11 +321,12 @@ class window.TVPlugin extends window.LimePlugin
              """
     container.append result
 
+    ###
     #widget controls
     $(".close").click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
+      eventLabel = annotation.widgets[@name].options.title
       try
         _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
@@ -331,6 +340,7 @@ class window.TVPlugin extends window.LimePlugin
         _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
       catch error
+    ###
 
   renderDirector: (annotation, container) ->
     modalContent = jQuery(container)
@@ -363,21 +373,32 @@ class window.TVPlugin extends window.LimePlugin
     lime = this.lime
     comment = annotation.getDescription()
     # comment = comment.split(". ")[0] + ". "
-    birthDate = "Birth date: "
+    birthDate = ""
     try
-      birthDate += annotation._detectProperty 'dbprop:birthDate'
+      birthDateValue = annotation._detectProperty 'dbprop:birthDate'
+      if birthDateValue isnt undefined
+        birthDateValue = birthDateValue.split("T")[0]
+        birthDate += 'Birth date: ' + birthDateValue + '<br>'
     catch error
       try
-        birthDate += annotation._detectProperty 'dbprop:dateOfBirth'
+        birthDateValue = annotation._detectProperty 'dbprop:dateOfBirth'
+        if birthDateValue isnt undefined
+          birthDateValue = birthDateValue.split("T")[0]
+          birthDate += 'Birth date: ' + birthDateValue  + '<br>'
       catch error
 
-    birthPlace = "Birth place: "
+    birthPlace = ""
     try
-      birthPlace += annotation._detectProperty('dbprop:birthPlace')['@value']
+      birthPlaceValue = annotation._detectProperty('dbprop:birthPlace')['@value']
+      if birthPlaceValue isnt undefined
+        birthPlace += 'Birth place: ' + birthPlaceValue + '<br>'
     catch error
       try
-        birthPlace += annotation._detectProperty('dbprop:placeOfBirth')['@value']
+        birthPlaceValue = annotation._detectProperty('dbprop:placeOfBirth')['@value']
+        if birthPlaceValue isnt undefined
+          birthPlace += 'Birth place: ' + birthPlaceValue + '<br>'
       catch error
+
     result = """
              <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: relative;height: auto; width: 100%;">
              <div id="infoWidget" style="background-color: rgba(37, 37, 37, 0.7); height: 40px; left: 0px; width: 100%; position: relative; float: left;">
@@ -391,8 +412,8 @@ class window.TVPlugin extends window.LimePlugin
              <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: orange; height: auto;">
              Bio</div>
              <div id="infoTextBio" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-    #{birthDate} <br>
-    #{birthPlace} <br> <br>
+    #{birthDate}
+    #{birthPlace}  <br>
     #{comment}
 
              </div>
@@ -417,6 +438,7 @@ class window.TVPlugin extends window.LimePlugin
               """
     container.append result
 
+    ###
     #widget controls
     $(".close").click (e) =>
       endTime = new Date().getTime()
@@ -435,6 +457,8 @@ class window.TVPlugin extends window.LimePlugin
         _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
       catch error
+
+    ###
 
   _cleanupLabel: (label) ->
     label = label.replace /<http:\/\/dbpedia.org\/resource\/(Category:)?/, ""
