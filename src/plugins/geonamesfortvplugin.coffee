@@ -246,7 +246,8 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           map = undefined
           myOptions = undefined
           output = undefined
-
+          directionsService = new google.maps.DirectionsService()
+          
           locationName = annotation.getLabel()
           latitude = annotation.getLatitude()
           longitude = annotation.getLongitude()
