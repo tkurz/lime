@@ -121,7 +121,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
                <div id="mapMenu" style="position: absolute; z-index: 900; width: 100%; background-color: rgba(37, 37, 37, 0.7); right: 1px; bottom: 0px; height: 41px;">
                <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
                <div id="geoWeather" class="geotab disabled" style="display: none; position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
-               <div id="geoRout" class="geotab " style=" background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
+               <div id="geoRout" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                <div id="geoPanoramio" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                </div>
                <!-- <div id="closingButton" style="position: absolute; z-index: 900; width: 87px; height: 38px; background-color: #414040; left: 513px; top: 408px;"><span data-dojo-type="shapes.Text" style="font-size: 14px; position: absolute; z-index: 900; color: #ffffff; left: 41px; top: 8.5px;">X</span></div> -->
@@ -135,7 +135,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
                <div id="mapMenu" style="position: absolute; z-index: 900; width: 100%; background-color: rgba(37, 37, 37, 0.7); right: 1px; bottom: 0px; height: 41px;">
                <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
                <div id="geoWeather" class="geotab disabled" style="display: none; position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
-               <div id="geoRout" class="geotab" style="background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
+               <div id="geoRout" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                <div id="geoPanoramio" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
                </div>
                <!-- <div id="closingButton" style="position: absolute; z-index: 900; width: 87px; height: 38px; background-color: #414040; left: 513px; top: 408px;"><span data-dojo-type="shapes.Text" style="font-size: 14px; position: absolute; z-index: 900; color: #ffffff; left: 41px; top: 8.5px;">X</span></div> -->
@@ -266,7 +266,8 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
           directionsService.route request, (result, status) ->
             if status is google.maps.DirectionsStatus.OK
               myRoute = result.routes[0].legs[0]
-              for i in myRoute.steps by 3
+              for i in myRoute.steps by 1
+                console.log i.end_location
                 @directionString += i.end_location+'|'
 
           console.log "route: #{position.coords.latitude},#{position.coords.longitude}|#{latitude},#{longitude} - @directionString= ", @directionString
