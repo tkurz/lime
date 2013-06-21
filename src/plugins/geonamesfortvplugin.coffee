@@ -105,7 +105,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
     result = undefined
     language = UTILS.getParameterByName("lang")
     startTime = new Date().getTime()
-
+    label = annotation.getLabel()
 
     # fix container size
     modalContent = jQuery(outputElement)
@@ -119,6 +119,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
                <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: absolute; top: 0; z-index: 100; width: 450px; right: 0; height: 100%;">
                <div id="map_area" style="left: 0px; top: 0px; width: 450px; height: 100%; position: relative;"><img></img></div>
                <div id="mapMenu" style="position: absolute; z-index: 900; width: 100%; background-color: rgba(37, 37, 37, 0.7); right: 1px; bottom: 0px; height: 41px;">
+               <div if="mapLabel" style="position: relative; float: left; height: 40px; width: auto;">&nbsp;#{label}</div>
                <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
                <div id="geoWeather" class="geotab disabled" style="display: none; position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
                <div id="geoRout" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>
@@ -133,6 +134,7 @@ class window.GeoNamesMapForTVPlugin extends window.LimePlugin
                <div id="ifoWidgetExpanded" style="border: 1px dotted lightgray; position: absolute; top: 0; z-index: 100; width: 450px; right: 0; height: 80%;">
                <div id="map_area" style="left: 0px; top: 0px; width: 450px; height: 100%; position: relative;"></div>
                <div id="mapMenu" style="position: absolute; z-index: 900; width: 100%; background-color: rgba(37, 37, 37, 0.7); right: 1px; bottom: 0px; height: 41px;">
+               <div if="mapLabel" style="position: relative; float: left; height: 40px; width: auto;">&nbsp;#{label}</div>
                <div id="geoMap" class="geotab" style="position: relative; background-position: center center; background-image: url('img/mapIcon.png'); background-size: contain; float: right; height: 40px; width: 86px;"></div>
                <div id="geoWeather" class="geotab disabled" style="display: none; position: relative; background-position: center center; background-image: url('img/weather.png'); background-size: contain; float: right; width: 86px; height: 40px;"></div>
                <div id="geoRout" class="geotab disabled" style="display: none; background-position: center center; background-size: contain; background-image: url('img/directionIcon.png'); float: right; width: 86px; height: 40px;"></div>

@@ -154,7 +154,7 @@ class window.DBPediaInfoForTVPlugin extends window.LimePlugin
                <div id="infoTextBioTitle" style="font: Helvetica; position: relative; float: left; width: 100%; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: rgb(82, 207, 255); height: auto;">
                Info</div>
                <div id="infoMainTextContent" style="font: Helvetica; font-family: Arial,Helvetica,sans-serif; font-size: 18px; color: #f1f1f1; float: left; line-height: normal; position: relative; height: auto; width: 100%;">
-      #{pagetext[@index]}
+      #{maintext}
                </div>
                </div>
                </div>
