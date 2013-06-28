@@ -137,8 +137,9 @@ class window.CMF
       unless err
         typeRegexp = new RegExp /\.(.{3,4})$/
         locators = _(res).map (l) ->
-          type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
-          return source: l.source.value, type: type
+          if l.source.value.indexOf("<crid") <0
+            type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
+            return source: l.source.value, type: type
 
       resCB err, locators
   _getVideoLocators: (resource) -> """
@@ -148,6 +149,7 @@ class window.CMF
     WHERE {
       <#{resource}>  mao:locator ?source.
       OPTIONAL {?source mao:hasFormat ?type}
+      FILTER regex(str(?source), "(http|https)")
     }
     ORDER BY ?source"""
 
@@ -159,8 +161,9 @@ class window.CMF
       unless err
         typeRegexp = new RegExp /\.(.{3,4})$/
         locators = _(res).map (l) ->
-          type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
-          return source: l.source.value, type: type
+          if l.source.value.indexOf("crid") <0
+            type = l.type?.value or "video/#{ l.source.value.match(typeRegexp)[1] }"
+            return source: l.source.value, type: type
       resCB err, locators
   _getAllVideoLocators: (locator) -> """
     PREFIX oac: <http://www.openannotation.org/ns/>
@@ -170,6 +173,7 @@ class window.CMF
       ?resource mao:locator <#{locator}>.
       ?resource  mao:locator ?source.
       OPTIONAL {?source mao:hasFormat ?type}
+      FILTER regex(str(?source), "(http|https)")
     }
     ORDER BY ?source"""
 
