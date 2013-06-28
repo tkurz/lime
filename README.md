@@ -5,10 +5,10 @@ ConnectMe Project (http://connectme.sti2.org/).
 
 CONTACT
 =======
-Thomas Kurz
+Szaby Grünwald
 Salzburg Research Forschungsgesellschaft
 Salzburg, Austria
-thomas.kurz@salzburgresearch.at
+szaby.gruenwald@salzburgresearch.at
 
 Online demo
 ===========
@@ -20,6 +20,13 @@ Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 CODE
 ====
-For a detaile documentation on the architecture see [the project wiki](http://connectme.sti2.org/wiki/index.php/ConnectME_hypervideo_player)
+For a detailed documentation on the architecture see [the Github wiki](http://github.com/tkurz/lime/wiki) or the
+documented [source code](http://tkurz.github.io/lime/docs)
 
-For building run `cake build`
+Build
+=====
+1. Install [node.js](http://nodejs.org) v0.6 or later
+2. Install grunt by running `npm install -g grunt`
+3. Install node dependencies by running `npm install` from the console
+
+For building the compiled and the minified javascript files, run `grunt build` or during develpment `grunt watch`

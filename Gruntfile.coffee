@@ -1,6 +1,6 @@
 module.exports = ->
   banner = """/* Lime Player <%= pkg.version %> - Linked Media Player
-           by Szaby Grünwald, Cristian Bara and the ConnectMe Project.
+           by Szaby Gruenwald, Cristian Bara and the ConnectMe Project.
            Available under the Apache License, Version 2.0
            See http://connectme.sti2.org/ for more information.
            */"""
@@ -28,33 +28,35 @@ module.exports = ->
         files:
           'lib/lime-core.min.js': ['lib/lime-core.js']
 
-  # Coding standards verification
-    coffeelint:
-      app: ['src/*.coffee', 'src/**/*.coffee']
-
-    jshint:
-      all: ['src/*.js', 'src/**/*.js']
-
-  # Unit tests
-#    qunit:
-#      all: ['test/*.html']
-#
-#    nodeunit:
-#      all: ['test/nodejs/*.js']
+    # Add short info in front of the produced file
+    usebanner:
+      coffee:
+        options:
+          position: 'top' || 'bottom'
+          banner: banner
+        files:
+          src: [ 'lib/lime.js', 'lib/lime-core.js' ]
 
   # Automated recompilation and testing when developing
     watch:
+      # Files to watch
       files: [
         'src/*.coffee'
         'src/**/*.coffee'
       ]
+      # Tasks to run on change
       tasks: ['build']
+
+    "docco-husky":
+      "show_timestamp": false,
+      "project_name": "LIME - Linked Media Player"
+
 
   # Build dependencies
   @loadNpmTasks 'grunt-contrib-coffee'
-  @loadNpmTasks 'grunt-contrib-concat'
   @loadNpmTasks 'grunt-contrib-uglify'
-  @loadNpmTasks 'grunt-coffeelint'
+  @loadNpmTasks 'grunt-banner'
+  @loadNpmTasks 'grunt-docco-husky'
 
   # Testing dependencies
   @loadNpmTasks 'grunt-contrib-jshint'
@@ -65,5 +67,9 @@ module.exports = ->
   # Local tasks
   @registerTask 'build', =>
     @task.run "coffee"
+    @task.run "usebanner"
     @task.run "uglify"
   # @registerTask 'test', ['jshint', 'build']
+
+  @registerTask 'doc', =>
+    @task.run "docco-husky"
