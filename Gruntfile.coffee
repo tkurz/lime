@@ -13,8 +13,30 @@ module.exports = ->
     coffee:
       compile:
         files:
-          'lib/lime-core.js': ['src/*.coffee', 'src/plugins/ldplugin.coffee', 'src/settings/usersettings.coffee']
-          'lib/lime.js': ['src/*.coffee', 'src/plugins/*.coffee', 'src/settings/*.coffee']
+          'lib/lime-core.js': [
+            'src/lime.coffee'
+            'src/annotation.coffee'
+            'src/plugin.coffee'
+            'src/widget.coffee'
+            'src/videojs-adapter.coffee'
+            'src/cmf.coffee'
+            'src/annotationoverlays.coffee'
+            'src/plugins/ldplugin.coffee'
+            'src/jquery.scrollTo.coffee'
+            'src/settings/usersettings.coffee'
+          ]
+          'lib/lime.js': [
+            'src/lime.coffee'
+            'src/annotation.coffee'
+            'src/plugin.coffee'
+            'src/widget.coffee'
+            'src/videojs-adapter.coffee'
+            'src/cmf.coffee'
+            'src/annotationoverlays.coffee'
+            'src/jquery.scrollTo.coffee'
+            'src/plugins/*.coffee'
+            'src/settings/*.coffee'
+          ]
 
   # JavaScript minification
     uglify:
