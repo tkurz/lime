@@ -21,7 +21,7 @@ class window.AnnotationOverlays extends window.LimePlugin
       # Annotation event listener
       jQuery(annotation).bind "becomeActive", (e) =>
         annotation = e.annotation
-        console.info 'active', annotation
+        #console.info 'active', annotation
         if annotation.isSpacial and (annotation.w > 0) and (annotation.h > 0)
           container.prepend @renderAnnotation annotation
 
@@ -55,9 +55,9 @@ class window.AnnotationOverlays extends window.LimePlugin
           domEl
       jQuery(annotation).bind "becomeInactive", (e) =>
         annotation = e.annotation
-        console.info 'inactive', annotation
-        if annotation.end is 5
-          console.info annotation
+        #console.info 'inactive', annotation
+        #if annotation.end is 5
+          #console.info annotation
         if annotation.isSpacial and (annotation.w > 0) and (annotation.h > 0)
           annotation.widgets.AnnotationOverlays.remove()
           delete annotation.widgets.AnnotationOverlays

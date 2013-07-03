@@ -24,31 +24,32 @@
 <link rel="stylesheet" href='css/ie_fixes.css' type="text/css" media="screen, projection"/>
 <![endif]-->
 <!-- The VideoJS player -->
-<script src="lib/videojs/video.js"></script>
+<script src="lib/videojs/video.js?a=1"></script>
 
-<script type="text/javascript" src="lib/utils.js"></script>
+<script type="text/javascript" src="lib/utils.js?a=1"></script>
 <!-- The Lime player -->
-<script type="text/javascript" src="lib/lime.js"></script>
+<script type="text/javascript" src="lib/lime.js?a=1"></script>
 <!-- plugins -->
-<script type="text/javascript" src="lib/plugins/geonamesmapplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/dbpediainfoplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/googleweatherplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/annotationmodalwindow.js"></script>
-<script type="text/javascript" src="lib/plugins/lsiimageplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/videoplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/youtubeplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/mediaplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/businessplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/bookingplugin.js"></script>
-<script type="text/javascript" src="lib/plugins/tvplugin.js"></script>
+<script type="text/javascript" src="lib/plugins/geonamesmapplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/dbpediainfoplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/googleweatherplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/annotationmodalwindow.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/lsiimageplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/videoplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/youtubeplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/mediaplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/businessplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/bookingplugin.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/tvplugin.js?a=1"></script>
 <!--
 <script src="lib/plugins/googledirectionplugin.js"></script>
 -->
 <!-- settings -->
-<script type="text/javascript" src="lib/settings/admin.js"></script>
-<script type="text/javascript" src="lib/settings/statistics.js"></script>
-<script type="text/javascript" src="lib/settings/usersettings.js"></script>
-<script type="text/javascript" src="lib/plugins/help.js"></script>
+<script type="text/javascript" src="lib/settings/admin.js?a=1"></script>
+<script type="text/javascript" src="lib/settings/statistics.js?a=1"></script>
+<script type="text/javascript" src="lib/settings/usersettings.js?a=1"></script>
+<script type="text/javascript" src="lib/plugins/help.js?a=1"></script>
+
 
 <link href="css/full-screen.css" rel="stylesheet">
 <!--<script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>-->
@@ -210,7 +211,7 @@
        &nbsp;
    </div>
 
-   <div id="wrapper" data="only for mobile devices">
+   <div id="wrapper" data="only for mobile devices" >
        <div id="widget-container-2" data-collapsed="0" class="widget-container horizontal"></div>
    </div>
    <div class="mainwrapper" id="mainwrapper" align="center"></div>
@@ -227,7 +228,7 @@
     slideOut = true;
     //$("#widget-container-2").css('right',slideRight + "px" );
     //$("div .lime-widget").css('right',slideRight + "px" );
-    console.log("i should be folded");
+    //console.log("i should be folded");
     $(".slideoutbutton").click(function (e) {
         if (slideOut) {
             slideRight = $("div .lime-widget").width();
@@ -255,7 +256,7 @@
             $(".slideoutbutton").attr('src', "img/slideout.png");
         }
         slideOut = !slideOut;
-        console.log("toggle");
+        //console.log("toggle");
 
     });
 </script>
@@ -279,7 +280,7 @@
 
         var playerWidth = $("#video_player").width();
         var playerHeight = $("#video_player").height();
-        console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
+        //console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
     }
     window.onload = resize;
     window.onresize = resize;

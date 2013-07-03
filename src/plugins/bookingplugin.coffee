@@ -40,6 +40,11 @@ class window.BookingPlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @expandWidget annotation, @getModalContainer()
 
       # Hang the widget on the annotation
@@ -48,37 +53,49 @@ class window.BookingPlugin extends window.LimePlugin
       jQuery(annotation).bind "becomeActive", (e) =>
         if(annotation.goodRelationsDataResource)
           if(annotation.goodRelationsDataResource.length > 0)
+            #attached gogle analytics stack push for active annotation
+            try
+              eventActiveLabel = e.target.widgets[@name].options.title
+              eventCategory = @name
+              _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+            catch error
             annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
+        #attached gogle analytics stack push for inactive annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setInactive()
 
       jQuery(widget).bind "downarrow", (e) =>
         @bookingtabsiterator = if 3 is @bookingtabsiterator + 1 then 0 else @bookingtabsiterator + 1
 
         if (@bookingtabsiterator == 0)
-          $("#businessWho").trigger 'click'
-          $("#businessWho").addClass 'selected'
+          jQuery("#businessWho").trigger 'click'
+          jQuery("#businessWho").addClass 'selected'
         if (@bookingtabsiterator == 1)
-          $("#businessWhat").trigger 'click'
-          $("#businessWhat").addClass 'selected'
+          jQuery("#businessWhat").trigger 'click'
+          jQuery("#businessWhat").addClass 'selected'
         if (@bookingtabsiterator == 2)
-          $("#businessWhere").trigger 'click'
-          $("#businessWhere").addClass 'selected'
+          jQuery("#businessWhere").trigger 'click'
+          jQuery("#businessWhere").addClass 'selected'
 
 
     jQuery(widget).bind "uparrow", (e) =>
       @bookingtabsiterator = if @bookingtabsiterator is 0 then 2  else @bookingtabsiterator - 1
-      $('.videotab.selected').removeClass 'selected'
+      jQuery('.videotab.selected').removeClass 'selected'
       if (@bookingtabsiterator == 0)
-        $("#businessWho").trigger 'click'
-        $("#businessWho").addClass 'selected'
+        jQuery("#businessWho").trigger 'click'
+        jQuery("#businessWho").addClass 'selected'
       if (@bookingtabsiterator == 1)
-        $("#businessWhat").trigger 'click'
-        $("#businessWhat").addClass 'selected'
+        jQuery("#businessWhat").trigger 'click'
+        jQuery("#businessWhat").addClass 'selected'
       if (@bookingtabsiterator == 2)
-        $("#businessWhere").trigger 'click'
-        $("#businessWhere").addClass 'selected'
+        jQuery("#businessWhere").trigger 'click'
+        jQuery("#businessWhere").addClass 'selected'
 
   getGRData: (annotation) ->
     @lime.cmf.getGRDataForTerm annotation.resource.value, (err, res) =>
@@ -110,7 +127,7 @@ class window.BookingPlugin extends window.LimePlugin
       "&" + {"&":"amp", "<":"lt", ">":"gt", '"':"quot", "'":"#39"}[$0] + ";"
 
   expandWidget: (annotation, outputElement) ->
-    modalContent = $(outputElement)
+    modalContent = jQuery(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
@@ -218,30 +235,36 @@ class window.BookingPlugin extends window.LimePlugin
         @bookingtabsiterator = 0
 
         #widget controls
-        $(".close").click (e) =>
+        jQuery(".close").click (e) =>
           endTime = new Date().getTime()
           timeSpent = endTime - startTime
-          eventLabel = annotation.widgets[@.name].options.title
-          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+          eventLabel = annotation.widgets[@name].options.title
+          try
+            _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+            _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+          catch error
 
-        $('#mask').click (e) =>
+        jQuery('#mask').click (e) =>
           endTime = new Date().getTime()
           timeSpent = endTime - startTime
-          eventLabel = annotation.widgets[@.name].options.title
-          console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+          eventLabel = annotation.widgets[@name].options.title
+          try
+            _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+            _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+          catch error
 
-        $(".businessContact").click =>
-          $(".businessContact").text "Danke schön!"
+        jQuery(".businessContact").click =>
+          jQuery(".businessContact").text "Danke schön!"
           grdata = annotation.getGRDataResource()
           if(grdata.length)
             if(grdata.length > 0)
-              time = $.now()
+              time = jQuery.now()
               bemail = grdata[0].email
               bname = grdata[0].name
 
               #entry = @clientIP + ' clicked on '+ grdata[0].name
               #@_htmlEncode entry
-              $.post 'http://devserver.sti2.org/connectme/logger.php?',
+              jQuery.post 'http://devserver.sti2.org/connectme/logger.php?',
                 entry : """
                         <div  style="width: 100%; position: relative; float: left; background-color: #e1e1e1; height: 30px; border-bottom: 1px dotted #696969;" class="item">
                         <div style="height: 100%; color: #32CD32; font-size: 16pt; background-color: #505050; width: 30px; text-align: center; position: relative; float: left;" class="icon">
@@ -261,33 +284,33 @@ class window.BookingPlugin extends window.LimePlugin
 
 
 
-        $("#businessWho").click =>
-          $('.bookingtab.selected').removeClass 'selected'
-          $("#businessWho").addClass "selected"
+        jQuery("#businessWho").click =>
+          jQuery('.bookingtab.selected').removeClass 'selected'
+          jQuery("#businessWho").addClass "selected"
 
-          $("#forthTile").css "display", "block"
-          $("#firstTile").css "display", "none"
-          $("#secondTile").css "display", "none"
-          $("#map").empty()
-
-
-        $("#businessWhat").click =>
-          $('.bookingtab.selected').removeClass 'selected'
-          $("#businessWhat").addClass "selected"
-
-          $("#forthTile").css "display", "none"
-          $("#firstTile").css "display", "none"
-          $("#secondTile").css "display", "block"
-          $("#map").empty()
+          jQuery("#forthTile").css "display", "block"
+          jQuery("#firstTile").css "display", "none"
+          jQuery("#secondTile").css "display", "none"
+          jQuery("#map").empty()
 
 
-        $("#businessWhere").click =>
-          $('.bookingtab.selected').removeClass 'selected'
-          $("#businessWhere").addClass "selected"
+        jQuery("#businessWhat").click =>
+          jQuery('.bookingtab.selected').removeClass 'selected'
+          jQuery("#businessWhat").addClass "selected"
 
-          $("#forthTile").css "display", "none"
-          $("#firstTile").css "display", "block"
-          $("#secondTile").css "display", "none"
+          jQuery("#forthTile").css "display", "none"
+          jQuery("#firstTile").css "display", "none"
+          jQuery("#secondTile").css "display", "block"
+          jQuery("#map").empty()
+
+
+        jQuery("#businessWhere").click =>
+          jQuery('.bookingtab.selected').removeClass 'selected'
+          jQuery("#businessWhere").addClass "selected"
+
+          jQuery("#forthTile").css "display", "none"
+          jQuery("#firstTile").css "display", "block"
+          jQuery("#secondTile").css "display", "none"
           # cartography handling
           if navigator.geolocation
             navigator.geolocation.getCurrentPosition ((position) ->
@@ -314,7 +337,7 @@ class window.BookingPlugin extends window.LimePlugin
                     latitude = grdata[0].geoLat
                     #annotation.getLatitude()
                     longitude = grdata[0].geoLong
-                    console.log 'latitude: ',latitude, ' longitude:  ', longitude
+                    #console.log 'latitude: ',latitude, ' longitude:  ', longitude
                     #annotation.getLongitude()
 
               output = document.getElementById("map")
@@ -355,4 +378,4 @@ class window.BookingPlugin extends window.LimePlugin
                   alert "Unknown error"
 
 
-        $("#businessWho").trigger "click"
+        jQuery("#businessWho").trigger "click"

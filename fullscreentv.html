@@ -29,15 +29,17 @@
 <!-- The Lime player -->
 <script type="text/javascript" src="lib/lime.js"></script>
 <!-- plugins -->
-<script src="lib/plugins/geonamesmapplugin.js"></script>
+<script src="lib/plugins/geonamesmapplugin.js?"></script>
+<script src="lib/plugins/geonamesfortvplugin.js?a=1"></script>
 <script src="lib/plugins/dbpediainfoplugin.js"></script>
-<script src="lib/plugins/googleweatherplugin.js"></script>
+<script src="lib/plugins/dbpediainfofortv.js?a=1"></script>
+<script src="lib/plugins/googleweatherplugin.js?a=1"></script>
 <script src="lib/plugins/annotationmodalwindow.js"></script>
 <script src="lib/plugins/lsiimageplugin.js"></script>
 <script src="lib/plugins/videoplugin.js"></script>
 <script src="lib/plugins/youtubeplugin.js"></script>
-<script src="lib/plugins/businessplugin.js"></script>
-<script src="lib/plugins/tvplugin.js"></script>
+<script src="lib/plugins/businessplugin.js?a=1"></script>
+<script src="lib/plugins/tvplugin.js?a=1"></script>
 <!--
 <script src="lib/plugins/googledirectionplugin.js"></script>
 -->
@@ -47,7 +49,9 @@
 <script src="lib/settings/usersettings.js"></script>
 <script src="lib/plugins/help.js"></script>
 
+
 <link href="css/full-screen-tv.css" rel="stylesheet">
+
 <!--<script type="text/javascript" src="lib/jquery/jquery-ui-1.8.21.min.js"></script>-->
 <script type="text/javascript">
     /*	document.body.addEventListener('touchmove', function(event) {
@@ -139,13 +143,14 @@
                     // annotFrameworkURL:"http://connectme.salzburgresearch.at/CMF/",
                     annotFrameworkURL:cmfurl,
                     plugins:{
-                        /* GeoNamesMapPlugin:{}, */
+                         GeoNamesMapForTVPlugin:{},
                         /* GoogleWeatherPlugin:{
                          preferredContainer:{ element:jQuery('#widget-container-2'),
                          orientation:'horizontal'}
                          }, */
                         AnnotationModalWindow:{},
-                        /* DBPediaInfoPlugin:{}, */
+                         DBPediaInfoForTVPlugin:{},
+                        /*DBPediaInfoPlugin:{}, */
                         /* BusinessPlugin:{}, */
                         /* YoutubePlugin:{}, */
                         /* VideoPlugin:{}, */
@@ -217,7 +222,7 @@
     window.addEventListener('load',
             function(){
                 setTimeout(function () {
-                    console.log("window.load event");
+                    //console.log("window.load event");
                     iScrollloaded();
                 }, 200);
             }, false);
@@ -271,7 +276,7 @@
     slideOut = true;
     //$("#widget-container-2").css('right',slideRight + "px" );
     //$("div .lime-widget").css('right',slideRight + "px" );
-    console.log("i should be folded");
+    //console.log("i should be folded");
     $(".slideoutbutton").click(function (e) {
         if (slideOut) {
             slideRight = $("div .lime-widget").width();
@@ -299,7 +304,7 @@
             $(".slideoutbutton").attr('src', "img/slideout.png");
         }
         slideOut = !slideOut;
-        console.log("toggle");
+        //console.log("toggle");
 
     });
 </script>
@@ -323,7 +328,7 @@
 
         var playerWidth = $("#video_player").width();
         var playerHeight = $("#video_player").height();
-        console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
+        //console.log("LOAD== playerWidth: " + playerWidth + " playerHeight: " + playerHeight);
     }
     window.onload = resize;
     window.onresize = resize;

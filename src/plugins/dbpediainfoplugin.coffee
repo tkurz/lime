@@ -25,21 +25,42 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
         widget.annotation = annotation
         # widget was activated, we show details now
         jQuery(widget).bind 'activate', (e) =>
-          # @getModalContainer().html @showAbstractInModalWindow annotation
+          # ataching google analytics
+          try
+            eventClickedLabel = e.target.options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+          catch error
           @showAbstractInModalWindow annotation, @getModalContainer()
 
         # Hang the widget on the annotation
         annotation.widgets[@name] = widget
 
         jQuery(annotation).bind "becomeActive", (e) =>
+          #attached gogle analytics stack push for active annotation
+          try
+            eventActiveLabel = e.target.widgets[@name].options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+          catch error
           annotation.widgets[@name].setActive()
 
         jQuery(annotation).bind "becomeInactive", (e) =>
+          #attached gogle analytics stack push for inactive annotation
+          try
+            eventActiveLabel = e.target.widgets[@name].options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+          catch error
           annotation.widgets[@name].setInactive()
 
         @getLSIImages annotation
+
         jQuery(widget).bind "leftarrow", (e) =>
-          console.info 'left arrow pressed', e
+          jQuery("#lefticon").trigger 'click'
+
+        jQuery(widget).bind "rightarrow", (e) =>
+          jQuery("#righticon").trigger 'click'
 
 
   getLSIImages: (annotation) ->
@@ -59,9 +80,10 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
 
   # Widget-specific detail-rendering
   showAbstractInModalWindow: (annotation, outputElement) ->
-    modalContent = $(outputElement)
+    modalContent = jQuery(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    @index = 0
     startTime = new Date().getTime()
     label = annotation.getLabel()
     page = annotation.getPage()
@@ -89,22 +111,24 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
     lime = this.lime
     comment = annotation.getDescription()
     maintext = comment
-    secondarytext = ""
-    if (maintext.length >= 240)
+    pagetext = [];
+    if (maintext.length >= 260)
       n = maintext.length
-      if maintext.length >= 240
+      if maintext.length >= 260
         tmptext = maintext.split(" ")
         n = tmptext.length
         textsum = ""
         i = 0
-        while textsum.length < 200
-          textsum += tmptext[i] + " "
-          i++
-        maintext = textsum
-        y = i
-        while y < n
-          secondarytext += tmptext[y] + " "
-          y++
+        for word in tmptext
+          if textsum.length < 260
+            textsum += word + " "
+          else
+            pagetext.push textsum
+            textsum = ""
+
+        maintext = pagetext[0]
+    console.log pagetext
+
 
     depiction = annotation.getDepiction(without: 'thumb')
     if(depiction == null)
@@ -116,72 +140,38 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
       -- added 29.apr.2013 --
       Extend interface logic (below) to fit LSIImages by creating a new tile with 1 or more images
     ###
-    if(secondarytext.length > 2)
-      if(lsiImageList.length >0)
+    if(pagetext.length < 1)
         result = """
-               <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
-               <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 600px; font-family: caviardreamsregular;">
-               <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{comment}</span>
+               <div id="infoWidgetExpanded" unselectable="on" style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; position: relative; height: 600px; width: auto; ">
+               <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
+               <span id="infoMainTextContent" >#{maintext}</span>
                <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
                </div>
 
                <div id="infoMainPicture" style="position: relative; float: right; width: 300px; height: 300px; background-color: #6ab1e7;">
                   <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 100%;">
                    <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 9000; right: 0px; bottom: 0px; width: 50px; height: 50px;">
-                   <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
+                   <span style="text-align:center; position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
                    </div>
                    </div>
                    <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                    <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                    </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="text-align:center; font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                 </div>
-
-                <div id="infoSecondText" style=" display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
-                  #{secondarytext}
-                </div>
-
-                <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{lsiImageList[0].image}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px;"></div>
-
 
                </div>
                """
-      else
-        result = """
-                 <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
-                 <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 600px; font-family: caviardreamsregular;">
-                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{comment}</span>
-                 <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
-                 </div>
-
-                 <div id="infoMainPicture" style="position: relative; float: right; width: 300px; height: 300px; background-color: #6ab1e7;">
-                 <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 100%;">
-                 <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 9000; right: 0px; bottom: 0px; width: 50px; height: 50px;">
-                 <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
-                 </div>
-                 </div>
-                 <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
-                 <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
-                 </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
-                 </div>
-
-                 <div id="infoSecondText" style="display: none; font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2;">
-                       #{secondarytext}
-                 </div>
-
-                 <div id="infoSecondPic" style=" background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px; opacity: 0;"></div>
-
-
-                 </div>
-                 """
     else
-      if(lsiImageList.length >0)
         result = """
-                 <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
+                 <div id="infoWidgetExpanded" unselectable="on" style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; position: relative; height: 600px; width: auto; ">
                  <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
-                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
-                 <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
+                 <span id="infoMainTextContent" >#{pagetext[@index]}</span>
+                 <div style="position: absolute; z-index: 900; width: 100px; height: 50px; left: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png'); background-color: #3f3e3e;"></div>
+                 <div id="pageNumber" style="position: absolute; z-index: 900; width: 50px; height: 35px; left: 135px; bottom: 0px; background: transparent;">#{@index+1}/#{pagetext.length}</div>
+                 <div id="righticon" unselectable="on" style=" -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;cursor: hand; cursor: pointer; border-right: 1px dotted lightgray; background-color: #000000; position: absolute; z-index: 9000; right: 0px; bottom: 0px; width: 50px; height: 50px;">
+                 <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">&gt;</span>
+                 </div>
                  </div>
 
                  <div id="infoMainPicture" style="position: relative; float: right; width: 300px; height: 300px; background-color: #6ab1e7;">
@@ -189,64 +179,67 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
                  <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 9000; right: 0px; bottom: 0px; width: 50px; height: 50px;">
                  <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
                  </div>
-                 </div>
-                 <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
-                 <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
-                 </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
-                 </div>
-
-                 <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2; display: none;">
-
-                 </div>
-
-                 <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{lsiImageList[0].image}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px; display: block;"></div>
-
-
-                 </div>
-                 """
-      else
-        result = """
-                 <div id="infoWidgetExpanded" style="position: relative; height: 600px; width: auto; ">
-                 <div id="infoMainText" style="position: relative; float: right; background-color: #242424; width: 300px; height: 300px; font-family: caviardreamsregular;">
-                 <span style="color: #f1f1f1; float: left; position: absolute; z-index: 900; left: 2%; top: 2%; width: 96%; font-size: 25px; height: auto;">#{maintext}</span>
-                 <div style="position: absolute; z-index: 900; width: 100px; height: 50px; right: 0px; bottom: 0px; background-repeat: no-repeat; background-position: center center; background-size: contain; background-image: url('img/120px-DBpediaLogo.svg.png');"></div>
-                 </div>
-
-                 <div id="infoMainPicture" style="position: relative; float: right; width: 300px; height: 300px; background-color: #6ab1e7;">
-                 <div id="pic" style="position: relative; float: left; height: 100%; background-image: url('#{depiction}'); background-repeat: no-repeat; background-position: center center; background-size: cover; width: 100%;">
-                 <div id="icon" style="border-right: 1px dotted lightgray; float: left; background-color: #3f3e3e; position: absolute; z-index: 9000; right: 0px; bottom: 0px; width: 50px; height: 50px;">
-                 <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">i</span>
+                 <div id="lefticon" unselectable="on" style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: hand; cursor: pointer; display: none; border-left: 1px dotted lightgray; background-color: #000000; position: absolute; z-index: 9000; left: 0px; bottom: 0px; width: 50px; height: 50px;">
+                 <span style="position: relative; font-family: 'Times New Roman',Times,serif; font-style: italic; font-weight: bold; font-size: 23px; top: 21%; left: 45%; color: rgb(112, 196, 243);">&lt;</span>
                  </div>
                  </div>
                  <div style="position: absolute; left: 0px; bottom: 0; width: 300px; height: 100px;">
                  <div id="titlebackground" style="float: left; position: absolute; z-index: 900; width: 100%; bottom: 0px; background-color: #000000; left: 0px; top: 0px; height: 100%; opacity: 0.5;">
                  </div>
-                 <span id="titletext" style="font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
+                 <span id="titletext" style="text-align:center; font-family: CaviarDreamsBold; font-size: 29px; line-height: 140%; position: absolute; z-index: 900; left: 5px; width: 100%; bottom: 0px; height: 100%; color: #fcf7f7; opacity: 1.0;">#{label}</span></div>
                  </div>
-
-                 <div id="infoSecondText" style="font-family: CaviarDreamsRegular; font-size: 25px; color: #f1f1f1; position: relative; float: right; background-color: #242424; vertical-align: middle; width: 300px; height: 300px; text-align: left; line-height: 1.2; display: none;">
-
-                 </div>
-
-                 <div id="infoSecondPic" style="background-repeat: no-repeat; background-image: url('#{depiction}'); background-position: center center; background-size: cover; position: relative; float: right; width: 300px; height: 300px; display: none;"></div>
 
 
                  </div>
                  """
+
 
     modalContent.append result
 
     #widget controls
-    $(".close").click (e) =>
-      endTime = new Date().getTime()
-      timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
 
-    $('#mask').click (e) =>
+    jQuery(".close").click (e) =>
+      # measures how much time the expanded widget was on screen , in miliseconds
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
-      eventLabel = annotation.widgets[@.name].options.title
-      console.log ": #{eventLabel} was viewed #{timeSpent} msec."
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    jQuery('#mask').click (e) =>
+      # measures how much time the expanded widget was on screen , in miliseconds
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    jQuery('#righticon').click =>
+      @index++
+      if (@index == 1)
+        jQuery('#lefticon').css "display", "block"
+      #console.log "right icon click"
+      if (@index >= pagetext.length-1)
+        @index = pagetext.length - 1
+        jQuery('#righticon').css "display", "none"
+      maintext = pagetext[@index]
+      jQuery("#infoMainTextContent").text maintext
+      jQuery("#pageNumber").text "#{@index+1}/#{pagetext.length}"
+
+
+    jQuery('#lefticon').click =>
+      @index--
+      if (@index == pagetext.length - 2)
+        jQuery('#righticon').css "display", "block"
+      #console.log "left icon click"
+      if (@index <= 0)
+        @index = 0
+        jQuery('#lefticon').css "display", "none"
+      maintext = pagetext[@index]
+      jQuery("#infoMainTextContent").text maintext
+      jQuery("#pageNumber").text "#{@index+1}/#{pagetext.length}"
 

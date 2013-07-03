@@ -15,8 +15,8 @@ class window.LimeWidget
       <div class="#{@options.type}">
         <table style="margin:0 auto; width: 100%;">
           <tr>
-            <td><img class="utility-icon" src="#{@options.thumbnail}" style="float: left; width: 45px; height: 27px; " ></td>
-            <td><span class="utility-text" style="float: left;">#{@options.title}</span></td>
+            <td style="width: 45px; background-color: rgb(0, 0, 0);"><img class="utility-icon" src="#{@options.thumbnail}" style="width: 45px; height: 27px;" ></td>
+            <td><span class="utility-text">#{@options.title}</span></td>
           </tr>
         </table>
       </div>
@@ -29,7 +29,7 @@ class window.LimeWidget
       plugin = jQuery(e.currentTarget).data().plugin
       if widget.isActive()
         @plugin.lime.pause()
-        console.info "activating widget", @
+        #console.info "activating widget", @
         jQuery(@).trigger 'activate',
           plugin: plugin
           widget: widget
@@ -50,7 +50,7 @@ class window.LimeWidget
     # Wrap element methods for convenience on the widget
     defMethod = (o, m) =>
       @[m] = ->
-        console.info "calling #{m} on ", o
+        #console.info "calling #{m} on ", o
         o[m].call o, arguments
     for m in ['addClass', 'html', 'removeClass']
       defMethod @element, m
@@ -77,8 +77,8 @@ class window.LimeWidget
     @element.find(".utility-icon").attr "src", @options.thumbnail
     # @element.find(".utility-text").css "color", ''
     @element.removeClass 'inactive'
-    console.info "Widget active, triggering update", @element
-    console.info "Jump up this widget", @
+    #console.info "Widget active, triggering update", @element
+    #console.info "Jump up this widget", @
     @element.parent().prepend(@element)
     @lime.updateWidgetsList()
   setInactive: ->

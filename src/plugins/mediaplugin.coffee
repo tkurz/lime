@@ -36,12 +36,12 @@ class window.MediaPlugin extends window.LimePlugin
       if annotation.resource.value.indexOf('dbpedia') isnt -1
         entity = @vie.entities.get annotation.resource.value
         @_loadFullDbpediaEntity entity, (fullEntity) =>
-          console.log fullEntity
+          #console.log fullEntity
           # @processAnnotation annotation, fullEntity.attributes['@type']
           @processAnnotation annotation, fullEntity
 
   processAnnotation: (annotation, fullEntity) ->
-    console.log "mediaplugin - ", fullEntity
+    #console.log "mediaplugin - ", fullEntity
     if _.intersection(fullEntity.attributes['@type'], @options.activityTypes).length or _.intersection(fullEntity.attributes['dcterms:subject'], @options.activityTypes).length
       # There's at least one type in common
       console.info 'Render Media widget'
@@ -58,6 +58,7 @@ class window.MediaPlugin extends window.LimePlugin
     modalContent = jQuery(container)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
     ###
     -- added 29.apr.2013
 
@@ -197,6 +198,25 @@ class window.MediaPlugin extends window.LimePlugin
              """
     modalContent.append result
 
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
     #count the video tabs and init the iterator
     @videotabs = $('.videotab:not(.disabled)')
     @videotabsiterator = 0
@@ -243,14 +263,14 @@ class window.MediaPlugin extends window.LimePlugin
 
     jQuery("#video1").trigger "click"
 
-    console.log "videoList -", videoList
+    #console.log "videoList -", videoList
 
   getLSIVideos: (annotation) ->
     @lime.cmf.getLSIVideosForTerm annotation.resource.value, (err, res) =>
       if err
         console.warn "Error getting LSI Video resources", err
       else
-        console.info "LSI resources for", annotation, res
+        #console.info "LSI resources for", annotation, res
         annotation.lsiVideoResources = _(res).map (resultset) ->
           entity =
             title: resultset.title.value
@@ -300,6 +320,11 @@ class window.MediaPlugin extends window.LimePlugin
     widget.annotation = annotation
     # widget was activated, we show details now
     jQuery(widget).bind 'activate', (e) =>
+      try
+        eventClickedLabel = e.target.options.title
+        eventCategory = @name
+        _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+      catch error
       renderMethod annotation,fullEntity , @getModalContainer()
 
     # Hang the widget on the annotation
@@ -308,9 +333,21 @@ class window.MediaPlugin extends window.LimePlugin
     jQuery(annotation).bind "becomeActive", (e) =>
       if (annotation.lsiVideoResources)
         if(annotation.lsiVideoResources.length > 0)
-            annotation.widgets[widgetType].setActive()
+          #attached gogle analytics stack push for active annotation
+          try
+            eventActiveLabel = e.target.widgets[@name].options.title
+            eventCategory = @name
+            _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+          catch error
+          annotation.widgets[widgetType].setActive()
 
     jQuery(annotation).bind "becomeInactive", (e) =>
+      #attached gogle analytics stack push for inactive annotation
+      try
+        eventActiveLabel = e.target.widgets[@name].options.title
+        eventCategory = @name
+        _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+      catch error
       annotation.widgets[widgetType].setInactive()
 
     jQuery(widget).bind "leftarrow", (e) =>

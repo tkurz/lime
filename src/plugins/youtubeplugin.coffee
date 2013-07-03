@@ -27,20 +27,38 @@ class window.YoutubePlugin extends window.LimePlugin
       widget.annotation = annotation
       # widget was activated, we show details now
       jQuery(widget).bind 'activate', (e) =>
+        try
+          eventClickedLabel = e.target.options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
+        catch error
         @showAbstractInModalWindow annotation, @getModalContainer()
       # Hang the widget on the annotation
       annotation.widgets[@name] = widget
 
       jQuery(annotation).bind "becomeActive", (e) =>
+        #attached gogle analytics stack push for active annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becameActive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setActive()
 
       jQuery(annotation).bind "becomeInactive", (e) =>
+        #attached gogle analytics stack push for inactive annotation
+        try
+          eventActiveLabel = e.target.widgets[@name].options.title
+          eventCategory = @name
+          _gaq.push ['_trackEvent',eventCategory,'becomeInactive',eventActiveLabel]
+        catch error
         annotation.widgets[@name].setInactive()
 
   showAbstractInModalWindow: (annotation, outputElement) ->
     modalContent = $(outputElement)
     modalContent.css "width", "600px"
     modalContent.css "height", "auto"
+    startTime = new Date().getTime()
     #console.log("latitude: " + latitude + " longitude: " + longitude + " = latlong: " + latlng);
     lime = this.lime
     url = annotation.resource.value
@@ -53,6 +71,25 @@ class window.YoutubePlugin extends window.LimePlugin
               </iframe>
             """
     modalContent.append result
+
+    #widget controls
+    $(".close").click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
+
+    $('#mask').click (e) =>
+      endTime = new Date().getTime()
+      timeSpent = endTime - startTime
+      eventLabel = annotation.widgets[@name].options.title
+      try
+        _gaq.push ['_trackEvent', @name, 'viewed', eventLabel, timeSpent]
+        _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
+      catch error
 
 
   ### displayModal: (annotation) -> # Modal window script usin jquery
