@@ -89,7 +89,6 @@ module.exports = ->
   @loadNpmTasks 'grunt-contrib-coffee'
   @loadNpmTasks 'grunt-contrib-uglify'
   @loadNpmTasks 'grunt-banner'
-  @loadNpmTasks 'grunt-docco'
   @loadNpmTasks 'grunt-docco-husky'
 
   # Testing dependencies
@@ -99,11 +98,8 @@ module.exports = ->
   @loadNpmTasks 'grunt-contrib-watch'
 
   # Local tasks
-  @registerTask 'build', =>
-    @task.run "coffee"
-    @task.run "usebanner"
-    @task.run "uglify"
-  # @registerTask 'test', ['jshint', 'build']
+  @registerTask 'build', ["coffee", "usebanner", "uglify"]
+  @registerTask 'default', 'build'
 
   @registerTask 'doc', =>
     @task.run "docco_husky"
