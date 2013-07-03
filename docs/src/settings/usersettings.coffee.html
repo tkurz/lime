@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>usersettings.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../src/annotation.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotation.coffee</span></a><a href="../../src/annotationoverlays.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">annotationoverlays.coffee</span></a><a href="../../src/cmf.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">cmf.coffee</span></a><a href="../../src/jquery.scrollTo.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">jquery.scrollTo.coffee</span></a><a href="../../src/lime.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">lime.coffee</span></a><a href="../../src/plugin.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">plugin.coffee</span></a><a href="../../src/plugins/bookingplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">bookingplugin.coffee</span></a><a href="../../src/plugins/businessplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">businessplugin.coffee</span></a><a href="../../src/plugins/dbpediainfofortv.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfofortv.coffee</span></a><a href="../../src/plugins/dbpediainfoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">dbpediainfoplugin.coffee</span></a><a href="../../src/plugins/geonamesfortvplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesfortvplugin.coffee</span></a><a href="../../src/plugins/geonamesmapplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">geonamesmapplugin.coffee</span></a><a href="../../src/plugins/googleweatherplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">googleweatherplugin.coffee</span></a><a href="../../src/plugins/help.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">help.coffee</span></a><a href="../../src/plugins/ldplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">ldplugin.coffee</span></a><a href="../../src/plugins/lsiimageplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsiimageplugin.coffee</span></a><a href="../../src/plugins/lsivideoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">lsivideoplugin.coffee</span></a><a href="../../src/plugins/mediaplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">mediaplugin.coffee</span></a><a href="../../src/plugins/objectplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">objectplugin.coffee</span></a><a href="../../src/plugins/tvplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">tvplugin.coffee</span></a><a href="../../src/plugins/videoplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">videoplugin.coffee</span></a><a href="../../src/plugins/youtubeplugin.coffee.html" class="source "><span class="base_path">src / plugins / </span><span class="file_name">youtubeplugin.coffee</span></a><a href="../../src/settings/admin.coffee.html" class="source "><span class="base_path">src / settings / </span><span class="file_name">admin.coffee</span></a><a href="../../src/settings/statistics.coffee.html" class="source "><span class="base_path">src / settings / </span><span class="file_name">statistics.coffee</span></a><a href="../../src/settings/usersettings.coffee.html" class="source selected"><span class="base_path">src / settings / </span><span class="file_name">usersettings.coffee</span></a><a href="../../src/videojs-adapter.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">videojs-adapter.coffee</span></a><a href="../../src/widget.coffee.html" class="source "><span class="base_path">src / </span><span class="file_name">widget.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>usersettings.coffee</h1><div class="filepath">src/settings/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nb">window</span><span class="p">.</span><span class="nx">UserSettingsPlugin</span> <span class="k">extends</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LimePlugin</span>
+  <span class="nv">init: </span><span class="o">-&gt;</span>
+    <span class="vi">@name = </span><span class="s">&#39;UserSettingsPlugin&#39;</span>
+    <span class="nv">annotation = </span><span class="kc">undefined</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize UserSettingsPlugin&quot;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>insert widget click function</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;div .usersettings&quot;</span><span class="p">).</span><span class="nx">click</span> <span class="o">=&gt;</span> <span class="c1">#click behaviour - highlight the related widgets by adding a class to them</span>
+      <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+      <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
+
+    <span class="nv">button = </span><span class="nx">$</span> <span class="s">&quot;&lt;div class=&#39;vjs-control usersettings&#39; title=&#39;User settings&#39; alt=&#39;User settings&#39;&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&quot;</span>
+    <span class="nx">button</span><span class="p">.</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+      <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">buttonContainer</span><span class="p">).</span><span class="nx">append</span> <span class="nx">button</span>
+
+    <span class="k">if</span> <span class="nx">@options</span><span class="p">.</span><span class="nx">permanentWidget</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Render a permanently shown widget for accessing the user settings e.g. on a TV where the control bar is hidden</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;Permanent widgets are on.&#39;</span>
+      <span class="nv">widget = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">allocateWidgetSpace</span> <span class="nx">@</span><span class="p">,</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;img/settingsWidget.png&quot;</span> <span class="c1"># should go into CSS</span>
+        <span class="nv">title: </span><span class="s">&quot;User settings&quot;</span>
+        <span class="nv">type: </span><span class="s">&quot;UserSettingsWidget&quot;</span>
+        <span class="nv">sortBy: </span><span class="o">-&gt;</span>
+          <span class="mi">100000000</span>
+
+      <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;activate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+        <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
+
+      <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span> <span class="o">-&gt;</span>
+        <span class="nx">widget</span><span class="p">.</span><span class="nx">setActive</span><span class="p">()</span>
+
+
+  <span class="nv">defaults:</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>List of widgets (type names) that are not offered to be hidden</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">unhidable: </span><span class="p">[]</span>
+    <span class="nv">permanentWidget: </span><span class="kc">false</span>
+
+  <span class="nv">getAllWidgetTypes: </span><span class="o">-&gt;</span>
+    <span class="nv">res = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@lime</span><span class="p">.</span><span class="nx">widgets</span><span class="p">).</span><span class="nx">chain</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">map</span> <span class="nf">(widget) -&gt;</span>
+        <span class="nx">widget</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">type</span>
+      <span class="p">.</span><span class="nx">uniq</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">sort</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">difference</span><span class="p">(</span><span class="nx">@defaults</span><span class="p">.</span><span class="nx">unhidable</span><span class="p">,</span> <span class="s">&#39;UserSettingsWidget&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">value</span><span class="p">()</span>
+    <span class="nx">res</span>
+
+  <span class="nv">getHiddenWidgetTypes: </span><span class="o">-&gt;</span>
+    <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s">&#39;hiddenWidgetTypes&#39;</span><span class="p">))</span> <span class="o">or</span> <span class="p">[]</span>
+
+  <span class="nv">setHiddenWidgetTypes: </span><span class="nf">(types) -&gt;</span>
+    <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s">&#39;hiddenWidgetTypes&#39;</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">types</span><span class="p">))</span>
+    <span class="nv">toBeShown = </span><span class="nx">_</span><span class="p">(</span><span class="nx">@getAllWidgetTypes</span><span class="p">()).</span><span class="nx">difference</span><span class="p">(</span><span class="nx">types</span><span class="p">).</span><span class="nx">concat</span> <span class="nx">@defaults</span><span class="p">.</span><span class="nx">unhidable</span>
+    <span class="nx">@lime</span><span class="p">.</span><span class="nx">updateDeactivatedWidgetStates</span> <span class="nx">toBeShown</span>
+
+  <span class="nv">hideWidgetType: </span><span class="nf">(type) -&gt;</span>
+    <span class="nv">hiddenTypes = </span><span class="nx">@getHiddenWidgetTypes</span><span class="p">()</span>
+    <span class="nx">hiddenTypes</span><span class="p">.</span><span class="nx">push</span> <span class="nx">type</span>
+    <span class="nv">hiddenTypes = </span><span class="nx">_</span><span class="p">(</span><span class="nx">hiddenTypes</span><span class="p">).</span><span class="nx">uniq</span><span class="p">()</span>
+    <span class="nx">@setHiddenWidgetTypes</span> <span class="nx">hiddenTypes</span>
+
+  <span class="nv">unhideWidgetType: </span><span class="nf">(type) -&gt;</span>
+    <span class="nv">hiddenTypes = </span><span class="nx">@getHiddenWidgetTypes</span><span class="p">()</span>
+    <span class="nv">index = </span><span class="nx">hiddenTypes</span><span class="p">.</span><span class="nx">indexOf</span> <span class="nx">type</span>
+    <span class="nx">hiddenTypes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="nx">@setHiddenWidgetTypes</span> <span class="nx">hiddenTypes</span>
+
+  <span class="nv">renderUserSettingsInModalWindow: </span><span class="o">-&gt;</span>
+    <span class="nv">modalContent = </span><span class="nx">@getModalContainer</span><span class="p">()</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="s">&quot;600px&quot;</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span>
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s">&#39;overflow&#39;</span><span class="p">,</span><span class="s">&#39;auto&#39;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;widget types:&quot;</span><span class="p">,</span> <span class="nx">@getAllWidgetTypes</span><span class="p">()</span>
+
+    <span class="nx">modalContent</span><span class="p">.</span><span class="nx">append</span> <span class="s">&#39;&lt;div class=&quot;settingscontent&quot; style=&quot;color: white; width: 100%; height: auto; margin-top: 0; background: rgba(0,0,0,0.6);&quot;&gt;&#39;</span>
+    <span class="nv">settingsElement = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.settingscontent&#39;</span><span class="p">,</span> <span class="nx">modalContent</span><span class="p">)</span>
+    <span class="nx">settingsElement</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;span class=&quot;settingstitle&quot; style=&quot;font-size: 20px; margin-left: 10px;&quot;&gt;LIME player settings &lt;/span&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">settingsElement</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;p class=&quot;settingssection&quot; style=&quot;font-size: 16px; &quot;&gt; Annotations &lt;/p&gt;</span>
+<span class="s">      &lt;form style=&quot;margin: 0 auto; text-align: left; font-size: 14px;width: 75%;&quot;&gt;</span>
+<span class="s">        &lt;div class=&quot;settingssection overlay-plugins&quot; style=&quot;margin: 0 auto; &quot;&gt;</span>
+<span class="s">          &lt;label&gt;&lt;input type=&quot;checkbox&quot; class=&quot;annotationspatialoverlay &quot; checked=&quot;checked&quot;&gt; Show annotation overlays on the video&lt;/label&gt;&lt;br/&gt;</span>
+<span class="s">          &lt;label&gt;&lt;input type=&quot;checkbox&quot; class=&quot;annotationtimelineoverlay setting&quot; checked=&quot;checked&quot;&gt; Show annotation overlays on the timeline&lt;/label&gt;</span>
+<span class="s">        &lt;/div&gt;</span>
+<span class="s">      &lt;/form&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><h1>#</h1>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.annotationspatialoverlay&#39;</span><span class="p">,</span> <span class="nx">settingssection</span><span class="p">).</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>TODO: implement</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.annotationtimelineoverlay&#39;</span><span class="p">,</span> <span class="nx">settingssection</span><span class="p">).</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>TODO: implement</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">settingsElement</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">      &lt;p class=&quot;settingssection&quot; style=&quot;font-size: 16px; margin-left: 10px;&quot;&gt; Widgets &lt;/p&gt;</span>
+<span class="s">      &lt;form style=&quot;margin: 0 auto; text-align: left; font-size: 14px; width: 75%;&quot; &gt;</span>
+<span class="s">        &lt;div class=&quot;settingssection widget-types&quot; style=&quot;margin: 0 auto;&quot;&gt;&lt;/div&gt;</span>
+<span class="s">      &lt;/form&gt;</span>
+<span class="s">      &lt;br/&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+
+    <span class="nv">settingssection = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;div.settingssection.widget-types&#39;</span><span class="p">,</span> <span class="nx">settingsElement</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">widgetType</span> <span class="k">in</span> <span class="nx">@getAllWidgetTypes</span><span class="p">()</span>
+      <span class="nv">checked = </span><span class="k">if</span> <span class="nx">@getHiddenWidgetTypes</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">widgetType</span><span class="p">)</span> <span class="o">is</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="s">&#39;checked&#39;</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
+      <span class="nx">settingssection</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;div&gt;&lt;label&gt;&lt;input type=&#39;checkbox&#39; name=&#39;</span><span class="si">#{</span><span class="nx">widgetType</span><span class="si">}</span><span class="s">&#39; class=&#39;</span><span class="si">#{</span><span class="nx">widgetType</span><span class="si">}</span><span class="s"> setting&#39; </span><span class="si">#{</span><span class="nx">checked</span><span class="si">}</span><span class="s"> &gt; Show &#39;</span><span class="si">#{</span><span class="nx">widgetType</span><span class="si">}</span><span class="s">&#39; widgets&lt;/label&gt;&lt;/div&gt;&quot;</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.setting&#39;</span><span class="p">,</span> <span class="nx">settingssection</span><span class="p">).</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nv">widgetName = </span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">name</span>
+      <span class="nv">widgetShown = </span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">checked</span>
+      <span class="k">if</span> <span class="nx">widgetShown</span>
+        <span class="nx">@unhideWidgetType</span> <span class="nx">widgetName</span>
+      <span class="k">else</span>
+        <span class="nx">@hideWidgetType</span> <span class="nx">widgetName</span>
+
+</pre></div></td></tr></tbody></table><div id="projectname"><a href="../../index.html">LIME - Linked Media Player</a></div></div></body></html>
