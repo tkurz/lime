@@ -59,7 +59,23 @@ module.exports = ->
         files:
           src: [ 'lib/lime.js', 'lib/lime-core.js' ]
 
-  # Automated recompilation and testing when developing
+    docco_husky:
+        project_name: "LIME - Linked Media Player"
+        # show_timestamp: false
+        files: [
+          'src/lime.coffee'
+          'src/annotation.coffee'
+          'src/plugin.coffee'
+          'src/widget.coffee'
+          'src/videojs-adapter.coffee'
+          'src/cmf.coffee'
+          'src/annotationoverlays.coffee'
+          'src/jquery.scrollTo.coffee'
+          'src/plugins/*.coffee'
+          'src/settings/*.coffee'
+        ]
+
+    # Automated recompilation and testing when developing
     watch:
       # Files to watch
       files: [
@@ -69,19 +85,15 @@ module.exports = ->
       # Tasks to run on change
       tasks: ['build']
 
-    "docco-husky":
-      "show_timestamp": false,
-      "project_name": "LIME - Linked Media Player"
-
-
   # Build dependencies
   @loadNpmTasks 'grunt-contrib-coffee'
   @loadNpmTasks 'grunt-contrib-uglify'
   @loadNpmTasks 'grunt-banner'
+  @loadNpmTasks 'grunt-docco'
   @loadNpmTasks 'grunt-docco-husky'
 
   # Testing dependencies
-  @loadNpmTasks 'grunt-contrib-jshint'
+#  @loadNpmTasks 'grunt-contrib-jshint'
 #  @loadNpmTasks 'grunt-contrib-qunit'
 #  @loadNpmTasks 'grunt-contrib-nodeunit'
   @loadNpmTasks 'grunt-contrib-watch'
@@ -94,4 +106,4 @@ module.exports = ->
   # @registerTask 'test', ['jshint', 'build']
 
   @registerTask 'doc', =>
-    @task.run "docco-husky"
+    @task.run "docco_husky"
