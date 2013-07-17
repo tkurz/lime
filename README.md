@@ -14,6 +14,26 @@ Online demo
 ===========
 [tkurz.github.com/lime](http://tkurz.github.com/lime/)
 
+Integrate
+=========
+For including the coe into your html file you'll need the following files to be included:
+## CSS
+* css/video-js.min.css
+* One of
+  * css/screen.css
+  * css/full-screen.css
+  * css/full-screen-tv.css
+## JS
+* jQuery 1.7+
+* One of
+  * `lib/underscoreJS/underscore.min.js`, `lib/backboneJS/backbone.js`, `lib/rdfquery/latest/jquery.rdfquery.debug.js`, `lib/vie/vie.js`
+  are the dependencies
+  * `lib/lime-deps\[.min\].js` The above dependencies packed for you in one file
+* One of
+  * `lib/lime\[.min\].js` contains the player with all plugins in the repository
+  * `lib/lime-core\[.min\].js` contains the player only, without the widget plugins
+For data integration see the Wiki page [Integration Manual](https://github.com/tkurz/lime/wiki/Integration-Manual)
+
 LICENSE
 =======
 Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
