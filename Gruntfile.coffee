@@ -77,20 +77,20 @@ module.exports = ->
           src: [ 'lib/lime.js', 'lib/lime-core.js' ]
 
     docco_husky:
-        project_name: "LIME - Linked Media Player"
-        # show_timestamp: false
-        files: [
-          'src/lime.coffee'
-          'src/annotation.coffee'
-          'src/plugin.coffee'
-          'src/widget.coffee'
-          'src/videojs-adapter.coffee'
-          'src/cmf.coffee'
-          'src/annotationoverlays.coffee'
-          'src/jquery.scrollTo.coffee'
-          'src/plugins/*.coffee'
-          'src/settings/*.coffee'
-        ]
+      project_name: "LIME - Linked Media Player"
+      # show_timestamp: false
+      files: [
+        'src/lime.coffee'
+        'src/annotation.coffee'
+        'src/plugin.coffee'
+        'src/widget.coffee'
+        'src/videojs-adapter.coffee'
+        'src/cmf.coffee'
+        'src/annotationoverlays.coffee'
+        'src/jquery.scrollTo.coffee'
+        'src/plugins/*.coffee'
+        'src/settings/*.coffee'
+      ]
 
     # Automated recompilation and testing when developing
     watch:
