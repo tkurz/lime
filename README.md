@@ -16,14 +16,16 @@ Online demo
 
 Integrate
 =========
-For including the coe into your html file you'll need the following files to be included:
-## CSS
+For including the player into your html file you'll need the following files to be included:
+
+## CSS to include
 * css/video-js.min.css
 * One of
   * css/screen.css
   * css/full-screen.css
   * css/full-screen-tv.css
-## JS
+
+## JS to include
 * jQuery 1.7+
 * One of
   * `lib/underscoreJS/underscore.min.js`, `lib/backboneJS/backbone.js`, `lib/rdfquery/latest/jquery.rdfquery.debug.js`, `lib/vie/vie.js`
@@ -32,6 +34,7 @@ For including the coe into your html file you'll need the following files to be 
 * One of
   * `lib/lime\[.min\].js` contains the player with all plugins in the repository
   * `lib/lime-core\[.min\].js` contains the player only, without the widget plugins
+
 For data integration see the Wiki page [Integration Manual](https://github.com/tkurz/lime/wiki/Integration-Manual)
 
 LICENSE
