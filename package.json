@@ -26,6 +26,7 @@
         "grunt-contrib-uglify": "~0.2.0",
         "grunt-contrib-watch": "~0.3.1",
         "grunt-contrib-coffee": "~0.7.0",
+        "grunt-contrib-concat": "~0.3.0",
         "grunt-docco-husky":  "https://github.com/szabyg/grunt-docco-husky/tarball/48fda325f21fe01d3d8e4bfa76be3e016d5f525a",
         "grunt-banner": "~0.1.4"
     },

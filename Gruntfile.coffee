@@ -50,7 +50,16 @@ module.exports = ->
         files:
           'lib/lime-core.min.js': ['lib/lime-core.js']
 
-    # Add short info in front of the produced file
+    concat:
+      core:
+        src: ['lib/lime-core.js','lib/utils.js']
+        dest: 'lib/lime.core.js'
+      full:
+        src:['lib/lime.js','lib/utils.js']
+        dest: 'lib/lime.js'
+
+
+          # Add short info in front of the produced file
     usebanner:
       coffee:
         options:
@@ -87,6 +96,7 @@ module.exports = ->
 
   # Build dependencies
   @loadNpmTasks 'grunt-contrib-coffee'
+  @loadNpmTasks 'grunt-contrib-concat'
   @loadNpmTasks 'grunt-contrib-uglify'
   @loadNpmTasks 'grunt-banner'
   @loadNpmTasks 'grunt-docco-husky'
@@ -98,7 +108,7 @@ module.exports = ->
   @loadNpmTasks 'grunt-contrib-watch'
 
   # Local tasks
-  @registerTask 'build', ["coffee", "usebanner", "uglify"]
+  @registerTask 'build', ["coffee", "concat", "usebanner", "uglify"]
   @registerTask 'default', 'build'
 
   @registerTask 'doc', =>
