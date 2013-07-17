@@ -49,15 +49,23 @@ module.exports = ->
       core:
         files:
           'lib/lime-core.min.js': ['lib/lime-core.js']
+      deps:
+        files:
+          'lib/lime-deps.min.js': ['lib/lime-deps.js']
 
     concat:
+      # core is the lime player without extra plugins
       core:
         src: ['lib/lime-core.js','lib/utils.js']
-        dest: 'lib/lime.core.js'
+        dest: 'lib/lime-core.js'
+      # full is the lime player with all plugins
       full:
         src:['lib/lime.js','lib/utils.js']
         dest: 'lib/lime.js'
-
+      # deps is the dependencies without the player itself.
+      deps:
+        src:['lib/underscoreJS/underscore.min.js', 'lib/backboneJS/backbone.js', 'lib/rdfquery/latest/jquery.rdfquery.debug.js', 'lib/vie/vie.js'],
+        dest: 'lib/lime-deps.js'
 
           # Add short info in front of the produced file
     usebanner:
