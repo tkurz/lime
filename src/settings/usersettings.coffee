@@ -6,12 +6,14 @@ class window.UserSettingsPlugin extends window.LimePlugin
 
     # insert widget click function
     $("div .usersettings").click => #click behaviour - highlight the related widgets by adding a class to them
-      @lime.player.pause()
+      if @lime.options.pauseOnWidgetopen
+        @lime.player.pause()
       @renderUserSettingsInModalWindow()
 
     button = $ "<div class='vjs-control usersettings' title='User settings' alt='User settings'><div></div></div>"
     button.click (e) =>
-      @lime.player.pause()
+      if @lime.options.pauseOnWidgetopen
+        @lime.player.pause()
       @renderUserSettingsInModalWindow()
 
     $(@lime.player.buttonContainer).append button
@@ -27,7 +29,8 @@ class window.UserSettingsPlugin extends window.LimePlugin
           100000000
 
       jQuery(widget).bind 'activate', (e) =>
-        @lime.player.pause()
+        if @lime.options.pauseOnWidgetopen
+          @lime.player.pause()
         @renderUserSettingsInModalWindow()
 
       _.defer ->

@@ -50,6 +50,9 @@ class window.LIMEPlayer
         TestPlugin: {}
       }
 
+      # The player normally pauses when the user activates a widget
+      pauseOnWidgetopen: true,
+
       # Define the array of widget types to be shown. Default: `null` means, everything is shown.
       # `[]` (empty array) means nothing is shown
       activeWidgetTypes: null

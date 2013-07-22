@@ -24,11 +24,16 @@ class window.LimeWidget
     jQuery(@element).parent().data('sorted', false)
     jQuery(@element).data 'widget', @
     jQuery(@element).data 'plugin', @plugin
+
+    # Widget handle is clicked
     jQuery(@element).click (e) =>
       widget = jQuery(e.currentTarget).data().widget
       plugin = jQuery(e.currentTarget).data().plugin
       if widget.isActive()
-        @plugin.lime.pause()
+
+        if @lime.options.pauseOnWidgetopen
+          @plugin.lime.pause()
+
         #console.info "activating widget", @
         jQuery(@).trigger 'activate',
           plugin: plugin
@@ -42,7 +47,8 @@ class window.LimeWidget
         @lime.claimKeyEvents widget
       else
         plugin.lime.player.seek widget.annotation.start
-        plugin.lime.player.play()
+        if @lime.options.pauseOnWidgetopen
+          plugin.lime.player.play()
 
       # If a widget is clicked, it should also be marked as active for clear navigation.
       plugin.lime.navActivateWidget widget.element

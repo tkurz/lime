@@ -12,6 +12,7 @@ module.exports = ->
   # Build setup: concatenate source files
     coffee:
       compile:
+        sourceMap: true
         files:
           'lib/lime-core.js': [
             'src/lime.coffee'
@@ -37,6 +38,18 @@ module.exports = ->
             'src/plugins/*.coffee'
             'src/settings/*.coffee'
           ]
+      mult_plugins:
+        src: ['src/plugins/*.coffee']
+        dest: 'lib/plugins/'
+        flatten: true
+        expand: true
+        ext: '.js'
+      mult_settings:
+        src: ['src/settings/*.coffee']
+        dest: 'lib/settings/'
+        flatten: true
+        expand: true
+        ext: '.js'
 
   # JavaScript minification
     uglify:
