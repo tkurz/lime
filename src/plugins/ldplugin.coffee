@@ -175,20 +175,27 @@ class window.LDPlugin extends window.LimePlugin
             return starringList
 
           annotation.getLatitude = ->
-            value = 0.0
-            for entity in @entities
-              if entity.getSubject().indexOf('geonames') isnt -1
-                value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#lat>']
-            console.log "Latitude = ", value
-            return value
+            if annotation.hash.latitude
+              console.info 'annotation.hash.latitude:', annotation.hash, annotation.hash.latitude
+              return annotation.hash.latitude.value
+            else
+              value = 0.0
+              for entity in @entities
+                if entity.getSubject().indexOf('geonames') isnt -1
+                  value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#lat>']
+              console.log "Latitude = ", value
+              return value
 
           annotation.getLongitude = ->
-            value = 0.0
-            for entity in @entities
-              if entity.getSubject().indexOf('geonames') isnt -1
-                value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#long>']
-            console.log "Latitude = ", value
-            return value
+            if annotation.hash.longitude
+              return annotation.hash.longitude.value
+            else
+              value = 0.0
+              for entity in @entities
+                if entity.getSubject().indexOf('geonames') isnt -1
+                  value = entity.attributes['<http://www.w3.org/2003/01/geo/wgs84_pos#long>']
+              console.log "Latitude = ", value
+              return value
 
         annotation.entityPromise.resolve annotation.entities
         readyCb()

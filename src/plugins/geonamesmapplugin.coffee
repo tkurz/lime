@@ -5,7 +5,11 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
     console.info "Initialize GeoNamesMapPlugin"
 
     for annotation in @lime.annotations
-      if annotation.resource.value.indexOf("sws.geonames.org") > 0 and annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions'] # is "http://connectme.at/ontology#hasKeyword"
+      relevant = false
+      relevant = annotation.resource.value.indexOf("sws.geonames.org") > 0 or (annotation.hash.latitude and annotation.hash.latitude)
+      unless annotation.relation.value in ['http://connectme.at/ontology#explicitlyShows', 'http://connectme.at/ontology#explicitlyMentions', 'http://connectme.at/ontology#implicitlyShows' , 'http://connectme.at/ontology#implicitlyMentions'] # is "http://connectme.at/ontology#hasKeyword"
+        relevant = false
+      if relevant
         @handleAnnotation annotation
 
   # Putting this into a function keeps the annotation in the context

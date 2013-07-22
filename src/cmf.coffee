@@ -94,19 +94,24 @@ class window.CMF
     res = []
     query = @_annotationsForVideo(resource)
     @_runSPARQL(query, resCB)
-  _annotationsForVideo: (resource) -> """PREFIX oac: <http://www.openannotation.org/ns/>
-      PREFIX mao: <http://www.w3.org/ns/ma-ont#>
-      PREFIX cma: <http://connectme.at/ontology#>
-      SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel
-      WHERE {
-        <#{resource}>  mao:hasFragment ?f.
-        ?f mao:locator ?fragment.
-        ?annotation oac:hasTarget ?f.
-        ?annotation a ?type.
-        OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}
-        ?annotation oac:hasBody ?resource.
-        ?f ?relation ?resource.
-      }"""
+  _annotationsForVideo: (resource) -> """
+    PREFIX oac: <http://www.openannotation.org/ns/>
+    PREFIX mao: <http://www.w3.org/ns/ma-ont#>
+    PREFIX cma: <http://connectme.at/ontology#>
+    PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel ?latitude ?longitude
+    WHERE {
+    <http://connectme.salzburgresearch.at/devel/resource/video/yoovisid_7208>  mao:hasFragment ?f.
+    ?f mao:locator ?fragment.
+    ?annotation oac:hasTarget ?f.
+    ?annotation a ?type.
+    OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}
+    OPTIONAL{?resource geo:lat ?latitude.}
+    OPTIONAL{?resource geo:long ?longitude.}
+    ?annotation oac:hasBody ?resource.
+    ?f ?relation ?resource.
+    }
+  """
 
   # Get annotations for a video's locator uri
   getAnnotationsForLocator: (locator, resCB) ->
