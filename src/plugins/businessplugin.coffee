@@ -22,7 +22,7 @@ class window.BusinessPlugin extends window.LimePlugin
 
     widget = @lime.allocateWidgetSpace @,
         thumbnail: "img/shop.png" # should go into CSS
-        title: "#{domain}"
+        title: "#{annotation.getLabel?() or domain}"
         type: "BusinessWidget"
         sortBy: ->
           10000 * annotation.start + annotation.end
