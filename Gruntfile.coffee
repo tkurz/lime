@@ -12,7 +12,6 @@ module.exports = ->
   # Build setup: concatenate source files
     coffee:
       compile:
-        sourceMap: true
         files:
           'lib/lime-core.js': [
             'src/lime.coffee'

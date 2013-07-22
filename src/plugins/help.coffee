@@ -6,12 +6,14 @@ class window.Help extends window.LimePlugin
 
     # insert widget click function
     $("div .help").click => #click behaviour - highlight the related widgets by adding a class to them
-      @lime.player.pause()
+      if @lime.options.pauseOnWidgetopen
+        @lime.player.pause()
       @renderHelpInModalWindow()
 
     button = $ "<div class='vjs-control help' title='Help' alt='Help' style='font-size: 18px;top: 2px;'>?<div></div></div>"
     button.click (e) =>
-      @lime.player.pause()
+      if @lime.options.pauseOnWidgetopen
+        @lime.player.pause()
       @renderHelpInModalWindow()
 
     $(@lime.player.buttonContainer).append button
@@ -32,7 +34,8 @@ class window.Help extends window.LimePlugin
           eventCategory = @name
           _gaq.push ['_trackEvent',eventCategory, 'clicked',eventClickedLabel]
         catch error
-        @lime.player.pause()
+        if @lime.options.pauseOnWidgetopen
+          @lime.player.pause()
         @renderHelpInModalWindow()
 
       _.defer ->
