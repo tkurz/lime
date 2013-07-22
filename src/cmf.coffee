@@ -101,7 +101,7 @@ class window.CMF
     PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
     SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel ?latitude ?longitude
     WHERE {
-    <http://connectme.salzburgresearch.at/devel/resource/video/yoovisid_7208>  mao:hasFragment ?f.
+    <#{resource}>  mao:hasFragment ?f.
     ?f mao:locator ?fragment.
     ?annotation oac:hasTarget ?f.
     ?annotation a ?type.
