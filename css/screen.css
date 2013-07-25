@@ -651,10 +651,6 @@ a:hover {
     -o-transform: skew(15deg) rotate(6deg);
     transform: skew(15deg) rotate(6deg);
 }
-.nav-selected {
-    border: turquoise 1px solid;
-}
-
 #video_player {
     position: relative;
 }
@@ -677,4 +673,9 @@ a:hover {
     width: 22px;
     height: 16px;
     margin: 0.5em auto 0;
+}
+
+.widget-container .lime-widget.nav-selected,
+.selected {
+    border: turquoise 1px solid;
 }
