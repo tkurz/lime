@@ -60,44 +60,44 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       jQuery(widget).bind "leftarrow", (e) =>
         # @geotabsiterator += 1
         @geotabsiterator = if @geotabs.length is @geotabsiterator + 1 then 0 else @geotabsiterator + 1
-        #$('.geotab.selected').removeClass 'selected'
+        #jQuery('.geotab.selected').removeClass 'selected'
         if (@geotabsiterator == 0)
-          $("#geoMap").trigger 'click'
-          #$("#geoMap").addClass 'selected'
+          jQuery("#geoMap").trigger 'click'
+          #jQuery("#geoMap").addClass 'selected'
         if (@geotabsiterator == 1)
-          $("#geoWeather").trigger 'click'
+          jQuery("#geoWeather").trigger 'click'
 
         if (@geotabsiterator == 2)
-          $("#geoRout").trigger 'click'
-          #$("#geoRout").addClass 'selected'
+          jQuery("#geoRout").trigger 'click'
+          #jQuery("#geoRout").addClass 'selected'
         if (@geotabsiterator == 3)
-          $("#geoPanoramio").trigger 'click'
-          #$("#geoPanoramio").addClass 'selected'
+          jQuery("#geoPanoramio").trigger 'click'
+          #jQuery("#geoPanoramio").addClass 'selected'
 
       jQuery(widget).bind "rightarrow", (e) =>
         # @geotabsiterator += 1
         @geotabsiterator = if @geotabsiterator is 0 then @geotabs.length - 1  else @geotabsiterator - 1
-        #$('.geotab.selected').removeClass 'selected'
+        #jQuery('.geotab.selected').removeClass 'selected'
         if (@geotabsiterator == 0)
-          $("#geoMap").trigger 'click'
-          #$("#geoMap").addClass 'selected'
+          jQuery("#geoMap").trigger 'click'
+          #jQuery("#geoMap").addClass 'selected'
         if (@geotabsiterator == 1)
-          $("#geoWeather").trigger 'click'
-          #$("#geoWeather").addClass 'selected'
+          jQuery("#geoWeather").trigger 'click'
+          #jQuery("#geoWeather").addClass 'selected'
         if (@geotabsiterator == 2)
-          $("#geoRout").trigger 'click'
-          #$("#geoRout").addClass 'selected'
+          jQuery("#geoRout").trigger 'click'
+          #jQuery("#geoRout").addClass 'selected'
         if (@geotabsiterator == 3)
-          $("#geoPanoramio").trigger 'click'
-          #$("#geoPanoramio").addClass 'selected'
+          jQuery("#geoPanoramio").trigger 'click'
+          #jQuery("#geoPanoramio").addClass 'selected'
 
       jQuery(widget).bind "uparrow", (e) =>
 
         # customEvent = jQuery.Event "keydown"
         # customEvent.which = 107 # + key code value
 
-        # $("#geoMap").trigger 'click'
-        # $("#map_area").trigger customEvent
+        # jQuery("#geoMap").trigger 'click'
+        # jQuery("#map_area").trigger customEvent
         currentZoom = @geomap.getZoom()
         @geomap.setZoom currentZoom + 1
 
@@ -114,7 +114,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
 
 
     # fix container size
-    modalContent = $(outputElement)
+    modalContent = jQuery(outputElement)
     modalContent.css "width", "600px"
 
     modalContent.css "height", "500px"
@@ -149,11 +149,11 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
                </div>
                """
     modalContent.append result
-    @geotabs = $('.geotab:not(.disabled)')
+    @geotabs = jQuery('.geotab:not(.disabled)')
     @geotabsiterator = 0
 
     # control widget
-    $(".close").click (e) =>
+    jQuery(".close").click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
       eventLabel = annotation.widgets[@name].options.title
@@ -162,7 +162,7 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
       catch error
 
-    $('#mask').click (e) =>
+    jQuery('#mask').click (e) =>
       endTime = new Date().getTime()
       timeSpent = endTime - startTime
       eventLabel = annotation.widgets[@name].options.title
@@ -171,13 +171,13 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
         _gaq.push ['_trackTiming', @name, eventLabel, timeSpent, 'viewed']
       catch error
 
-    $("#geoMap").click =>
-      $('.geotab.selected').removeClass 'selected'
+    jQuery("#geoMap").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "visible"
-      $("#weather_bar").css "visibility", "hidden"
-      $("#rout_bar").css "visibility", "hidden"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "visible"
+      jQuery("#weather_bar").css "visibility", "hidden"
+      jQuery("#rout_bar").css "visibility", "hidden"
+      jQuery("#map_area").empty()
 
       # cartography handling
       i = undefined
@@ -235,15 +235,15 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       @geomap = map
 
 
-      $("#geoMap").addClass 'selected'
+      jQuery("#geoMap").addClass 'selected'
 
-    $("#geoWeather").click =>
-      $('.geotab.selected').removeClass 'selected'
+    jQuery("#geoWeather").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "hidden"
-      $("#weather_bar").css "visibility", "visible"
-      $("#rout_bar").css "visibility", "hidden"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "hidden"
+      jQuery("#weather_bar").css "visibility", "visible"
+      jQuery("#rout_bar").css "visibility", "hidden"
+      jQuery("#map_area").empty()
 
       # cartography handling
       i = undefined
@@ -291,15 +291,15 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
       weatherLayer = new google.maps.weather.WeatherLayer(temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS)
       weatherLayer.setMap map
       @geomap = map
-      $("#geoWeather").addClass 'selected'
+      jQuery("#geoWeather").addClass 'selected'
 
-    $("#geoRout").click =>
-      $('.geotab.selected').removeClass 'selected'
+    jQuery("#geoRout").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
       # menu handling
-      $("#location_bar").css "visibility", "hidden"
-      $("#weather_bar").css "visibility", "hidden"
-      $("#rout_bar").css "visibility", "visible"
-      $("#map_area").empty()
+      jQuery("#location_bar").css "visibility", "hidden"
+      jQuery("#weather_bar").css "visibility", "hidden"
+      jQuery("#rout_bar").css "visibility", "visible"
+      jQuery("#map_area").empty()
 
       # cartography handling
       if navigator.geolocation
@@ -377,14 +377,14 @@ class window.GeoNamesMapPlugin extends window.LimePlugin
               alert "Permission denied"
             when error.UNKNOWN_ERROR
               alert "Unknown error"
-      $("#geoRout").addClass 'selected'
+      jQuery("#geoRout").addClass 'selected'
 
-    $("#geoPanoramio").click =>
-      $('.geotab.selected').removeClass 'selected'
-      $("#geoPanoramio").addClass 'selected'
+    jQuery("#geoPanoramio").click =>
+      jQuery('.geotab.selected').removeClass 'selected'
+      jQuery("#geoPanoramio").addClass 'selected'
 
 
     # default selection
-    $("#geoMap").trigger "click"
-    $("#geoMap").addClass 'selected'
+    jQuery("#geoMap").trigger "click"
+    jQuery("#geoMap").addClass 'selected'
     return;
