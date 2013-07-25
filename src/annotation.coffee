@@ -1,8 +1,11 @@
 class window.Annotation
   constructor: (@hash) ->
     hash = @hash
+
+    # For easier debugging:
     @_res = @hash.resource.value
     @_prefLabel = @hash.prefLabel.value
+
     hash.fragment.value = hash.fragment.value.replace("?","#")
     hash.fragment.type = 'uri'
     @annotation = hash.annotation.value
