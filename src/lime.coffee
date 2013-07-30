@@ -334,13 +334,17 @@ class window.LIMEPlayer
     console.info "Loading annotations from LMF"
     src = @player.currentSource()
     @annotations = @options.annotations
+
+    # Keep only annotations that fragment-relevant
     @annotations = _.filter @options.annotations, (ann) =>
       src.indexOf(@_getFilename(ann.fragment.value)) isnt -1
-    @annotations = _.uniq @annotations,false, (item) =>
-      [item.hash.resource.value, item.hash.fragment.value]
 
+    # Keep only uniq annotations
+    @annotations = _.uniq @annotations,false, (item) =>
+      [item.hash.resource.value, item.hash.fragment.value, item.hash.annotation.value].join('')
     console.info "Relevant annotations:", @annotations
     cb()
+
   _moveWidgets: (isFullscreen) ->
     # added SORIN - toggle the annotations between fullscreen and normal screen
     console.log("fullscreen", isFullscreen, ", Visible "+LimePlayer.options.annotationsVisible);
