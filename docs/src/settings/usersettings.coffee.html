@@ -5,12 +5,14 @@
     <span class="nv">annotation = </span><span class="kc">undefined</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;Initialize UserSettingsPlugin&quot;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>insert widget click function</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;div .usersettings&quot;</span><span class="p">).</span><span class="nx">click</span> <span class="o">=&gt;</span> <span class="c1">#click behaviour - highlight the related widgets by adding a class to them</span>
-      <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">pauseOnWidgetopen</span>
+        <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
       <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
 
     <span class="nv">button = </span><span class="nx">$</span> <span class="s">&quot;&lt;div class=&#39;vjs-control usersettings&#39; title=&#39;User settings&#39; alt=&#39;User settings&#39;&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&quot;</span>
     <span class="nx">button</span><span class="p">.</span><span class="nx">click</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">pauseOnWidgetopen</span>
+        <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
       <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
 
     <span class="nx">$</span><span class="p">(</span><span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">buttonContainer</span><span class="p">).</span><span class="nx">append</span> <span class="nx">button</span>
@@ -25,7 +27,8 @@
           <span class="mi">100000000</span>
 
       <span class="nx">jQuery</span><span class="p">(</span><span class="nx">widget</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;activate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
-        <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nx">@lime</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">pauseOnWidgetopen</span>
+          <span class="nx">@lime</span><span class="p">.</span><span class="nx">player</span><span class="p">.</span><span class="nx">pause</span><span class="p">()</span>
         <span class="nx">@renderUserSettingsInModalWindow</span><span class="p">()</span>
 
       <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span> <span class="o">-&gt;</span>

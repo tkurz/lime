@@ -18,7 +18,7 @@ console.info "entities for annotation #{annotation.resource} loaded, create a wi
 
     <span class="nv">widget = </span><span class="nx">@lime</span><span class="p">.</span><span class="nx">allocateWidgetSpace</span> <span class="nx">@</span><span class="p">,</span>
         <span class="nv">thumbnail: </span><span class="s">&quot;img/shop.png&quot;</span> <span class="c1"># should go into CSS</span>
-        <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">domain</span><span class="si">}</span><span class="s">&quot;</span>
+        <span class="nv">title: </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">annotation</span><span class="p">.</span><span class="nx">getLabel</span><span class="o">?</span><span class="p">()</span> <span class="o">or</span> <span class="nx">domain</span><span class="si">}</span><span class="s">&quot;</span>
         <span class="nv">type: </span><span class="s">&quot;BusinessWidget&quot;</span>
         <span class="nv">sortBy: </span><span class="o">-&gt;</span>
           <span class="mi">10000</span> <span class="o">*</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">start</span> <span class="o">+</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">end</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>We're going to need the annotation for the widget's <code>activate</code> event</p>

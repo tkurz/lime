@@ -83,19 +83,24 @@ covered and generalized by the more convenient methods above</p>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_annotationsForVideo</span><span class="p">(</span><span class="nx">resource</span><span class="p">)</span>
     <span class="nx">@_runSPARQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">resCB</span><span class="p">)</span>
-  <span class="nv">_annotationsForVideo: </span><span class="nf">(resource) -&gt;</span> <span class="s">&quot;&quot;&quot;PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
-<span class="s">      PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
-<span class="s">      PREFIX cma: &lt;http://connectme.at/ontology</span><span class="err">#</span><span class="s">&gt;</span>
-<span class="s">      SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel</span>
-<span class="s">      WHERE {</span>
-<span class="s">        &lt;</span><span class="si">#{</span><span class="nx">resource</span><span class="si">}</span><span class="s">&gt;  mao:hasFragment ?f.</span>
-<span class="s">        ?f mao:locator ?fragment.</span>
-<span class="s">        ?annotation oac:hasTarget ?f.</span>
-<span class="s">        ?annotation a ?type.</span>
-<span class="s">        OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}</span>
-<span class="s">        ?annotation oac:hasBody ?resource.</span>
-<span class="s">        ?f ?relation ?resource.</span>
-<span class="s">      }&quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Get annotations for a video's locator uri</p>
+  <span class="nv">_annotationsForVideo: </span><span class="nf">(resource) -&gt;</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    PREFIX oac: &lt;http://www.openannotation.org/ns/&gt;</span>
+<span class="s">    PREFIX mao: &lt;http://www.w3.org/ns/ma-ont</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    PREFIX cma: &lt;http://connectme.at/ontology</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos</span><span class="err">#</span><span class="s">&gt;</span>
+<span class="s">    SELECT DISTINCT ?annotation ?fragment ?resource ?relation ?type ?prefLabel ?latitude ?longitude</span>
+<span class="s">    WHERE {</span>
+<span class="s">    &lt;</span><span class="si">#{</span><span class="nx">resource</span><span class="si">}</span><span class="s">&gt;  mao:hasFragment ?f.</span>
+<span class="s">    ?f mao:locator ?fragment.</span>
+<span class="s">    ?annotation oac:hasTarget ?f.</span>
+<span class="s">    ?annotation a ?type.</span>
+<span class="s">    OPTIONAL{?annotation cma:preferredLabel ?prefLabel.}</span>
+<span class="s">    OPTIONAL{?resource geo:lat ?latitude.}</span>
+<span class="s">    OPTIONAL{?resource geo:long ?longitude.}</span>
+<span class="s">    ?annotation oac:hasBody ?resource.</span>
+<span class="s">    ?f ?relation ?resource.</span>
+<span class="s">    }</span>
+<span class="s">  &quot;&quot;&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Get annotations for a video's locator uri</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">getAnnotationsForLocator: </span><span class="nf">(locator, resCB) -&gt;</span>
     <span class="nv">res = </span><span class="p">[]</span>
     <span class="nv">query = </span><span class="nx">@_annotationsForLocator</span><span class="p">(</span><span class="nx">locator</span><span class="p">)</span>

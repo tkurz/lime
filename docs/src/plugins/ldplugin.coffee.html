@@ -161,20 +161,27 @@ entityPromise.annotations is the array of all annotations that have the same res
             <span class="k">return</span> <span class="nx">starringList</span>
 
           <span class="nv">annotation.getLatitude = </span><span class="o">-&gt;</span>
-            <span class="nv">value = </span><span class="mf">0.0</span>
-            <span class="k">for</span> <span class="nx">entity</span> <span class="k">in</span> <span class="nx">@entities</span>
-              <span class="k">if</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;geonames&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://www.w3.org/2003/01/geo/wgs84_pos#lat&gt;&#39;</span><span class="p">]</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Latitude = &quot;</span><span class="p">,</span> <span class="nx">value</span>
-            <span class="k">return</span> <span class="nx">value</span>
+            <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">latitude</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;annotation.hash.latitude:&#39;</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">,</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">latitude</span>
+              <span class="k">return</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">latitude</span><span class="p">.</span><span class="nx">value</span>
+            <span class="k">else</span>
+              <span class="nv">value = </span><span class="mf">0.0</span>
+              <span class="k">for</span> <span class="nx">entity</span> <span class="k">in</span> <span class="nx">@entities</span>
+                <span class="k">if</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;geonames&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
+                  <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://www.w3.org/2003/01/geo/wgs84_pos#lat&gt;&#39;</span><span class="p">]</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Latitude = &quot;</span><span class="p">,</span> <span class="nx">value</span>
+              <span class="k">return</span> <span class="nx">value</span>
 
           <span class="nv">annotation.getLongitude = </span><span class="o">-&gt;</span>
-            <span class="nv">value = </span><span class="mf">0.0</span>
-            <span class="k">for</span> <span class="nx">entity</span> <span class="k">in</span> <span class="nx">@entities</span>
-              <span class="k">if</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;geonames&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://www.w3.org/2003/01/geo/wgs84_pos#long&gt;&#39;</span><span class="p">]</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Latitude = &quot;</span><span class="p">,</span> <span class="nx">value</span>
-            <span class="k">return</span> <span class="nx">value</span>
+            <span class="k">if</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">longitude</span>
+              <span class="k">return</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">longitude</span><span class="p">.</span><span class="nx">value</span>
+            <span class="k">else</span>
+              <span class="nv">value = </span><span class="mf">0.0</span>
+              <span class="k">for</span> <span class="nx">entity</span> <span class="k">in</span> <span class="nx">@entities</span>
+                <span class="k">if</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">getSubject</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&#39;geonames&#39;</span><span class="p">)</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span>
+                  <span class="nv">value = </span><span class="nx">entity</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="s">&#39;&lt;http://www.w3.org/2003/01/geo/wgs84_pos#long&gt;&#39;</span><span class="p">]</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Latitude = &quot;</span><span class="p">,</span> <span class="nx">value</span>
+              <span class="k">return</span> <span class="nx">value</span>
 
         <span class="nx">annotation</span><span class="p">.</span><span class="nx">entityPromise</span><span class="p">.</span><span class="nx">resolve</span> <span class="nx">annotation</span><span class="p">.</span><span class="nx">entities</span>
         <span class="nx">readyCb</span><span class="p">()</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>Fetches the entity for <code>entityUri</code> and the possible redirects based on props, in a decreasing <code>depth</code>.</p>
