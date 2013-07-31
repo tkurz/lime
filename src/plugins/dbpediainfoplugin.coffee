@@ -45,6 +45,9 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
           catch error
           annotation.widgets[@name].setActive()
 
+        if annotation.state is 'active'
+          annotation.widgets[@name].setActive()
+
         jQuery(annotation).bind "becomeInactive", (e) =>
           #attached gogle analytics stack push for inactive annotation
           try

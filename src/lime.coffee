@@ -428,15 +428,14 @@ class window.LIMEPlayer
     domEl = jQuery ".lime-widget:first", container
     opts = _(@options.widget).extend options
     res = new LimeWidget plugin, domEl, opts
-    _.defer =>
-      if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
-        res.render()
-        @widgets.push res
-        res.show()
-        res.setInactive()
-        unless @getHiddenWidgetTypes().indexOf(options.type) is -1
-          res.element.addClass 'deactivated'
-        @updateWidgetsList()
+    if @options.widgetVisibility is 'scrolling-list' and @_isWidgetToBeShown res
+      res.render()
+      @widgets.push res
+      res.show()
+      res.setInactive()
+      unless @getHiddenWidgetTypes().indexOf(options.type) is -1
+        res.element.addClass 'deactivated'
+      @updateWidgetsList()
     return res
 
   _hasFreeSpace: (container, options) ->
