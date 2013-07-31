@@ -125,7 +125,9 @@ class window.DBPediaInfoPlugin extends window.LimePlugin
           else
             pagetext.push textsum
             textsum = ""
-
+        if textsum.length
+          pagetext.push textsum
+          textsum = ""
         maintext = pagetext[0]
     console.log pagetext
 
