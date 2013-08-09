@@ -77,6 +77,7 @@ class window.LIMEPlayer
       builtinPlugins:
         AnnotationOverlays: {}
         LDPlugin: {}
+        CreditsPlugin: {}
       widget: {}
     @options = jQuery.extend options, opts
 
